@@ -1,7 +1,7 @@
 {
   "sbg:sbgMaintained": false,
   "description": "",
-  "sbg:id": "dave/cgrhpv/hpv-typing-illumina-workflow/125",
+  "sbg:id": "dave/cgrhpv/hpv-typing-illumina-workflow/126",
   "steps": [
     {
       "sbg:x": 696.7524094008027,
@@ -380,7 +380,6 @@
         ],
         "sbg:projectName": "cgrHPV",
         "id": "dave/cgrhpv/bwa-index/1",
-        "sbg:toolAuthor": "Heng Li",
         "sbg:revisionsInfo": [
           {
             "sbg:modifiedOn": 1510550269,
@@ -400,7 +399,7 @@
           "FASTA-Processing"
         ],
         "sbg:cmdPreview": "bwa index reference.fasta   -a bwtsw      -6    ; tar -cf reference.fasta.tar reference.fasta *.amb *.ann *.bwt *.pac *.sa",
-        "y": 217.91468969417403,
+        "sbg:modifiedOn": 1520716437,
         "sbg:job": {
           "inputs": {
             "bwt_construction": "bwtsw",
@@ -439,7 +438,8 @@
         "$namespaces": {
           "sbg": "https://sevenbridges.com"
         },
-        "sbg:modifiedBy": "dave",
+        "stdout": "",
+        "y": 217.91468969417403,
         "sbg:links": [
           {
             "label": "Homepage",
@@ -462,7 +462,7 @@
             "id": "http://www.ncbi.nlm.nih.gov/pubmed/19451168"
           }
         ],
-        "stdout": "",
+        "sbg:modifiedBy": "dave",
         "sbg:id": "dave/cgrhpv/bwa-index/1",
         "sbg:toolkit": "BWA",
         "sbg:contributors": [
@@ -496,6 +496,78 @@
             "id": "#indexed_reference"
           }
         ],
+        "sbg:project": "dave/cgrhpv",
+        "sbg:image_url": null,
+        "description": "BWA INDEX constructs the FM-index (Full-text index in Minute space) for the reference genome.\nGenerated index files will be used with BWA MEM, BWA ALN, BWA SAMPE and BWA SAMSE tools.\n\nIf input reference file has TAR extension it is assumed that BWA indices came together with it. BWA INDEX will only pass that TAR to the output. If input is not TAR, the creation of BWA indices and its packing in TAR file (together with the reference) will be performed.",
+        "sbg:createdBy": "dave",
+        "cwlVersion": "sbg:draft-2",
+        "label": "BWA INDEX",
+        "arguments": [
+          {
+            "valueFrom": {
+              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.bwt_construction){\n    return ''\n  } else {\n    return '-a ' + $job.inputs.bwt_construction\n  }\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          },
+          {
+            "valueFrom": {
+              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.prefix){\n    return ''\n  } else {\n    return '-p ' + $job.inputs.prefix\n  }\n}\n",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          },
+          {
+            "valueFrom": {
+              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.block_size){\n    return ''\n  } else {\n    return '-b ' + $job.inputs.block_size\n  }\n}\n\n",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          },
+          {
+            "valueFrom": {
+              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.add_64_to_fasta_name){\n    return ''\n  } else {\n    return '-6 '\n  }\n}\n",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          },
+          {
+            "valueFrom": {
+              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar'){\n    return ''\n  }\n  else{\n    tar_cmd = 'tar -cf ' + reference_file + '.tar ' + reference_file + ' *.amb' + ' *.ann' + ' *.bwt' + ' *.pac' + ' *.sa' \n    return ' ; ' + tar_cmd\n  }\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          }
+        ],
+        "sbg:toolAuthor": "Heng Li",
+        "hints": [
+          {
+            "class": "DockerRequirement",
+            "dockerImageId": "2f813371e803",
+            "dockerPull": "cgrlab/typeseqer:latest"
+          },
+          {
+            "class": "sbg:CPURequirement",
+            "value": 1
+          },
+          {
+            "class": "sbg:MemRequirement",
+            "value": {
+              "script": "{\n  GB_1 = 1024*1024*1024\n  reads_size = $job.inputs.reference.size\n\n  if(!reads_size) { reads_size = GB_1 }\n  \n  if($job.inputs.total_memory){\n    return $job.inputs.total_memory * 1024\n  } else {\n    return (parseInt(1.5 * reads_size / (1024*1024)))\n  }\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            }
+          }
+        ],
+        "sbg:validationErrors": [],
+        "sbg:publisher": "sbg",
+        "class": "CommandLineTool",
+        "sbg:latestRevision": 1,
         "inputs": [
           {
             "sbg:category": "Configuration",
@@ -575,79 +647,7 @@
             "id": "#add_64_to_fasta_name"
           }
         ],
-        "class": "CommandLineTool",
-        "description": "BWA INDEX constructs the FM-index (Full-text index in Minute space) for the reference genome.\nGenerated index files will be used with BWA MEM, BWA ALN, BWA SAMPE and BWA SAMSE tools.\n\nIf input reference file has TAR extension it is assumed that BWA indices came together with it. BWA INDEX will only pass that TAR to the output. If input is not TAR, the creation of BWA indices and its packing in TAR file (together with the reference) will be performed.",
-        "sbg:project": "dave/cgrhpv",
-        "sbg:createdBy": "dave",
-        "cwlVersion": "sbg:draft-2",
-        "label": "BWA INDEX",
-        "arguments": [
-          {
-            "valueFrom": {
-              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.bwt_construction){\n    return ''\n  } else {\n    return '-a ' + $job.inputs.bwt_construction\n  }\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          },
-          {
-            "valueFrom": {
-              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.prefix){\n    return ''\n  } else {\n    return '-p ' + $job.inputs.prefix\n  }\n}\n",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          },
-          {
-            "valueFrom": {
-              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.block_size){\n    return ''\n  } else {\n    return '-b ' + $job.inputs.block_size\n  }\n}\n\n",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          },
-          {
-            "valueFrom": {
-              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar' || !$job.inputs.add_64_to_fasta_name){\n    return ''\n  } else {\n    return '-6 '\n  }\n}\n",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          },
-          {
-            "valueFrom": {
-              "script": "{\n  reference_file = $job.inputs.reference.path.split('/')[$job.inputs.reference.path.split('/').length-1]\n  ext = reference_file.split('.')[reference_file.split('.').length-1]\n  if(ext=='tar'){\n    return ''\n  }\n  else{\n    tar_cmd = 'tar -cf ' + reference_file + '.tar ' + reference_file + ' *.amb' + ' *.ann' + ' *.bwt' + ' *.pac' + ' *.sa' \n    return ' ; ' + tar_cmd\n  }\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          }
-        ],
         "x": -191.70946084066048,
-        "hints": [
-          {
-            "class": "DockerRequirement",
-            "dockerImageId": "2f813371e803",
-            "dockerPull": "cgrlab/typeseqer:latest"
-          },
-          {
-            "class": "sbg:CPURequirement",
-            "value": 1
-          },
-          {
-            "class": "sbg:MemRequirement",
-            "value": {
-              "script": "{\n  GB_1 = 1024*1024*1024\n  reads_size = $job.inputs.reference.size\n\n  if(!reads_size) { reads_size = GB_1 }\n  \n  if($job.inputs.total_memory){\n    return $job.inputs.total_memory * 1024\n  } else {\n    return (parseInt(1.5 * reads_size / (1024*1024)))\n  }\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            }
-          }
-        ],
-        "sbg:validationErrors": [],
-        "sbg:publisher": "sbg",
-        "sbg:latestRevision": 1,
-        "sbg:modifiedOn": 1520716437,
-        "sbg:image_url": null,
         "sbg:toolkitVersion": "0.7.13",
         "sbg:revision": 1
       },
@@ -717,7 +717,6 @@
         ],
         "sbg:projectName": "cgrHPV",
         "id": "dave/cgrhpv/bwa-mem-bundle-0-7-13/49",
-        "sbg:toolAuthor": "Heng Li",
         "sbg:revisionsInfo": [
           {
             "sbg:modifiedOn": 1481059586,
@@ -1025,7 +1024,7 @@
           "FASTQ-Processing"
         ],
         "sbg:cmdPreview": "tar -xf reference.b37.fasta.gz.tar ;  bwa mem  -R '@RG\\tID:1' -t 8  reference.b37.fasta.gz  /path/to/LP6005524-DNA_C01_lane_7.sorted.converted.filtered.pe_1.gz /path/to/LP6005524-DNA_C01_lane_7.sorted.converted.filtered.pe_2.gz | /sambamba_v0.6.6 view -t 8 --filter 'not secondary_alignment' -f bam -l 0 -S /dev/stdin | /sambamba_v0.6.6 sort -t 8 -m 32GiB --tmpdir ./ -o LP6005524-DNA_C01_lane_7.sorted.converted.filtered.bam -l 5 /dev/stdin",
-        "y": 303.4675358868678,
+        "sbg:modifiedOn": 1520741385,
         "sbg:job": {
           "inputs": {
             "rg_median_fragment_length": "",
@@ -1089,7 +1088,8 @@
         "$namespaces": {
           "sbg": "https://sevenbridges.com"
         },
-        "sbg:modifiedBy": "dave",
+        "stdout": "",
+        "y": 303.4675358868678,
         "sbg:links": [
           {
             "label": "Homepage",
@@ -1116,12 +1116,13 @@
             "id": "http://www.ncbi.nlm.nih.gov/pubmed/19451168"
           }
         ],
-        "stdout": "",
+        "sbg:modifiedBy": "dave",
         "sbg:id": "dave/cgrhpv/bwa-mem-bundle-0-7-13/49",
         "sbg:toolkit": "BWA",
         "sbg:contributors": [
           "dave"
         ],
+        "x": -40.944682963278815,
         "sbg:createdOn": 1481059586,
         "outputs": [
           {
@@ -1150,6 +1151,89 @@
             "id": "#aligned_reads"
           }
         ],
+        "sbg:project": "dave/cgrhpv",
+        "sbg:image_url": null,
+        "sbg:createdBy": "dave",
+        "cwlVersion": "sbg:draft-2",
+        "label": "BWA MEM Bundle",
+        "arguments": [
+          {
+            "position": 111,
+            "valueFrom": {
+              "script": "{  ///  SAMBAMBA VIEW   //////////////////////\n   ///////////////////////////////////////////\nfunction common_substring(a,b) {\n  var i = 0;\n  \n  while(a[i] === b[i] && i < a.length)\n  {\n    i = i + 1;\n  }\n\n  return a.slice(0, i);\n}\n  \n   // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_1 = $job.inputs.input_reads[0][0] // scatter mode\n    input_2 = $job.inputs.input_reads[0][1]\n  } else if($job.inputs.input_reads instanceof Array){\n    input_1 = $job.inputs.input_reads[0]\n    input_2 = $job.inputs.input_reads[1]\n  }else {\n    input_1 = [].concat($job.inputs.input_reads)[0]\n    input_2 = input_1\n  }\n  full_name = input_1.path.split('/')[input_1.path.split('/').length-1] \n\n  if($job.inputs.output_name){name = $job.inputs.output_name }\n  else if ($job.inputs.input_reads.length == 1){ \n    name = full_name\n\n    if(name.slice(-3, name.length) === '.gz' || name.slice(-3, name.length) === '.GZ')\n      name = name.slice(0, -3)   \n    if(name.slice(-3, name.length) === '.fq' || name.slice(-3, name.length) === '.FQ')\n      name = name.slice(0, -3)\n    if(name.slice(-6, name.length) === '.fastq' || name.slice(-6, name.length) === '.FASTQ')\n      name = name.slice(0, -6)\n       \n  }else{\n    full_name2 = input_2.path.split('/')[input_2.path.split('/').length-1] \n    name = common_substring(full_name, full_name2)\n    \n    if(name.slice(-1, name.length) === '_' || name.slice(-1, name.length) === '.')\n      name = name.slice(0, -1)\n    if(name.slice(-2, name.length) === 'p_' || name.slice(-1, name.length) === 'p.')\n      name = name.slice(0, -2)\n    if(name.slice(-2, name.length) === 'P_' || name.slice(-1, name.length) === 'P.')\n      name = name.slice(0, -2)\n    if(name.slice(-3, name.length) === '_p_' || name.slice(-3, name.length) === '.p.')\n      name = name.slice(0, -3)\n    if(name.slice(-3, name.length) === '_pe' || name.slice(-3, name.length) === '.pe')\n      name = name.slice(0, -3)\n  }\n  \n  // Read number of threads if defined\n  if ($job.inputs.sambamba_threads){\n    threads = $job.inputs.sambamba_threads\n  }\n  else if ($job.inputs.threads){\n    threads = $job.inputs.threads\n  }\n  else { threads = 8 }\n  \n  if ($job.inputs.filter_out_secondary_alignments){\n    filt_sec = ' --filter \\'not secondary_alignment\\' '\n  }\n  else {filt_sec=' '}\n   \n  // Set output command\n  sambamba_path = '/sambamba_v0.6.6'\n  if ($job.inputs.output_format == 'BAM') {\n    return \"| \" + sambamba_path + \" view -t \"+ threads + filt_sec + \"-f bam -S /dev/stdin -o \"+ name + \".bam\"\n  }\n  else if ($job.inputs.output_format == 'SAM'){ // SAM\n    return \"> \" + name + \".sam\"\n  }\n  else { // SortedBAM is considered default\n    return \"| \" + sambamba_path + \" view -t \"+ threads + filt_sec + \"-f bam -l 0 -S /dev/stdin\"\n  }\n\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": false,
+            "prefix": ""
+          },
+          {
+            "position": 112,
+            "valueFrom": {
+              "script": "{ ///  SAMBAMBA SORT   //////////////////////\n///////////////////////////////////////////\n  \nfunction common_substring(a,b) {\n  var i = 0;\n  while(a[i] === b[i] && i < a.length)\n  {\n    i = i + 1;\n  }\n\n  return a.slice(0, i);\n}\n\n   // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_1 = $job.inputs.input_reads[0][0] // scatter mode\n    input_2 = $job.inputs.input_reads[0][1]\n  } else if($job.inputs.input_reads instanceof Array){\n    input_1 = $job.inputs.input_reads[0]\n    input_2 = $job.inputs.input_reads[1]\n  }else {\n    input_1 = [].concat($job.inputs.input_reads)[0]\n    input_2 = input_1\n  }\n  full_name = input_1.path.split('/')[input_1.path.split('/').length-1] \n  \n  if($job.inputs.output_name){name = $job.inputs.output_name }\n  else if ($job.inputs.input_reads.length == 1){\n    name = full_name\n    if(name.slice(-3, name.length) === '.gz' || name.slice(-3, name.length) === '.GZ')\n      name = name.slice(0, -3)   \n    if(name.slice(-3, name.length) === '.fq' || name.slice(-3, name.length) === '.FQ')\n      name = name.slice(0, -3)\n    if(name.slice(-6, name.length) === '.fastq' || name.slice(-6, name.length) === '.FASTQ')\n      name = name.slice(0, -6)\n       \n  }else{\n    full_name2 = input_2.path.split('/')[input_2.path.split('/').length-1] \n    name = common_substring(full_name, full_name2)\n    \n    if(name.slice(-1, name.length) === '_' || name.slice(-1, name.length) === '.')\n      name = name.slice(0, -1)\n    if(name.slice(-2, name.length) === 'p_' || name.slice(-1, name.length) === 'p.')\n      name = name.slice(0, -2)\n    if(name.slice(-2, name.length) === 'P_' || name.slice(-1, name.length) === 'P.')\n      name = name.slice(0, -2)\n    if(name.slice(-3, name.length) === '_p_' || name.slice(-3, name.length) === '.p.')\n      name = name.slice(0, -3)\n    if(name.slice(-3, name.length) === '_pe' || name.slice(-3, name.length) === '.pe')\n      name = name.slice(0, -3)\n  }\n\n  //////////////////////////\n  // Set sort memory size\n  \n  reads_size = 0 // Not used because of situations when size does not exist!\n  GB_1 = 1024*1024*1024\n  if(reads_size < GB_1){ \n    suggested_memory = 4\n    suggested_cpus = 1\n  }\n  else if(reads_size < 10 * GB_1){ \n    suggested_memory = 15\n    suggested_cpus = 8\n  }\n  else { \n    suggested_memory = 58 \n    suggested_cpus = 31\n  }\n  \n  \n  if(!$job.inputs.total_memory){ total_memory = suggested_memory }\n  else{ total_memory = $job.inputs.total_memory }\n\n  // TODO:Rough estimation, should be fine-tuned!\n  if(total_memory > 16){ sorter_memory = parseInt(total_memory / 3) }\n  else{ sorter_memory = 5 }\n          \n  if ($job.inputs.sort_memory){\n    sorter_memory_string = $job.inputs.sort_memory +'GiB'\n  }\n  else sorter_memory_string = sorter_memory + 'GiB' \n  \n  // Read number of threads if defined  \n  if ($job.inputs.sambamba_threads){\n    threads = $job.inputs.sambamba_threads\n  }\n  else if ($job.inputs.threads){\n    threads = $job.inputs.threads\n  }\n  else threads = suggested_cpus\n  \n  sambamba_path = '/sambamba_v0.6.6'\n  \n  // SortedBAM is considered default\n  if (!(($job.inputs.output_format == 'BAM') || ($job.inputs.output_format == 'SAM'))){\n    cmd = \"| \" + sambamba_path + \" sort -t \" + threads\n    return cmd + \" -m \"+sorter_memory_string+\" --tmpdir ./ -o \"+ name +\".bam -l 5 /dev/stdin\"\n  }\n  else return \"\"\n}\n  \n",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": false
+          },
+          {
+            "position": 1,
+            "valueFrom": {
+              "script": "{\n  \n  if($job.inputs.read_group_header){\n  \treturn '-R ' + $job.inputs.read_group_header\n  }\n    \n  function add_param(key, val){\n    if(!val){\n      return\n\t}\n    param_list.push(key + ':' + val)\n  }\n\n  param_list = []\n\n  // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_1 = $job.inputs.input_reads[0][0] // scatter mode\n  } else if($job.inputs.input_reads instanceof Array){\n    input_1 = $job.inputs.input_reads[0]\n  }else {\n    input_1 = [].concat($job.inputs.input_reads)[0]\n  }\n  \n  //Read metadata for input reads\n  read_metadata = input_1.metadata\n  if(!read_metadata) read_metadata = []\n\n  add_param('ID', '1')\n  \n  if($job.inputs.rg_data_submitting_center){\n  \tadd_param('CN', $job.inputs.rg_data_submitting_center)\n  }\n  else if('data_submitting_center' in  read_metadata){\n  \tadd_param('CN', read_metadata.data_submitting_center)\n  }\n  \n  if($job.inputs.rg_library_id){\n  \tadd_param('LB', $job.inputs.rg_library_id)\n  }\n  else if('library_id' in read_metadata){\n  \tadd_param('LB', read_metadata.library_id)\n  }\n  \n  if($job.inputs.rg_median_fragment_length){\n  \tadd_param('PI', $job.inputs.rg_median_fragment_length)\n  }\n\n  \n  if($job.inputs.rg_platform){\n  \tadd_param('PL', $job.inputs.rg_platform)\n  }\n  else if('platform' in read_metadata){\n    if(read_metadata.platform == 'HiSeq X Ten'){\n      rg_platform = 'Illumina'\n    }\n    else{\n      rg_platform = read_metadata.platform\n    }\n  \tadd_param('PL', rg_platform)\n  }\n  \n  if($job.inputs.rg_platform_unit_id){\n  \tadd_param('PU', $job.inputs.rg_platform_unit_id)\n  }\n  else if('platform_unit_id' in read_metadata){\n  \tadd_param('PU', read_metadata.platform_unit_id)\n  }\n  \n  if($job.inputs.rg_sample_id){\n  \tadd_param('SM', $job.inputs.rg_sample_id)\n  }\n  else if('sample_id' in  read_metadata){\n  \tadd_param('SM', read_metadata.sample_id)\n  }\n    \n  return \"-R '@RG\\\\t\" + param_list.join('\\\\t') + \"'\"\n  \n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          },
+          {
+            "position": 101,
+            "valueFrom": {
+              "script": "{\n  /////// Set input reads in the correct order depending of the paired end from metadata\n    \n     // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_reads = $job.inputs.input_reads[0] // scatter mode\n  } else {\n    input_reads = $job.inputs.input_reads = [].concat($job.inputs.input_reads)\n  }\n  \n  \n  //Read metadata for input reads\n  read_metadata = input_reads[0].metadata\n  if(!read_metadata) read_metadata = []\n  \n  order = 0 // Consider this as normal order given at input: pe1 pe2\n  \n  // Check if paired end 1 corresponds to the first given read\n  if(read_metadata == []){ order = 0 }\n  else if('paired_end' in  read_metadata){ \n    pe1 = read_metadata.paired_end\n    if(pe1 != 1) order = 1 // change order\n  }\n\n  // Return reads in the correct order\n  if (input_reads.length == 1){\n    return input_reads[0].path // Only one read present\n  }\n  else if (input_reads.length == 2){\n    if (order == 0) return input_reads[0].path + ' ' + input_reads[1].path\n    else return input_reads[1].path + ' ' + input_reads[0].path\n  }\n\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          },
+          {
+            "position": 2,
+            "valueFrom": {
+              "script": "{\n  \n  reads_size = 0 \n\n  GB_1 = 1024*1024*1024\n  if(reads_size < GB_1){ suggested_threads = 1 }\n  else if(reads_size < 10 * GB_1){ suggested_threads = 8 }\n  else { suggested_threads = 31 }\n  \n  \n  if(!$job.inputs.threads){  \treturn suggested_threads  }  \n  else{    return $job.inputs.threads  }\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true,
+            "prefix": "-t"
+          },
+          {
+            "position": 10,
+            "valueFrom": {
+              "script": "{\n  reference_file = $job.inputs.reference_index_tar.path.split('/')[$job.inputs.reference_index_tar.path.split('/').length-1]\n  name = reference_file.slice(0, -4) // cut .tar extension \n  \n  return name\n  \n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "separate": true
+          }
+        ],
+        "sbg:toolAuthor": "Heng Li",
+        "hints": [
+          {
+            "class": "DockerRequirement",
+            "dockerImageId": "",
+            "dockerPull": "cgrlab/typeseqer:latest"
+          },
+          {
+            "class": "sbg:MemRequirement",
+            "value": 16000
+          },
+          {
+            "class": "sbg:CPURequirement",
+            "value": 8
+          }
+        ],
+        "sbg:validationErrors": [],
+        "sbg:publisher": "sbg",
+        "class": "CommandLineTool",
+        "sbg:latestRevision": 49,
         "inputs": [
           {
             "label": "Verbose level",
@@ -1900,90 +1984,6 @@
             "id": "#append_comment"
           }
         ],
-        "sbg:image_url": null,
-        "sbg:project": "dave/cgrhpv",
-        "sbg:createdBy": "dave",
-        "cwlVersion": "sbg:draft-2",
-        "label": "BWA MEM Bundle",
-        "arguments": [
-          {
-            "position": 111,
-            "valueFrom": {
-              "script": "{  ///  SAMBAMBA VIEW   //////////////////////\n   ///////////////////////////////////////////\nfunction common_substring(a,b) {\n  var i = 0;\n  \n  while(a[i] === b[i] && i < a.length)\n  {\n    i = i + 1;\n  }\n\n  return a.slice(0, i);\n}\n  \n   // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_1 = $job.inputs.input_reads[0][0] // scatter mode\n    input_2 = $job.inputs.input_reads[0][1]\n  } else if($job.inputs.input_reads instanceof Array){\n    input_1 = $job.inputs.input_reads[0]\n    input_2 = $job.inputs.input_reads[1]\n  }else {\n    input_1 = [].concat($job.inputs.input_reads)[0]\n    input_2 = input_1\n  }\n  full_name = input_1.path.split('/')[input_1.path.split('/').length-1] \n\n  if($job.inputs.output_name){name = $job.inputs.output_name }\n  else if ($job.inputs.input_reads.length == 1){ \n    name = full_name\n\n    if(name.slice(-3, name.length) === '.gz' || name.slice(-3, name.length) === '.GZ')\n      name = name.slice(0, -3)   \n    if(name.slice(-3, name.length) === '.fq' || name.slice(-3, name.length) === '.FQ')\n      name = name.slice(0, -3)\n    if(name.slice(-6, name.length) === '.fastq' || name.slice(-6, name.length) === '.FASTQ')\n      name = name.slice(0, -6)\n       \n  }else{\n    full_name2 = input_2.path.split('/')[input_2.path.split('/').length-1] \n    name = common_substring(full_name, full_name2)\n    \n    if(name.slice(-1, name.length) === '_' || name.slice(-1, name.length) === '.')\n      name = name.slice(0, -1)\n    if(name.slice(-2, name.length) === 'p_' || name.slice(-1, name.length) === 'p.')\n      name = name.slice(0, -2)\n    if(name.slice(-2, name.length) === 'P_' || name.slice(-1, name.length) === 'P.')\n      name = name.slice(0, -2)\n    if(name.slice(-3, name.length) === '_p_' || name.slice(-3, name.length) === '.p.')\n      name = name.slice(0, -3)\n    if(name.slice(-3, name.length) === '_pe' || name.slice(-3, name.length) === '.pe')\n      name = name.slice(0, -3)\n  }\n  \n  // Read number of threads if defined\n  if ($job.inputs.sambamba_threads){\n    threads = $job.inputs.sambamba_threads\n  }\n  else if ($job.inputs.threads){\n    threads = $job.inputs.threads\n  }\n  else { threads = 8 }\n  \n  if ($job.inputs.filter_out_secondary_alignments){\n    filt_sec = ' --filter \\'not secondary_alignment\\' '\n  }\n  else {filt_sec=' '}\n   \n  // Set output command\n  sambamba_path = '/sambamba_v0.6.6'\n  if ($job.inputs.output_format == 'BAM') {\n    return \"| \" + sambamba_path + \" view -t \"+ threads + filt_sec + \"-f bam -S /dev/stdin -o \"+ name + \".bam\"\n  }\n  else if ($job.inputs.output_format == 'SAM'){ // SAM\n    return \"> \" + name + \".sam\"\n  }\n  else { // SortedBAM is considered default\n    return \"| \" + sambamba_path + \" view -t \"+ threads + filt_sec + \"-f bam -l 0 -S /dev/stdin\"\n  }\n\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": false,
-            "prefix": ""
-          },
-          {
-            "position": 112,
-            "valueFrom": {
-              "script": "{ ///  SAMBAMBA SORT   //////////////////////\n///////////////////////////////////////////\n  \nfunction common_substring(a,b) {\n  var i = 0;\n  while(a[i] === b[i] && i < a.length)\n  {\n    i = i + 1;\n  }\n\n  return a.slice(0, i);\n}\n\n   // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_1 = $job.inputs.input_reads[0][0] // scatter mode\n    input_2 = $job.inputs.input_reads[0][1]\n  } else if($job.inputs.input_reads instanceof Array){\n    input_1 = $job.inputs.input_reads[0]\n    input_2 = $job.inputs.input_reads[1]\n  }else {\n    input_1 = [].concat($job.inputs.input_reads)[0]\n    input_2 = input_1\n  }\n  full_name = input_1.path.split('/')[input_1.path.split('/').length-1] \n  \n  if($job.inputs.output_name){name = $job.inputs.output_name }\n  else if ($job.inputs.input_reads.length == 1){\n    name = full_name\n    if(name.slice(-3, name.length) === '.gz' || name.slice(-3, name.length) === '.GZ')\n      name = name.slice(0, -3)   \n    if(name.slice(-3, name.length) === '.fq' || name.slice(-3, name.length) === '.FQ')\n      name = name.slice(0, -3)\n    if(name.slice(-6, name.length) === '.fastq' || name.slice(-6, name.length) === '.FASTQ')\n      name = name.slice(0, -6)\n       \n  }else{\n    full_name2 = input_2.path.split('/')[input_2.path.split('/').length-1] \n    name = common_substring(full_name, full_name2)\n    \n    if(name.slice(-1, name.length) === '_' || name.slice(-1, name.length) === '.')\n      name = name.slice(0, -1)\n    if(name.slice(-2, name.length) === 'p_' || name.slice(-1, name.length) === 'p.')\n      name = name.slice(0, -2)\n    if(name.slice(-2, name.length) === 'P_' || name.slice(-1, name.length) === 'P.')\n      name = name.slice(0, -2)\n    if(name.slice(-3, name.length) === '_p_' || name.slice(-3, name.length) === '.p.')\n      name = name.slice(0, -3)\n    if(name.slice(-3, name.length) === '_pe' || name.slice(-3, name.length) === '.pe')\n      name = name.slice(0, -3)\n  }\n\n  //////////////////////////\n  // Set sort memory size\n  \n  reads_size = 0 // Not used because of situations when size does not exist!\n  GB_1 = 1024*1024*1024\n  if(reads_size < GB_1){ \n    suggested_memory = 4\n    suggested_cpus = 1\n  }\n  else if(reads_size < 10 * GB_1){ \n    suggested_memory = 15\n    suggested_cpus = 8\n  }\n  else { \n    suggested_memory = 58 \n    suggested_cpus = 31\n  }\n  \n  \n  if(!$job.inputs.total_memory){ total_memory = suggested_memory }\n  else{ total_memory = $job.inputs.total_memory }\n\n  // TODO:Rough estimation, should be fine-tuned!\n  if(total_memory > 16){ sorter_memory = parseInt(total_memory / 3) }\n  else{ sorter_memory = 5 }\n          \n  if ($job.inputs.sort_memory){\n    sorter_memory_string = $job.inputs.sort_memory +'GiB'\n  }\n  else sorter_memory_string = sorter_memory + 'GiB' \n  \n  // Read number of threads if defined  \n  if ($job.inputs.sambamba_threads){\n    threads = $job.inputs.sambamba_threads\n  }\n  else if ($job.inputs.threads){\n    threads = $job.inputs.threads\n  }\n  else threads = suggested_cpus\n  \n  sambamba_path = '/sambamba_v0.6.6'\n  \n  // SortedBAM is considered default\n  if (!(($job.inputs.output_format == 'BAM') || ($job.inputs.output_format == 'SAM'))){\n    cmd = \"| \" + sambamba_path + \" sort -t \" + threads\n    return cmd + \" -m \"+sorter_memory_string+\" --tmpdir ./ -o \"+ name +\".bam -l 5 /dev/stdin\"\n  }\n  else return \"\"\n}\n  \n",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": false
-          },
-          {
-            "position": 1,
-            "valueFrom": {
-              "script": "{\n  \n  if($job.inputs.read_group_header){\n  \treturn '-R ' + $job.inputs.read_group_header\n  }\n    \n  function add_param(key, val){\n    if(!val){\n      return\n\t}\n    param_list.push(key + ':' + val)\n  }\n\n  param_list = []\n\n  // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_1 = $job.inputs.input_reads[0][0] // scatter mode\n  } else if($job.inputs.input_reads instanceof Array){\n    input_1 = $job.inputs.input_reads[0]\n  }else {\n    input_1 = [].concat($job.inputs.input_reads)[0]\n  }\n  \n  //Read metadata for input reads\n  read_metadata = input_1.metadata\n  if(!read_metadata) read_metadata = []\n\n  add_param('ID', '1')\n  \n  if($job.inputs.rg_data_submitting_center){\n  \tadd_param('CN', $job.inputs.rg_data_submitting_center)\n  }\n  else if('data_submitting_center' in  read_metadata){\n  \tadd_param('CN', read_metadata.data_submitting_center)\n  }\n  \n  if($job.inputs.rg_library_id){\n  \tadd_param('LB', $job.inputs.rg_library_id)\n  }\n  else if('library_id' in read_metadata){\n  \tadd_param('LB', read_metadata.library_id)\n  }\n  \n  if($job.inputs.rg_median_fragment_length){\n  \tadd_param('PI', $job.inputs.rg_median_fragment_length)\n  }\n\n  \n  if($job.inputs.rg_platform){\n  \tadd_param('PL', $job.inputs.rg_platform)\n  }\n  else if('platform' in read_metadata){\n    if(read_metadata.platform == 'HiSeq X Ten'){\n      rg_platform = 'Illumina'\n    }\n    else{\n      rg_platform = read_metadata.platform\n    }\n  \tadd_param('PL', rg_platform)\n  }\n  \n  if($job.inputs.rg_platform_unit_id){\n  \tadd_param('PU', $job.inputs.rg_platform_unit_id)\n  }\n  else if('platform_unit_id' in read_metadata){\n  \tadd_param('PU', read_metadata.platform_unit_id)\n  }\n  \n  if($job.inputs.rg_sample_id){\n  \tadd_param('SM', $job.inputs.rg_sample_id)\n  }\n  else if('sample_id' in  read_metadata){\n  \tadd_param('SM', read_metadata.sample_id)\n  }\n    \n  return \"-R '@RG\\\\t\" + param_list.join('\\\\t') + \"'\"\n  \n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          },
-          {
-            "position": 101,
-            "valueFrom": {
-              "script": "{\n  /////// Set input reads in the correct order depending of the paired end from metadata\n    \n     // Set output file name\n  if($job.inputs.input_reads[0] instanceof Array){\n    input_reads = $job.inputs.input_reads[0] // scatter mode\n  } else {\n    input_reads = $job.inputs.input_reads = [].concat($job.inputs.input_reads)\n  }\n  \n  \n  //Read metadata for input reads\n  read_metadata = input_reads[0].metadata\n  if(!read_metadata) read_metadata = []\n  \n  order = 0 // Consider this as normal order given at input: pe1 pe2\n  \n  // Check if paired end 1 corresponds to the first given read\n  if(read_metadata == []){ order = 0 }\n  else if('paired_end' in  read_metadata){ \n    pe1 = read_metadata.paired_end\n    if(pe1 != 1) order = 1 // change order\n  }\n\n  // Return reads in the correct order\n  if (input_reads.length == 1){\n    return input_reads[0].path // Only one read present\n  }\n  else if (input_reads.length == 2){\n    if (order == 0) return input_reads[0].path + ' ' + input_reads[1].path\n    else return input_reads[1].path + ' ' + input_reads[0].path\n  }\n\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          },
-          {
-            "position": 2,
-            "valueFrom": {
-              "script": "{\n  \n  reads_size = 0 \n\n  GB_1 = 1024*1024*1024\n  if(reads_size < GB_1){ suggested_threads = 1 }\n  else if(reads_size < 10 * GB_1){ suggested_threads = 8 }\n  else { suggested_threads = 31 }\n  \n  \n  if(!$job.inputs.threads){  \treturn suggested_threads  }  \n  else{    return $job.inputs.threads  }\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true,
-            "prefix": "-t"
-          },
-          {
-            "position": 10,
-            "valueFrom": {
-              "script": "{\n  reference_file = $job.inputs.reference_index_tar.path.split('/')[$job.inputs.reference_index_tar.path.split('/').length-1]\n  name = reference_file.slice(0, -4) // cut .tar extension \n  \n  return name\n  \n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "separate": true
-          }
-        ],
-        "x": -40.944682963278815,
-        "hints": [
-          {
-            "class": "DockerRequirement",
-            "dockerImageId": "",
-            "dockerPull": "cgrlab/typeseqer:latest"
-          },
-          {
-            "class": "sbg:MemRequirement",
-            "value": 16000
-          },
-          {
-            "class": "sbg:CPURequirement",
-            "value": 8
-          }
-        ],
-        "sbg:validationErrors": [],
-        "sbg:publisher": "sbg",
-        "class": "CommandLineTool",
-        "sbg:latestRevision": 49,
-        "sbg:modifiedOn": 1520741385,
         "temporaryFailCodes": [],
         "sbg:toolkitVersion": "0.7.13",
         "sbg:revision": 49
@@ -2203,7 +2203,6 @@
         ],
         "sbg:projectName": "cgrHPV",
         "id": "dave/cgrhpv/sambamba-view-0-5-9/2",
-        "sbg:toolAuthor": "Artem Tarasov",
         "sbg:revisionsInfo": [
           {
             "sbg:modifiedOn": 1485478878,
@@ -2228,7 +2227,7 @@
           "SAM/BAM-Processing"
         ],
         "sbg:cmdPreview": "/sambamba_v0.6.6 view --format=bam  /root/dir/example.bam -o example.filtered.bam",
-        "y": 199.2427914050468,
+        "sbg:modifiedOn": 1520743858,
         "sbg:job": {
           "inputs": {
             "mem_mb": 7,
@@ -2254,7 +2253,8 @@
         "$namespaces": {
           "sbg": "https://sevenbridges.com"
         },
-        "sbg:modifiedBy": "dave",
+        "stdout": "",
+        "y": 199.2427914050468,
         "sbg:links": [
           {
             "label": "Homepage",
@@ -2277,12 +2277,13 @@
             "id": "http://lomereiter.github.io/sambamba/docs/sambamba-view.html"
           }
         ],
-        "stdout": "",
+        "sbg:modifiedBy": "dave",
         "sbg:id": "dave/cgrhpv/sambamba-view-0-5-9/2",
         "sbg:toolkit": "Sambamba",
         "sbg:contributors": [
           "dave"
         ],
+        "x": 136.92308780286467,
         "sbg:createdOn": 1485478878,
         "outputs": [
           {
@@ -2305,6 +2306,51 @@
             "id": "#filtered"
           }
         ],
+        "sbg:project": "dave/cgrhpv",
+        "sbg:image_url": null,
+        "sbg:createdBy": "dave",
+        "cwlVersion": "sbg:draft-2",
+        "label": "Sambamba View",
+        "arguments": [
+          {
+            "position": 3,
+            "valueFrom": {
+              "script": "{\n  fnameRegex = /^(.*?)(?:\\.([^.]+))?$/;\n  if ($job.inputs.input) \n  {\n  \tfile_path = $job.inputs.input.path;\n  \tbase_name = fnameRegex.exec(file_path)[1];\n  \tfile_name = base_name.replace(/^.*[\\\\\\/]/, '');\n  \n  if ($job.inputs.output == 'sam'){\n  \treturn file_name + '.filtered.sam'\n  }\n  else if ($job.inputs.output == 'bam'){\n  \treturn file_name.concat('.filtered.bam')\n  }\n  else if ($job.inputs.output == 'json'){\n  \treturn file_name.concat('.filtered.json')\n  }\n  else if ($job.inputs.output == 'msgpack'){\n  \treturn file_name.concat('.filtered.msgpack')\n  }\n  else\t{\n  \treturn file_name + '.filtered.sam'\n  }\n  }\n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            },
+            "prefix": "-o",
+            "separate": true
+          }
+        ],
+        "sbg:toolAuthor": "Artem Tarasov",
+        "hints": [
+          {
+            "class": "DockerRequirement",
+            "dockerImageId": "59e577b13d5d",
+            "dockerPull": "cgrlab/typeseqer:latest"
+          },
+          {
+            "class": "sbg:CPURequirement",
+            "value": {
+              "script": "{\n  if ($job.inputs.reserved_threads) {\n    \n    return $job.inputs.reserved_threads\n    \n  } else if ($job.inputs.nthreads) {\n    \n    return $job.inputs.nthreads\n    \n  } else {\n    \n    return 1\n  }\n  \n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            }
+          },
+          {
+            "class": "sbg:MemRequirement",
+            "value": {
+              "script": "{\n  if ($job.inputs.mem_mb) {\n    \n    return $job.inputs.mem_mb\n    \n  } else {\n    \n    return 1024\n    \n  }\n  \n}",
+              "class": "Expression",
+              "engine": "#cwl-js-engine"
+            }
+          }
+        ],
+        "sbg:validationErrors": [],
+        "sbg:publisher": "sbg",
+        "class": "CommandLineTool",
+        "sbg:latestRevision": 2,
         "inputs": [
           {
             "label": "With header",
@@ -2579,52 +2625,6 @@
             "id": "#compression_level"
           }
         ],
-        "sbg:image_url": null,
-        "sbg:project": "dave/cgrhpv",
-        "sbg:createdBy": "dave",
-        "cwlVersion": "sbg:draft-2",
-        "label": "Sambamba View",
-        "arguments": [
-          {
-            "position": 3,
-            "valueFrom": {
-              "script": "{\n  fnameRegex = /^(.*?)(?:\\.([^.]+))?$/;\n  if ($job.inputs.input) \n  {\n  \tfile_path = $job.inputs.input.path;\n  \tbase_name = fnameRegex.exec(file_path)[1];\n  \tfile_name = base_name.replace(/^.*[\\\\\\/]/, '');\n  \n  if ($job.inputs.output == 'sam'){\n  \treturn file_name + '.filtered.sam'\n  }\n  else if ($job.inputs.output == 'bam'){\n  \treturn file_name.concat('.filtered.bam')\n  }\n  else if ($job.inputs.output == 'json'){\n  \treturn file_name.concat('.filtered.json')\n  }\n  else if ($job.inputs.output == 'msgpack'){\n  \treturn file_name.concat('.filtered.msgpack')\n  }\n  else\t{\n  \treturn file_name + '.filtered.sam'\n  }\n  }\n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            },
-            "prefix": "-o",
-            "separate": true
-          }
-        ],
-        "x": 136.92308780286467,
-        "hints": [
-          {
-            "class": "DockerRequirement",
-            "dockerImageId": "59e577b13d5d",
-            "dockerPull": "cgrlab/typeseqer:latest"
-          },
-          {
-            "class": "sbg:CPURequirement",
-            "value": {
-              "script": "{\n  if ($job.inputs.reserved_threads) {\n    \n    return $job.inputs.reserved_threads\n    \n  } else if ($job.inputs.nthreads) {\n    \n    return $job.inputs.nthreads\n    \n  } else {\n    \n    return 1\n  }\n  \n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            }
-          },
-          {
-            "class": "sbg:MemRequirement",
-            "value": {
-              "script": "{\n  if ($job.inputs.mem_mb) {\n    \n    return $job.inputs.mem_mb\n    \n  } else {\n    \n    return 1024\n    \n  }\n  \n}",
-              "class": "Expression",
-              "engine": "#cwl-js-engine"
-            }
-          }
-        ],
-        "sbg:validationErrors": [],
-        "sbg:publisher": "sbg",
-        "class": "CommandLineTool",
-        "sbg:latestRevision": 2,
-        "sbg:modifiedOn": 1520743858,
         "temporaryFailCodes": [],
         "sbg:toolkitVersion": "0.5.9",
         "sbg:revision": 2
@@ -2687,358 +2687,6 @@
       ],
       "id": "#Sambamba_View",
       "sbg:y": 199.2427914050468
-    },
-    {
-      "scatter": "#illumina_typing_run_processor.bam_json",
-      "sbg:x": 510.5132220877906,
-      "outputs": [
-        {
-          "id": "#illumina_typing_run_processor.hpv_types"
-        },
-        {
-          "id": "#illumina_typing_run_processor.app_html_out"
-        }
-      ],
-      "run": {
-        "sbg:sbgMaintained": false,
-        "description": "",
-        "baseCommand": [
-          "Rscript",
-          "-e",
-          "'require(rmarkdown);",
-          "render(\"illumina_demultiplex_read_processor.R\")'"
-        ],
-        "sbg:id": "dave/cgrhpv/illumina-typing-run-processor/22",
-        "requirements": [
-          {
-            "class": "CreateFileRequirement",
-            "fileDef": [
-              {
-                "filename": "args.R",
-                "fileContent": {
-                  "script": "\n'# get args \\n\\\nargs_bam_json = data_frame(path = \"'+$job.inputs.bam_json.path+'\", name = \"'+$job.inputs.bam_json.path.split(\"/\").reverse()[0].split(\".fastq.\")[0]+'\") \\n\\\nargs_barcode_file = \"'+$job.inputs.barcode_file.path+'\" \\n\\\nargs_parameter_file = \"/opt/2017-Nov_HPV_Typing_MiSeq_MQ_and_MinLen_Filters_4.csv\" \\n\\\nargs_page_size = ' +$job.inputs.page_size\n",
-                  "class": "Expression",
-                  "engine": "#cwl-js-engine"
-                }
-              },
-              {
-                "filename": "illumina_demultiplex_read_processor.R",
-                "fileContent": "# Databricks notebook source\n#+ db only - load spark, echo=FALSE, include = FALSE, eval=FALSE\nlibrary(SparkR)\n\n#+ load packages\nlibrary(GenomicAlignments)\nlibrary(tidyverse)\nlibrary(stringr)\nlibrary(jsonlite)\nlibrary(pander)\nlibrary(scales)\nlibrary(knitr)\nlibrary(rmarkdown)\nlibrary(koRpus)\nlibrary(fuzzyjoin)\nsessionInfo()\n\n\n# COMMAND ----------\n\n#+ databricks args, echo=exists(\"is_test\"), include =FALSE, eval=exists(\"is_test\")\n\nargs_bam_json = data_frame(path = \"/databricks/driver/temp.json\", name = \"Run5_Pool5_S1_L001_R_000\") \nargs_barcode_file = \"/dbfs/mnt/rd111/2017-11-09_TypeSeqer_MiSeq_v2_Barcodes_FandR-rev-comp.csv\"\nargs_parameter_file = \"/dbfs/mnt/rd111/2017-Nov_HPV_Typing_MiSeq_MQ_and_MinLen_Filters_4.csv\"\nargs_page_size = 20000\n\nsystem(\"touch args.R\")\n\n#+ get args\nread_lines(\"args.R\") %>% \nwriteLines()\nsource(\"args.R\")\n\n\n# COMMAND ----------\n\n#+ read barcodes csv\nbarcodes = read_csv(args_barcode_file) %>% \nmap_if(is.factor, as.character) %>% \nas_tibble() %>%\nglimpse()\n\n#+ eval=FALSE, include=FALSE\ndisplay(barcodes)\n\n# COMMAND ----------\n\n#+ read parameters csv\nparameters = read_csv(args_parameter_file) %>% \nmap_if(is.factor, as.character) %>% \nas_tibble() %>% \nmutate(min_mq = mq) %>% \nselect(-mq)\n\n# COMMAND ----------\n\n#+ process reads - init output\n\nhpv_types_output = file(paste0(args_bam_json$name,\"_hpv_types.json\"), open = \"wb\")\n\n#+ process reads - db only, eval=FALSE, include=FALSE\n\nhpv_types_output = file(paste0(\"/databricks/driver/\", args_bam_json$name,\"_hpv_types.json\"), open = \"wb\")\n\n#+ process reads - main code, include=FALSE\n\npage = 1\n\nstream_in(file(args_bam_json$path), handler = function(bam_json){\n# Processes a page of data at a time\n\nreads = bind_cols(bam_json[1:11], as_data_frame(bam_json$tags)) %>% \nas_tibble()\n  \n# demultiplex (add barcode column via fuzzy join)\nreads_demultiplex = reads %>%\nselect(qname, rname, seq, mapq, cigar) %>%\nmutate(pre_demultiplex_pairs = n()/2) %>%\nfuzzy_join(barcodes, mode = \"inner\", by=c(\"seq\" = \"bc_sequence\"), match_fun = function(x, y) str_detect(str_sub(x, start=-25), fixed(y, ignore_case=TRUE))) %>%\nmutate(bc_num = ifelse(str_detect(bc_id, \"Rev\"), 1, 2)) %>%\narrange(qname, bc_num) %>%\ndo({print(\"post fuzzy join\"); temp=.}) %>% glimpse() %>%\ngroup_by(qname) %>%\nmutate(pair_read_count = n()) %>%\nmutate(barcode = paste0(bc_id, collapse=\"\")) %>%\nungroup() %>%\nfilter(!str_detect(bc_id, \"Fwd\")) %>%\nmutate(barcode_1 = bc_id) %>%\ndo({print(\"post str detect rev\"); temp=.}) %>% glimpse() %>%\nselect(barcode_1, barcode, qname, rname, seq, mapq, cigar, pair_read_count, pre_demultiplex_pairs) %>%\ndistinct() %>%\n    \ndo({print(\"post demultiplex\"); temp=.}) %>% glimpse() %>%\n\n# now get barcode_1 metrics\nmutate(barcode_pairs = n()) %>%\nfilter(pair_read_count == 2) %>%\nselect(-pair_read_count) %>%\nfilter(str_detect(barcode, \"Fwd\"), str_detect(barcode, \"Rev\")) %>%\nmutate(total_demultiplex_reads = n()) %>%\ngroup_by(barcode_1) %>% \nmutate(post_demultiplex_reads = n()) %>%\nungroup() %>%\ndo({print(\"post barcode 1 metrics\"); temp=.}) %>% glimpse()\n           \n#filter and reduce\nreads_reduced = reads_demultiplex %>%\nselect(barcode_1, barcode, qname, HPV_Type = rname, seq, mapq, cigar, pre_demultiplex_pairs, total_demultiplex_reads, post_demultiplex_reads) %>%\ngroup_by(barcode) %>%\nmutate(page_num = page) %>%\nmutate(file_name = args_bam_json$name) %>%\nleft_join(parameters) %>%\nfilter(mapq >= min_mq) %>%\nmutate(mapq_reads = n()) %>%\nmutate(seq_length = str_length(seq)) %>%\nfilter(mapq != 0) %>%\nmutate(cigar_seq = as.character(sequenceLayer(DNAStringSet(seq), cigar))) %>%\nmutate(cigar_len = str_length(cigar_seq)) %>%\nfilter(cigar_len >= min_align_len) %>%\nmutate(gt_equal_min_reads = n()) %>%\nmutate(qualified_barcode_reads = n()) %>%\ngroup_by(barcode, HPV_Type) %>%\nmutate(HPV_Type_count = n()) %>%\nungroup() %>%\nselect(barcode_1, barcode, file_name, page_num, pre_demultiplex_pairs, total_demultiplex_reads, post_demultiplex_reads, mapq_reads, gt_equal_min_reads, qualified_barcode_reads, HPV_Type, HPV_Type_count) %>%\ndistinct() %>%\ndo({print(\"post everything\"); temp=.}) %>% glimpse()\n           \npage <<- page + 1\n\nstream_out(reads_reduced, hpv_types_output, verbose = FALSE)\n           \n}, pagesize = args_page_size, verbose = FALSE)\n\nclose(hpv_types_output)\n\n# COMMAND ----------\n\n#+ checking on db, eval=FALSE, include=FALSE\ntemp = stream_in(file(\"/databricks/driver/Run5_Pool5_S1_L001_R_000_hpv_types.json\")) %>%\nglimpse()\n\ndisplay(temp)\n\n# COMMAND ----------\n\n# MAGIC %sh\n# MAGIC #sudo rm -r TypeSeqer-private && \n# MAGIC sudo mkdir TypeSeqer-private && cd TypeSeqer-private && sudo git init && sudo git pull https://86e728b5c68508d0de00422e81126de37c118fbd@github.com/davidroberson/TypeSeqer-private.git &&\n# MAGIC cd ../\n# MAGIC Rscript -e 'require(rmarkdown); is_test=\"true\"; render(\"TypeSeqer-private/scripts/illumina_demultiplex_read_processor.R\");'"
-              }
-            ]
-          },
-          {
-            "class": "ExpressionEngineRequirement",
-            "id": "#cwl-js-engine",
-            "requirements": [
-              {
-                "class": "DockerRequirement",
-                "dockerPull": "rabix/js-engine"
-              }
-            ]
-          }
-        ],
-        "sbg:revisionNotes": "put barcode back in",
-        "stdin": "",
-        "sbg:appVersion": [
-          "sbg:draft-2"
-        ],
-        "sbg:projectName": "cgrHPV",
-        "id": "dave/cgrhpv/illumina-typing-run-processor/22",
-        "sbg:revisionsInfo": [
-          {
-            "sbg:modifiedOn": 1492530856,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "Copy of dave/cgrhpv/split-barcode-2-get-coverage/36",
-            "sbg:revision": 0
-          },
-          {
-            "sbg:modifiedOn": 1492531013,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "changing from the regular ion app",
-            "sbg:revision": 1
-          },
-          {
-            "sbg:modifiedOn": 1492539836,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": null,
-            "sbg:revision": 2
-          },
-          {
-            "sbg:modifiedOn": 1492540967,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "removing references to A1 barcode",
-            "sbg:revision": 3
-          },
-          {
-            "sbg:modifiedOn": 1492542278,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": null,
-            "sbg:revision": 4
-          },
-          {
-            "sbg:modifiedOn": 1495053330,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": null,
-            "sbg:revision": 5
-          },
-          {
-            "sbg:modifiedOn": 1510244908,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "adding demultiplex",
-            "sbg:revision": 6
-          },
-          {
-            "sbg:modifiedOn": 1510244936,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "changed to typeseqer docker",
-            "sbg:revision": 7
-          },
-          {
-            "sbg:modifiedOn": 1510245033,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "added std.err std.out output",
-            "sbg:revision": 8
-          },
-          {
-            "sbg:modifiedOn": 1510251011,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "added demultiplex",
-            "sbg:revision": 9
-          },
-          {
-            "sbg:modifiedOn": 1510251553,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "added barcode file input",
-            "sbg:revision": 10
-          },
-          {
-            "sbg:modifiedOn": 1510251661,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "added html out",
-            "sbg:revision": 11
-          },
-          {
-            "sbg:modifiedOn": 1510252681,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "renamed args.R",
-            "sbg:revision": 12
-          },
-          {
-            "sbg:modifiedOn": 1510252842,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "removed some args from command line",
-            "sbg:revision": 13
-          },
-          {
-            "sbg:modifiedOn": 1510715534,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "better metrics",
-            "sbg:revision": 14
-          },
-          {
-            "sbg:modifiedOn": 1510721184,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": null,
-            "sbg:revision": 15
-          },
-          {
-            "sbg:modifiedOn": 1510721221,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": null,
-            "sbg:revision": 16
-          },
-          {
-            "sbg:modifiedOn": 1510792420,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "fixing barcode orientation",
-            "sbg:revision": 17
-          },
-          {
-            "sbg:modifiedOn": 1510792666,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "fixing barcodes",
-            "sbg:revision": 18
-          },
-          {
-            "sbg:modifiedOn": 1510799338,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "added fwd rev back in",
-            "sbg:revision": 19
-          },
-          {
-            "sbg:modifiedOn": 1520650394,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "parameter files in jazz area",
-            "sbg:revision": 20
-          },
-          {
-            "sbg:modifiedOn": 1520650841,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "barcode file is now in the docker",
-            "sbg:revision": 21
-          },
-          {
-            "sbg:modifiedOn": 1520876842,
-            "sbg:modifiedBy": "dave",
-            "sbg:revisionNotes": "put barcode back in",
-            "sbg:revision": 22
-          }
-        ],
-        "sbg:categories": [
-          "hpv_typing"
-        ],
-        "sbg:cmdPreview": "Rscript -e 'require(rmarkdown); render(\"illumina_demultiplex_read_processor.R\")'  1>&2",
-        "y": 161.80698296935176,
-        "$namespaces": {
-          "sbg": "https://sevenbridges.com"
-        },
-        "sbg:modifiedBy": "dave",
-        "successCodes": [],
-        "stdout": "",
-        "sbg:contributors": [
-          "dave"
-        ],
-        "sbg:createdOn": 1492530856,
-        "outputs": [
-          {
-            "outputBinding": {
-              "sbg:inheritMetadataFrom": "#bam_json",
-              "glob": {
-                "script": "\"*_hpv_types.json\"",
-                "class": "Expression",
-                "engine": "#cwl-js-engine"
-              }
-            },
-            "type": [
-              "null",
-              "File"
-            ],
-            "id": "#hpv_types"
-          },
-          {
-            "outputBinding": {
-              "sbg:inheritMetadataFrom": "#bam_json",
-              "glob": "*.html"
-            },
-            "type": [
-              "null",
-              "File"
-            ],
-            "id": "#app_html_out"
-          }
-        ],
-        "inputs": [
-          {
-            "sbg:stageInput": null,
-            "type": [
-              "null",
-              "int"
-            ],
-            "id": "#page_size"
-          },
-          {
-            "required": false,
-            "type": [
-              "null",
-              "File"
-            ],
-            "id": "#barcode_file"
-          },
-          {
-            "label": "bam",
-            "description": "bam",
-            "type": [
-              "null",
-              "File"
-            ],
-            "default": "",
-            "required": false,
-            "streamable": false,
-            "sbg:stageInput": null,
-            "id": "#bam_json"
-          }
-        ],
-        "sbg:image_url": null,
-        "sbg:project": "dave/cgrhpv",
-        "sbg:createdBy": "dave",
-        "cwlVersion": "sbg:draft-2",
-        "label": "illumina typing run processor",
-        "arguments": [
-          {
-            "position": 100,
-            "valueFrom": "1>&2",
-            "separate": true
-          }
-        ],
-        "x": 510.5132220877906,
-        "hints": [
-          {
-            "class": "DockerRequirement",
-            "dockerPull": "cgrlab/typeseqer:latest"
-          },
-          {
-            "class": "sbg:CPURequirement",
-            "value": 1
-          },
-          {
-            "class": "sbg:MemRequirement",
-            "value": 1000
-          }
-        ],
-        "sbg:validationErrors": [],
-        "sbg:publisher": "sbg",
-        "class": "CommandLineTool",
-        "sbg:latestRevision": 22,
-        "sbg:modifiedOn": 1520876842,
-        "temporaryFailCodes": [],
-        "sbg:job": {
-          "inputs": {
-            "bam_json": {
-              "secondaryFiles": [
-                {
-                  "path": ".bai"
-                }
-              ],
-              "class": "File",
-              "size": 0,
-              "path": "path/to/_2_Run1v0202_Pool1_S1_L001_001_barcode_Rev_BC107_2_barcode_Fwd_BC03.fastq.sorted.filtered.json"
-            },
-            "page_size": 5000,
-            "barcode_file": {
-              "secondaryFiles": [],
-              "class": "File",
-              "size": 0,
-              "path": "/path/to/barcode_file.ext"
-            }
-          },
-          "allocatedResources": {
-            "cpu": 1,
-            "mem": 1000
-          }
-        },
-        "sbg:revision": 22
-      },
-      "inputs": [
-        {
-          "id": "#illumina_typing_run_processor.page_size",
-          "default": 20000
-        },
-        {
-          "source": [
-            "#barcode_file"
-          ],
-          "id": "#illumina_typing_run_processor.barcode_file"
-        },
-        {
-          "source": [
-            "#json_splitter.split_variants_json"
-          ],
-          "id": "#illumina_typing_run_processor.bam_json"
-        }
-      ],
-      "id": "#illumina_typing_run_processor",
-      "sbg:y": 161.80698296935176
     },
     {
       "sbg:x": 326.2395835393183,
@@ -3297,7 +2945,6 @@
         ],
         "sbg:projectName": "cgrHPV",
         "id": "dave/cgrhpv/samtools-extract-bam-header-1-3/3",
-        "sbg:toolAuthor": "Heng Li/Sanger Institute,  Bob Handsaker/Broad Institute, James Bonfield/Sanger Institute,",
         "sbg:revisionsInfo": [
           {
             "sbg:modifiedOn": 1492714234,
@@ -3328,7 +2975,24 @@
           "SAM/BAM-Processing"
         ],
         "sbg:cmdPreview": "samtools view  input_bam_or_sam_file.bam  -H -o input_bam_or_sam_file.txt",
-        "y": 514.6274697208834,
+        "inputs": [
+          {
+            "label": "BAM or SAM input file",
+            "description": "BAM or SAM input file.",
+            "type": [
+              "File"
+            ],
+            "required": true,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "position": 0,
+              "separate": true
+            },
+            "sbg:category": "File input",
+            "sbg:fileTypes": "BAM, SAM",
+            "id": "#input_bam_or_sam_file"
+          }
+        ],
         "sbg:job": {
           "inputs": {
             "input_bam_or_sam_file": {
@@ -3346,7 +3010,8 @@
         "$namespaces": {
           "sbg": "https://sevenbridges.com"
         },
-        "sbg:modifiedBy": "dave",
+        "stdout": "",
+        "y": 514.6274697208834,
         "sbg:links": [
           {
             "label": "Homepage",
@@ -3373,13 +3038,13 @@
             "id": "http://www.htslib.org"
           }
         ],
-        "stdout": "",
+        "sbg:modifiedBy": "dave",
         "sbg:id": "dave/cgrhpv/samtools-extract-bam-header-1-3/3",
         "sbg:toolkit": "SAMtools",
         "sbg:contributors": [
           "dave"
         ],
-        "sbg:modifiedOn": 1520717721,
+        "x": 306.15387536788234,
         "sbg:createdOn": 1492714234,
         "outputs": [
           {
@@ -3423,7 +3088,7 @@
             "separate": true
           }
         ],
-        "x": 306.15387536788234,
+        "sbg:toolAuthor": "Heng Li/Sanger Institute,  Bob Handsaker/Broad Institute, James Bonfield/Sanger Institute,",
         "hints": [
           {
             "class": "sbg:CPURequirement",
@@ -3443,24 +3108,7 @@
         "sbg:publisher": "sbg",
         "class": "CommandLineTool",
         "sbg:latestRevision": 3,
-        "inputs": [
-          {
-            "label": "BAM or SAM input file",
-            "description": "BAM or SAM input file.",
-            "type": [
-              "File"
-            ],
-            "required": true,
-            "inputBinding": {
-              "sbg:cmdInclude": true,
-              "position": 0,
-              "separate": true
-            },
-            "sbg:category": "File input",
-            "sbg:fileTypes": "BAM, SAM",
-            "id": "#input_bam_or_sam_file"
-          }
-        ],
+        "sbg:modifiedOn": 1520717721,
         "temporaryFailCodes": [],
         "sbg:toolkitVersion": "v1.3",
         "sbg:revision": 3
@@ -3475,6 +3123,367 @@
       ],
       "id": "#SAMtools_extract_SAM_BAM_header",
       "sbg:y": 514.6274697208834
+    },
+    {
+      "scatter": "#illumina_typing_run_processor.bam_json",
+      "sbg:x": 510.51322208779067,
+      "outputs": [
+        {
+          "id": "#illumina_typing_run_processor.hpv_types"
+        },
+        {
+          "id": "#illumina_typing_run_processor.app_html_out"
+        }
+      ],
+      "run": {
+        "sbg:sbgMaintained": false,
+        "description": "",
+        "baseCommand": [
+          "Rscript",
+          "-e",
+          "'require(rmarkdown);",
+          "render(\"illumina_demultiplex_read_processor.R\")'"
+        ],
+        "successCodes": [],
+        "requirements": [
+          {
+            "class": "CreateFileRequirement",
+            "fileDef": [
+              {
+                "filename": "args.R",
+                "fileContent": {
+                  "script": "\n'# get args \\n\\\nargs_bam_json = data_frame(path = \"'+$job.inputs.bam_json.path+'\", name = \"'+$job.inputs.bam_json.path.split(\"/\").reverse()[0].split(\".fastq.\")[0]+'\") \\n\\\nargs_barcode_file = \"'+$job.inputs.barcode_file.path+'\" \\n\\\nargs_parameter_file = \"/opt/illumina_TypeSeqer_minQual_minLen_filters.csv\" \\n\\\nargs_page_size = ' +$job.inputs.page_size\n",
+                  "class": "Expression",
+                  "engine": "#cwl-js-engine"
+                }
+              },
+              {
+                "filename": "illumina_demultiplex_read_processor.R",
+                "fileContent": "# Databricks notebook source\n#+ db only - load spark, echo=FALSE, include = FALSE, eval=FALSE\nlibrary(SparkR)\n\n#+ load packages\nlibrary(GenomicAlignments)\nlibrary(tidyverse)\nlibrary(stringr)\nlibrary(jsonlite)\nlibrary(pander)\nlibrary(scales)\nlibrary(knitr)\nlibrary(rmarkdown)\nlibrary(koRpus)\nlibrary(fuzzyjoin)\nsessionInfo()\n\n\n# COMMAND ----------\n\n#+ databricks args, echo=exists(\"is_test\"), include =FALSE, eval=exists(\"is_test\")\n\nargs_bam_json = data_frame(path = \"/databricks/driver/temp.json\", name = \"Run5_Pool5_S1_L001_R_000\") \nargs_barcode_file = \"/dbfs/mnt/rd111/2017-11-09_TypeSeqer_MiSeq_v2_Barcodes_FandR-rev-comp.csv\"\nargs_parameter_file = \"/dbfs/mnt/rd111/2017-Nov_HPV_Typing_MiSeq_MQ_and_MinLen_Filters_4.csv\"\nargs_page_size = 20000\n\nsystem(\"touch args.R\")\n\n#+ get args\nread_lines(\"args.R\") %>% \nwriteLines()\nsource(\"args.R\")\n\n\n# COMMAND ----------\n\n#+ read barcodes csv\nbarcodes = read_csv(args_barcode_file) %>% \nmap_if(is.factor, as.character) %>% \nas_tibble() %>%\nglimpse()\n\n#+ eval=FALSE, include=FALSE\ndisplay(barcodes)\n\n# COMMAND ----------\n\n#+ read parameters csv\nparameters = read_csv(args_parameter_file) %>% \nmap_if(is.factor, as.character) %>% \nas_tibble() %>% \nmutate(min_mq = mq) %>% \nselect(-mq)\n\n# COMMAND ----------\n\n#+ process reads - init output\n\nhpv_types_output = file(paste0(args_bam_json$name,\"_hpv_types.json\"), open = \"wb\")\n\n#+ process reads - db only, eval=FALSE, include=FALSE\n\nhpv_types_output = file(paste0(\"/databricks/driver/\", args_bam_json$name,\"_hpv_types.json\"), open = \"wb\")\n\n#+ process reads - main code, include=FALSE\n\npage = 1\n\nstream_in(file(args_bam_json$path), handler = function(bam_json){\n# Processes a page of data at a time\n\nreads = bind_cols(bam_json[1:11], as_data_frame(bam_json$tags)) %>% \nas_tibble()\n  \n# demultiplex (add barcode column via fuzzy join)\nreads_demultiplex = reads %>%\nselect(qname, rname, seq, mapq, cigar) %>%\nmutate(pre_demultiplex_pairs = n()/2) %>%\nfuzzy_join(barcodes, mode = \"inner\", by=c(\"seq\" = \"bc_sequence\"), match_fun = function(x, y) str_detect(str_sub(x, start=-25), fixed(y, ignore_case=TRUE))) %>%\nmutate(bc_num = ifelse(str_detect(bc_id, \"Rev\"), 1, 2)) %>%\narrange(qname, bc_num) %>%\ndo({print(\"post fuzzy join\"); temp=.}) %>% glimpse() %>%\ngroup_by(qname) %>%\nmutate(pair_read_count = n()) %>%\nmutate(barcode = paste0(bc_id, collapse=\"\")) %>%\nungroup() %>%\nfilter(!str_detect(bc_id, \"Fwd\")) %>%\nmutate(barcode_1 = bc_id) %>%\ndo({print(\"post str detect rev\"); temp=.}) %>% glimpse() %>%\nselect(barcode_1, barcode, qname, rname, seq, mapq, cigar, pair_read_count, pre_demultiplex_pairs) %>%\ndistinct() %>%\n    \ndo({print(\"post demultiplex\"); temp=.}) %>% glimpse() %>%\n\n# now get barcode_1 metrics\nmutate(barcode_pairs = n()) %>%\nfilter(pair_read_count == 2) %>%\nselect(-pair_read_count) %>%\nfilter(str_detect(barcode, \"Fwd\"), str_detect(barcode, \"Rev\")) %>%\nmutate(total_demultiplex_reads = n()) %>%\ngroup_by(barcode_1) %>% \nmutate(post_demultiplex_reads = n()) %>%\nungroup() %>%\ndo({print(\"post barcode 1 metrics\"); temp=.}) %>% glimpse()\n           \n#filter and reduce\nreads_reduced = reads_demultiplex %>%\nselect(barcode_1, barcode, qname, HPV_Type = rname, seq, mapq, cigar, pre_demultiplex_pairs, total_demultiplex_reads, post_demultiplex_reads) %>%\ngroup_by(barcode) %>%\nmutate(page_num = page) %>%\nmutate(file_name = args_bam_json$name) %>%\nleft_join(parameters) %>%\nfilter(mapq >= min_mq) %>%\nmutate(mapq_reads = n()) %>%\nmutate(seq_length = str_length(seq)) %>%\nfilter(mapq != 0) %>%\nmutate(cigar_seq = as.character(sequenceLayer(DNAStringSet(seq), cigar))) %>%\nmutate(cigar_len = str_length(cigar_seq)) %>%\nfilter(cigar_len >= min_align_len) %>%\nmutate(gt_equal_min_reads = n()) %>%\nmutate(qualified_barcode_reads = n()) %>%\ngroup_by(barcode, HPV_Type) %>%\nmutate(HPV_Type_count = n()) %>%\nungroup() %>%\nselect(barcode_1, barcode, file_name, page_num, pre_demultiplex_pairs, total_demultiplex_reads, post_demultiplex_reads, mapq_reads, gt_equal_min_reads, qualified_barcode_reads, HPV_Type, HPV_Type_count) %>%\ndistinct() %>%\ndo({print(\"post everything\"); temp=.}) %>% glimpse()\n           \npage <<- page + 1\n\nstream_out(reads_reduced, hpv_types_output, verbose = FALSE)\n           \n}, pagesize = args_page_size, verbose = FALSE)\n\nclose(hpv_types_output)\n\n# COMMAND ----------\n\n#+ checking on db, eval=FALSE, include=FALSE\ntemp = stream_in(file(\"/databricks/driver/Run5_Pool5_S1_L001_R_000_hpv_types.json\")) %>%\nglimpse()\n\ndisplay(temp)\n\n# COMMAND ----------\n\n# MAGIC %sh\n# MAGIC #sudo rm -r TypeSeqer-private && \n# MAGIC sudo mkdir TypeSeqer-private && cd TypeSeqer-private && sudo git init && sudo git pull https://86e728b5c68508d0de00422e81126de37c118fbd@github.com/davidroberson/TypeSeqer-private.git &&\n# MAGIC cd ../\n# MAGIC Rscript -e 'require(rmarkdown); is_test=\"true\"; render(\"TypeSeqer-private/scripts/illumina_demultiplex_read_processor.R\");'"
+              }
+            ]
+          },
+          {
+            "class": "ExpressionEngineRequirement",
+            "id": "#cwl-js-engine",
+            "requirements": [
+              {
+                "class": "DockerRequirement",
+                "dockerPull": "rabix/js-engine"
+              }
+            ]
+          }
+        ],
+        "sbg:revisionNotes": "illumina_TypeSeqer_minQual_minLen_filters.csv",
+        "stdin": "",
+        "temporaryFailCodes": [],
+        "sbg:projectName": "cgrHPV",
+        "sbg:appVersion": [
+          "sbg:draft-2"
+        ],
+        "sbg:revisionsInfo": [
+          {
+            "sbg:modifiedOn": 1492530856,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "Copy of dave/cgrhpv/split-barcode-2-get-coverage/36",
+            "sbg:revision": 0
+          },
+          {
+            "sbg:modifiedOn": 1492531013,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "changing from the regular ion app",
+            "sbg:revision": 1
+          },
+          {
+            "sbg:modifiedOn": 1492539836,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": null,
+            "sbg:revision": 2
+          },
+          {
+            "sbg:modifiedOn": 1492540967,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "removing references to A1 barcode",
+            "sbg:revision": 3
+          },
+          {
+            "sbg:modifiedOn": 1492542278,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": null,
+            "sbg:revision": 4
+          },
+          {
+            "sbg:modifiedOn": 1495053330,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": null,
+            "sbg:revision": 5
+          },
+          {
+            "sbg:modifiedOn": 1510244908,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "adding demultiplex",
+            "sbg:revision": 6
+          },
+          {
+            "sbg:modifiedOn": 1510244936,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "changed to typeseqer docker",
+            "sbg:revision": 7
+          },
+          {
+            "sbg:modifiedOn": 1510245033,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "added std.err std.out output",
+            "sbg:revision": 8
+          },
+          {
+            "sbg:modifiedOn": 1510251011,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "added demultiplex",
+            "sbg:revision": 9
+          },
+          {
+            "sbg:modifiedOn": 1510251553,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "added barcode file input",
+            "sbg:revision": 10
+          },
+          {
+            "sbg:modifiedOn": 1510251661,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "added html out",
+            "sbg:revision": 11
+          },
+          {
+            "sbg:modifiedOn": 1510252681,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "renamed args.R",
+            "sbg:revision": 12
+          },
+          {
+            "sbg:modifiedOn": 1510252842,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "removed some args from command line",
+            "sbg:revision": 13
+          },
+          {
+            "sbg:modifiedOn": 1510715534,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "better metrics",
+            "sbg:revision": 14
+          },
+          {
+            "sbg:modifiedOn": 1510721184,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": null,
+            "sbg:revision": 15
+          },
+          {
+            "sbg:modifiedOn": 1510721221,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": null,
+            "sbg:revision": 16
+          },
+          {
+            "sbg:modifiedOn": 1510792420,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "fixing barcode orientation",
+            "sbg:revision": 17
+          },
+          {
+            "sbg:modifiedOn": 1510792666,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "fixing barcodes",
+            "sbg:revision": 18
+          },
+          {
+            "sbg:modifiedOn": 1510799338,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "added fwd rev back in",
+            "sbg:revision": 19
+          },
+          {
+            "sbg:modifiedOn": 1520650394,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "parameter files in jazz area",
+            "sbg:revision": 20
+          },
+          {
+            "sbg:modifiedOn": 1520650841,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "barcode file is now in the docker",
+            "sbg:revision": 21
+          },
+          {
+            "sbg:modifiedOn": 1520876842,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "put barcode back in",
+            "sbg:revision": 22
+          },
+          {
+            "sbg:modifiedOn": 1521176814,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "illumina_TypeSeqer_minQual_minLen_filters",
+            "sbg:revision": 23
+          },
+          {
+            "sbg:modifiedOn": 1521177513,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "illumina_TypeSeqer_minQual_minLen_filters.csv",
+            "sbg:revision": 24
+          }
+        ],
+        "sbg:categories": [
+          "hpv_typing"
+        ],
+        "sbg:cmdPreview": "Rscript -e 'require(rmarkdown); render(\"illumina_demultiplex_read_processor.R\")'  1>&2",
+        "inputs": [
+          {
+            "label": "bam",
+            "description": "bam",
+            "type": [
+              "null",
+              "File"
+            ],
+            "default": "",
+            "required": false,
+            "streamable": false,
+            "sbg:stageInput": null,
+            "id": "#bam_json"
+          },
+          {
+            "sbg:stageInput": null,
+            "type": [
+              "null",
+              "int"
+            ],
+            "id": "#page_size"
+          },
+          {
+            "type": [
+              "null",
+              "File"
+            ],
+            "id": "#barcode_file"
+          }
+        ],
+        "$namespaces": {
+          "sbg": "https://sevenbridges.com"
+        },
+        "sbg:modifiedBy": "dave",
+        "id": "https://api.sbgenomics.com/v2/apps/dave/cgrhpv/illumina-typing-run-processor/24/raw/",
+        "sbg:image_url": null,
+        "stdout": "",
+        "sbg:id": "dave/cgrhpv/illumina-typing-run-processor/24",
+        "sbg:contributors": [
+          "dave"
+        ],
+        "sbg:createdOn": 1492530856,
+        "outputs": [
+          {
+            "outputBinding": {
+              "sbg:inheritMetadataFrom": "#bam_json",
+              "glob": {
+                "script": "\"*_hpv_types.json\"",
+                "class": "Expression",
+                "engine": "#cwl-js-engine"
+              }
+            },
+            "type": [
+              "null",
+              "File"
+            ],
+            "id": "#hpv_types"
+          },
+          {
+            "outputBinding": {
+              "sbg:inheritMetadataFrom": "#bam_json",
+              "glob": "*.html"
+            },
+            "type": [
+              "null",
+              "File"
+            ],
+            "id": "#app_html_out"
+          }
+        ],
+        "sbg:project": "dave/cgrhpv",
+        "class": "CommandLineTool",
+        "sbg:createdBy": "dave",
+        "cwlVersion": "sbg:draft-2",
+        "label": "illumina typing run processor",
+        "arguments": [
+          {
+            "position": 100,
+            "valueFrom": "1>&2",
+            "separate": true
+          }
+        ],
+        "hints": [
+          {
+            "class": "DockerRequirement",
+            "dockerPull": "cgrlab/typeseqer:latest"
+          },
+          {
+            "class": "sbg:CPURequirement",
+            "value": 1
+          },
+          {
+            "class": "sbg:MemRequirement",
+            "value": 1000
+          }
+        ],
+        "sbg:validationErrors": [],
+        "sbg:publisher": "sbg",
+        "sbg:latestRevision": 24,
+        "sbg:modifiedOn": 1521177513,
+        "sbg:job": {
+          "inputs": {
+            "bam_json": {
+              "secondaryFiles": [
+                {
+                  "path": ".bai"
+                }
+              ],
+              "class": "File",
+              "size": 0,
+              "path": "path/to/_2_Run1v0202_Pool1_S1_L001_001_barcode_Rev_BC107_2_barcode_Fwd_BC03.fastq.sorted.filtered.json"
+            },
+            "page_size": 5000,
+            "barcode_file": {
+              "secondaryFiles": [],
+              "class": "File",
+              "size": 0,
+              "path": "/path/to/barcode_file.ext"
+            }
+          },
+          "allocatedResources": {
+            "cpu": 1,
+            "mem": 1000
+          }
+        },
+        "sbg:revision": 24
+      },
+      "inputs": [
+        {
+          "source": [
+            "#json_splitter.split_variants_json"
+          ],
+          "id": "#illumina_typing_run_processor.bam_json"
+        },
+        {
+          "id": "#illumina_typing_run_processor.page_size",
+          "default": 20000
+        },
+        {
+          "source": [
+            "#barcode_file"
+          ],
+          "id": "#illumina_typing_run_processor.barcode_file"
+        }
+      ],
+      "id": "#illumina_typing_run_processor",
+      "sbg:y": 161.80698296935176
     },
     {
       "sbg:x": 918.8887561574423,
@@ -3527,7 +3536,7 @@
               {
                 "filename": "args.R",
                 "fileContent": {
-                  "script": "'args_control_defs = \"'+$job.inputs.control_defs.path+'\" \\n\\\nargs_run_manifest_path =  \"'+$job.inputs.run_manifest.path+'\" \\n\\\nargs_bam_header_path =  \"'+$job.inputs.bam_header_file.path+'\" \\n\\\nargs_pos_neg_filtering_criteria_path = \"/opt/2017-06-11_Pos-Neg_matrix_filtering_criteria_RefTable_v3.txt\" \\n\\\nargs_hpv_types_path = \"'+$job.inputs.hpv_types_json.path+'\" \\n\\\nargs_scaling_table = \"/opt/2017-11-24_TypeSeqer_Filtering_Scaling_Table_v2.csv\" \\n\\\nargs_parameter_file_path = \"/opt/2017-Nov_HPV_Typing_MiSeq_MQ_and_MinLen_Filters_4.csv\"';\n\n\n\n\n\n\n\n\n",
+                  "script": "'args_control_defs = \"'+$job.inputs.control_defs.path+'\" \\n\\\nargs_run_manifest_path =  \"'+$job.inputs.run_manifest.path+'\" \\n\\\nargs_bam_header_path =  \"'+$job.inputs.bam_header_file.path+'\" \\n\\\nargs_pos_neg_filtering_criteria_path = \"/opt/2017-06-11_Pos-Neg_matrix_filtering_criteria_RefTable_v3.txt\" \\n\\\nargs_hpv_types_path = \"'+$job.inputs.hpv_types_json.path+'\" \\n\\\nargs_scaling_table = \"/opt/2017-11-24_TypeSeqer_Filtering_Scaling_Table_v2.csv\" \\n\\\nargs_parameter_file_path = \"/opt/illumina_TypeSeqer_minQual_minLen_filters.csv\"';\n\n\n\n\n\n\n\n\n",
                   "class": "Expression",
                   "engine": "#cwl-js-engine"
                 }
@@ -3549,7 +3558,7 @@
             ]
           }
         ],
-        "sbg:revisionNotes": "added rm filter.json",
+        "sbg:revisionNotes": "renamed filter file in args",
         "stdin": "",
         "temporaryFailCodes": [],
         "sbg:projectName": "cgrHPV",
@@ -3688,6 +3697,12 @@
             "sbg:modifiedBy": "dave",
             "sbg:revisionNotes": "added rm filter.json",
             "sbg:revision": 21
+          },
+          {
+            "sbg:modifiedOn": 1521177239,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "renamed filter file in args",
+            "sbg:revision": 22
           }
         ],
         "successCodes": [],
@@ -3734,10 +3749,10 @@
           "sbg": "https://sevenbridges.com"
         },
         "sbg:modifiedBy": "dave",
-        "id": "https://api.sbgenomics.com/v2/apps/dave/cgrhpv/illumina-typeseqer-report/21/raw/",
+        "id": "https://api.sbgenomics.com/v2/apps/dave/cgrhpv/illumina-typeseqer-report/22/raw/",
         "sbg:image_url": null,
         "stdout": "",
-        "sbg:id": "dave/cgrhpv/illumina-typeseqer-report/21",
+        "sbg:id": "dave/cgrhpv/illumina-typeseqer-report/22",
         "sbg:contributors": [
           "dave"
         ],
@@ -3850,8 +3865,8 @@
         ],
         "sbg:validationErrors": [],
         "sbg:publisher": "sbg",
-        "sbg:latestRevision": 21,
-        "sbg:modifiedOn": 1521159965,
+        "sbg:latestRevision": 22,
+        "sbg:modifiedOn": 1521177239,
         "sbg:job": {
           "inputs": {
             "run_manifest": {
@@ -3884,7 +3899,7 @@
             "mem": 2000
           }
         },
-        "sbg:revision": 21
+        "sbg:revision": 22
       },
       "inputs": [
         {
@@ -3916,13 +3931,13 @@
       "sbg:y": 303.35062628570694
     }
   ],
-  "sbg:revisionNotes": "illumina_typeseqer_report \n\"added rm filter.json\"",
+  "sbg:revisionNotes": "updated hardcoded file names for new repo",
   "sbg:appVersion": [
     "sbg:draft-2"
   ],
   "sbg:projectName": "cgrHPV",
   "sbg:publisher": "sbg",
-  "sbg:image_url": "https://igor.sbgenomics.com/ns/brood/images/dave/cgrhpv/hpv-typing-illumina-workflow/125.png",
+  "sbg:image_url": "https://igor.sbgenomics.com/ns/brood/images/dave/cgrhpv/hpv-typing-illumina-workflow/126.png",
   "sbg:contributors": [
     "sarah",
     "dave"
@@ -3941,13 +3956,13 @@
       "value": "4"
     }
   ],
-  "sbg:latestRevision": 125,
+  "sbg:latestRevision": 126,
   "sbg:validationErrors": [],
   "sbg:canvas_y": 74,
   "sbg:categories": [
     "hpv_typing"
   ],
-  "id": "https://api.sbgenomics.com/v2/apps/dave/cgrhpv/hpv-typing-illumina-workflow/125/raw/",
+  "id": "https://api.sbgenomics.com/v2/apps/dave/cgrhpv/hpv-typing-illumina-workflow/126/raw/",
   "sbg:revisionsInfo": [
     {
       "sbg:modifiedOn": 1492530729,
@@ -4704,9 +4719,15 @@
       "sbg:modifiedBy": "dave",
       "sbg:revisionNotes": "illumina_typeseqer_report \n\"added rm filter.json\"",
       "sbg:revision": 125
+    },
+    {
+      "sbg:modifiedOn": 1521177630,
+      "sbg:modifiedBy": "dave",
+      "sbg:revisionNotes": "updated hardcoded file names for new repo",
+      "sbg:revision": 126
     }
   ],
-  "sbg:modifiedOn": 1521166125,
+  "sbg:modifiedOn": 1521177630,
   "$namespaces": {
     "sbg": "https://sevenbridges.com"
   },
@@ -4840,5 +4861,5 @@
     }
   ],
   "sbg:canvas_zoom": 0.6499999999999997,
-  "sbg:revision": 125
+  "sbg:revision": 126
 }
