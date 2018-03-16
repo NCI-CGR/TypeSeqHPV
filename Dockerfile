@@ -72,5 +72,5 @@ cd TypeSeqer && \
 git init && \
 git pull https://github.com/cgrlab/TypeSeqer_HPV.git
 
-RUN cp /TypeSeqer/apps/* /TypeSeqer/docs/* /TypeSeqer/scripts/* /opt 
+RUN cp /TypeSeqer/apps/* /TypeSeqer/docs/*/* /TypeSeqer/scripts/* /opt 
 RUN mkdir /typeSeqerFiles
