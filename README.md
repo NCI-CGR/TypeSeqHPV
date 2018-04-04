@@ -1,9 +1,9 @@
 # TypeSeqer_HPV
 ***CGR laboratory's HPV typing TypeSeqer analysis workflows***
 
-# Instructions For Running Illumina TypeSeqer
+## Instructions For Running Illumina TypeSeqer
 
-## 1. Generate fastq files from raw sequencing data using modified parameters
+### 1. Generate fastq files from raw sequencing data using modified parameters
   
 The Illumina fastq files need to be regenerated using the following custom bcl2fastq parameters:  
 ```  
@@ -17,7 +17,7 @@ bcl2fastq --runfolder-dir [location of run directory (local or networked drive) 
 This should generate two new fastq files, one for R1 and one for R2. Any version of bcl2fastq higher than  
 2.19 should work.
   
-## 2. Create New Directory for The Project  
+### 2. Create New Directory for The Project  
 
 The pre-built image, cwl file, and helper bash script are hosted in an archive on the NIH HPC at `https://hpc.nih.gov/~robersondw/TypeSeqerHPV_0.18.314.tar.gz`
 
@@ -34,7 +34,7 @@ The workflow will need to utilize a fresh working directory. Make sure that the 
    
 As an alternative the user can genearate the singularity image by building from the Dockerfile.  The user will still need to download the latest cwl and shell script from this reposititory.     
     
-## 3. Adjust the Shell Variables  
+### 3. Adjust the Shell Variables  
 
 In the shell script there are 5 variables that will need to be entered manually to help with the Singularity
 exec command. These include fastq1, fastq2, control_defs, run_manifest and working_dir.  
@@ -43,7 +43,7 @@ Note that the file paths specified should be relative to the working_dir so that
 maintained inside the container. Any paths relative to your local environment will not work inside
 Singularity.
   
-## 4. Run the Workflow  
+### 4. Run the Workflow  
   
 These instructions were tested on the NIH HPC which uses Slurm Workload Manager. We used an
 interactive node but the shell script can easily be adjusted for a batch job. For a fast completion time try
