@@ -1,0 +1,2 @@
+FROM cgrlab/typeseqer:0.5.02
+RUN Rscript -e 'require(devtools); install_github("davidroberson/TypeSeqer", force=TRUE)'
