@@ -54,7 +54,7 @@ RUN echo 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignm
 && echo 'install.packages("ggsci")' | r \
 && echo 'require(tidyverse); sessionInfo()' | r
 
-### Installing Java 8.... dockerfile snippet from https://github.com/dockerfile/java/blob/master/oracle-java8/Dockerfile
+# Installing Java 8.... dockerfile snippet from https://github.com/dockerfile/java/blob/master/oracle-java8/Dockerfile
 RUN \
   echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   add-apt-repository -y ppa:webupd8team/java && \
@@ -66,11 +66,3 @@ RUN \
 # Define commonly used JAVA_HOME variable
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 ENV JAVA_LIBRARY_PATH /usr/lib/jni
-
-RUN mkdir TypeSeqer && \
-cd TypeSeqer && \
-git init && \
-git pull https://github.com/cgrlab/TypeSeqer_HPV.git
-
-RUN cp /TypeSeqer/apps/* /TypeSeqer/docs/*/* /TypeSeqer/scripts/* /opt 
-RUN mkdir /typeSeqerFiles
