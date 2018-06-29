@@ -1,2 +1,11 @@
 FROM cgrlab/typeseqer:0.5.02
 RUN Rscript -e 'require(devtools); install_github("davidroberson/TypeSeqer", force=TRUE)'
+
+#clone repo to get other docs
+RUN mkdir TypeSeqHPV && \
+cd TypeSeqHPV && \
+git init && \
+git pull https://github.com/cgrlab/TypeSeqHPV.git
+
+RUN cp /TypeSeqHPV/apps/* /TypeSeqHPV/docs/*/* /TypeSeqHPV/scripts/* /opt 
+RUN mkdir /typeSeqerFiles
