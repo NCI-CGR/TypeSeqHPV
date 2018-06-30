@@ -4,7 +4,7 @@
 #' They should already be installed in the docker image 
 #' but this is still sometimes helpful for testing on other platforms (such as databricks).
 
-ion_report_load_packages <- function(){
+illumina_read_processor_load_packages <- function(){
 # load packages
 dynamic_require = function(x){
   for( i in x ){
