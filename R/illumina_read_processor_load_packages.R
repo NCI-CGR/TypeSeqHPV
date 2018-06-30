@@ -19,7 +19,12 @@ dynamic_require = function(x){
 }
 
 dynamic_require(c("tidyverse",
-                  "jsonlite"
+                  "jsonlite",
+                  "pander",
+                  "scales",
+                  "fuzzyjoin",
+                  "ggsci",
+                  "koRpus"
                   ))
   
 dynamic_require_bioc = function(x){
