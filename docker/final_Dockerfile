@@ -6,7 +6,7 @@ RUN Rscript -e 'library(sparklyr); spark_install(version = "2.3.0")'
 
 
 #clone repo to get other docs
-RUN mkdir TypeSeqHPV && \
+RUN mkdir /TypeSeqHPV && \
 cd TypeSeqHPV && \
 git init && \
 git pull https://github.com/cgrlab/TypeSeqHPV.git
