@@ -1,5 +1,9 @@
 FROM cgrlab/typeseqer:0.5.02
 RUN Rscript -e 'require(devtools); install_github("davidroberson/TypeSeqer", force=TRUE)'
+RUN Rscript -e 'install.packages("sparklyr")'
+RUN Rscript -e 'library(sparklyr); spark_install(version = "2.3.0")'
+
+
 
 #clone repo to get other docs
 RUN mkdir TypeSeqHPV && \
