@@ -11,5 +11,5 @@ cd TypeSeqHPV && \
 git init && \
 git pull https://github.com/cgrlab/TypeSeqHPV.git
 
-RUN cp /TypeSeqHPV/apps/* /TypeSeqHPV/docs/*/* /TypeSeqHPV/scripts/* /opt 
+RUN cp /TypeSeqHPV/apps/*/* /TypeSeqHPV/docs/*/* /TypeSeqHPV/scripts/* /opt 
 RUN mkdir /typeSeqerFiles
