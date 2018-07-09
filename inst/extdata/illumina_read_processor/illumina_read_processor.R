@@ -7,7 +7,7 @@ require(sparklyr)
 #sc <- spark_connect(method = "databricks")
 
 config=spark_config()
-Sys.setenv("SPARK_MEM" = "200G")
+#Sys.setenv("SPARK_MEM" = "200G")
 #config$`sparklyr.shell.driver-memory` <- "200G"
 #config$spark.memory.fraction <- 0.99
 
