@@ -102,107 +102,107 @@ spark_apply(context=barcodes, f=function(bam, barcodes){
                     bc_id_1 = "character" ))
                
 sdf_register(bam_mapped_first, "bam_mapped_first")
-    
-#### merge read 1 and read 2 information by qname
-# gets here in 10mins
-bam = inner_join(tbl(sc, "bam_mapped_first"), tbl(sc,"bam_unmapped_second"), by="qname") %>%
-mutate(barcode = paste0(bc_id_1, bc_id_2)) %>%
-select(-bc_id_2, -flag) %>%
-mutate(total_demultiplex_reads = n()) %>%
-group_by(bc_id_1) %>% 
-mutate(post_demultiplex_reads = n()) %>%
-ungroup() %>%
-select(barcode_1 = bc_id_1, barcode, qname, HPV_Type = rname, seq, mapq, cigar, 
-       pre_demultiplex_reads, total_demultiplex_reads, post_demultiplex_reads) %>%
-
-## joining with paramers csv #######
-left_join(parameters, copy=TRUE) %>%
-
-####### filter mapq > min mapq - always summarize by barcode #######
-filter(mapq >= min_mq) %>%
-mutate(mapq_reads = n()) %>%
-select(-display_order, -Owner_Sample_ID, -min_mq)
-
-sdf_register(bam, "bam")
-tbl(sc, "bam")
-tbl(sc, "bam")    
-tbl(sc, "bam")    
-
-temp <- tbl(sc, "bam")  %>%
-sdf_repartition(128) %>%
   
-####### filter by read length #######
-spark_apply(f=function(bam){
-  require(tidyverse)
-  require(GenomicAlignments)
+tbl(sc, "bam_mapped_first")
+   
 
-  bam_return = bam %>% 
-  mutate(seq_length = str_length(seq)) %>%
-  mutate(cigar_seq = as.character(sequenceLayer(DNAStringSet(seq), cigar))) %>%
-  mutate(cigar_len = str_length(cigar_seq)) %>%
-  filter(cigar_len >= min_align_len) %>%
-  select(-seq_length, -cigar_len, -cigar_seq, -min_align_len) 
+
+# #### merge read 1 and read 2 information by qname
+# # gets here in 10mins
+# bam = inner_join(tbl(sc, "bam_mapped_first"), tbl(sc,"bam_unmapped_second"), by="qname") %>%
+# mutate(barcode = paste0(bc_id_1, bc_id_2)) %>%
+# select(-bc_id_2, -flag) %>%
+# mutate(total_demultiplex_reads = n()) %>%
+# group_by(bc_id_1) %>% 
+# mutate(post_demultiplex_reads = n()) %>%
+# ungroup() %>%
+# select(barcode_1 = bc_id_1, barcode, qname, HPV_Type = rname, seq, mapq, cigar, 
+#        pre_demultiplex_reads, total_demultiplex_reads, post_demultiplex_reads) %>%
+
+# ## joining with paramers csv #######
+# left_join(parameters, copy=TRUE) %>%
+
+# ####### filter mapq > min mapq - always summarize by barcode #######
+# filter(mapq >= min_mq) %>%
+# mutate(mapq_reads = n()) %>%
+# select(-display_order, -Owner_Sample_ID, -min_mq)
+
+# sdf_register(bam, "bam")
+# tbl(sc, "bam")
+# tbl(sc, "bam")    
+# tbl(sc, "bam")    
+
+# temp <- tbl(sc, "bam")  %>%
+# sdf_repartition(128) %>%
   
-  return(bam_return)
-}, 
-names=c(
-  'barcode_1', 
-  'barcode',
-  'qname',
-  'HPV_Type',
-  'seq', 
-  'mapq', 
-  'cigar',
-  'pre_demultiplexed_reads',
- 'total_demultiplex_reads', 
-  'post_demultiplex_reads',
-  'mapq_reads'), 
-columns=list(
-  barcode_1 = "character",
-  barcode = "character",
-  qname = "character", 
-  HPV_Type = "character",
-  seq = "character",
-  mapq = "integer",
-  cigar= "character",
-  pre_demultiplexed_reads = "integer",
-  total_demultiplex_reads = "integer",
-  post_demultiplex_reads = "integer",
-  mapq_reads = "integer"
-))
+# ####### filter by read length #######
+# spark_apply(f=function(bam){
+#   require(tidyverse)
+#   require(GenomicAlignments)
+
+#   bam_return = bam %>% 
+#   mutate(seq_length = str_length(seq)) %>%
+#   mutate(cigar_seq = as.character(sequenceLayer(DNAStringSet(seq), cigar))) %>%
+#   mutate(cigar_len = str_length(cigar_seq)) %>%
+#   filter(cigar_len >= min_align_len) %>%
+#   select(-seq_length, -cigar_len, -cigar_seq, -min_align_len) 
   
-sdf_register(temp, "temp")
-tbl(sc, "temp")
-tbl(sc, "temp")   
-tbl(sc, "temp")   
+#   return(bam_return)
+# }, 
+# names=c(
+#   'barcode_1', 
+#   'barcode',
+#   'qname',
+#   'HPV_Type',
+#   'seq', 
+#   'mapq', 
+#   'cigar',
+#   'pre_demultiplexed_reads',
+#  'total_demultiplex_reads', 
+#   'post_demultiplex_reads',
+#   'mapq_reads'), 
+# columns=list(
+#   barcode_1 = "character",
+#   barcode = "character",
+#   qname = "character", 
+#   HPV_Type = "character",
+#   seq = "character",
+#   mapq = "integer",
+#   cigar= "character",
+#   pre_demultiplexed_reads = "integer",
+#   total_demultiplex_reads = "integer",
+#   post_demultiplex_reads = "integer",
+#   mapq_reads = "integer"
+# ))
+  
+# sdf_register(temp, "temp")
+# tbl(sc, "temp")
+# tbl(sc, "temp")   
+# tbl(sc, "temp")   
 
-bam_final <- tbl(sc, "temp") %>%
-####### count final qc metrics #######
-mutate(qualified_barcode_reads = n()) %>%
+# bam_final <- tbl(sc, "temp") %>%
+# ####### count final qc metrics #######
+# mutate(qualified_barcode_reads = n()) %>%
 
-####### count hpv type read counts #######
-group_by(barcode, HPV_Type) %>%
-mutate(HPV_Type_count = n()) %>%
-ungroup() %>%
+# ####### count hpv type read counts #######
+# group_by(barcode, HPV_Type) %>%
+# mutate(HPV_Type_count = n()) %>%
+# ungroup() %>%
 
-##### create final table for outputs #####
-select(barcode_1, barcode, pre_demultiplexed_reads, total_demultiplex_reads, 
-       post_demultiplex_reads, mapq_reads, qualified_barcode_reads, 
-       HPV_Type, HPV_Type_count) %>%
-sdf_repartition(128) %>%
-distinct()
+# ##### create final table for outputs #####
+# select(barcode_1, barcode, pre_demultiplexed_reads, total_demultiplex_reads, 
+#        post_demultiplex_reads, mapq_reads, qualified_barcode_reads, 
+#        HPV_Type, HPV_Type_count) %>%
+# sdf_repartition(128) %>%
+# distinct()
 
-sdf_register(bam_final, "bam_final"); tbl(sc, "bam_final"); tbl(sc, "bam_final")
-
-
-#write csv output
-bam_output = tbl(sc, "bam_final") %>%
-collect() %>%
-distinct() %>%
-write_csv("illum_typeseqhpv_processed_run.csv")
+# sdf_register(bam_final, "bam_final"); tbl(sc, "bam_final"); tbl(sc, "bam_final")
 
 
-#bam_output %>%
-#display()
+# #write csv output
+# bam_output = tbl(sc, "bam_final") %>%
+# collect() %>%
+# distinct() %>%
+# write_csv("illum_typeseqhpv_processed_run.csv")
 
 
