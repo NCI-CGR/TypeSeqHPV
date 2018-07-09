@@ -104,7 +104,6 @@ spark_apply(context=barcodes, f=function(bam, barcodes){
 sdf_register(bam_mapped_first, "bam_mapped_first")
   
 tbl(sc, "bam_mapped_first")
-
 tbl(sc, "bam_mapped_first") %>%
 glimpse()
 
