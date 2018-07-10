@@ -9,7 +9,7 @@ require(sparklyr)
 config=spark_config()
 Sys.setenv("SPARK_MEM" = "200G")
 config$`sparklyr.shell.driver-memory` <- "200G"
-config$spark.memory.fraction <- 0.6
+config$spark.memory.fraction <- 0.99
 
 sc <- spark_connect(master = "local", config = config, version = '2.3.0')
 
@@ -40,7 +40,7 @@ bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE,
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
-sdf_repartition(128) 
+sdf_repartition(64) 
 
 sdf_register(bam_input, "bam_input")
 
@@ -49,6 +49,7 @@ print("bam_input complete")
 #### The long read and inline barcode 
 bam_unmapped_second <- tbl(sc, "bam_input") %>%
 filter(flag==181) %>%
+sdf_repartition(128) %>%
 
 ####### add barcode column via fuzzy join #######
 spark_apply(context=barcodes, f=function(bam, barcodes){
@@ -81,6 +82,7 @@ print("bam_unmapped_second complete")
 #### The long read and inline barcode 
 bam_mapped_first <- tbl(sc, "bam_input") %>%
 filter(flag==121) %>%
+sdf_repartition(128) %>%
   
 ####### add barcode column via fuzzy join #######
 spark_apply(context=barcodes, f=function(bam, barcodes){
@@ -116,6 +118,7 @@ print("bam_mapped_first complete")
 #### merge read 1 and read 2 information by qname
 # gets here in 10mins
 bam = inner_join(tbl(sc, "bam_mapped_first"), tbl(sc,"bam_unmapped_second"), by="qname") %>%
+sdf_repartition(128) %>%
 mutate(barcode = paste0(bc_id_1, bc_id_2)) %>%
 select(-bc_id_2, -flag) %>%
 mutate(total_demultiplex_reads = n()) %>%
@@ -142,7 +145,7 @@ print("bam complete")
 
 
 temp <- tbl(sc, "bam")  %>%
-#sdf_repartition(128) %>%
+sdf_repartition(128) %>%
   
 ####### filter by read length #######
 spark_apply(f=function(bam){
