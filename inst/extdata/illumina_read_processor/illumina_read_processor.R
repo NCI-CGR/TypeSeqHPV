@@ -7,9 +7,9 @@ require(sparklyr)
 #sc <- spark_connect(method = "databricks")
 
 config=spark_config()
-Sys.setenv("SPARK_MEM" = "100G")
-config$`sparklyr.shell.driver-memory` <- "100G"
-config$spark.memory.fraction <- 0.7
+Sys.setenv("SPARK_MEM" = "200G")
+config$`sparklyr.shell.driver-memory` <- "200G"
+config$spark.memory.fraction <- 0.99
 
 sc <- spark_connect(master = "local", config = config, version = '2.3.0')
 
@@ -40,10 +40,11 @@ bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE,
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
-#sdf_sample(fraction = 0.05, replacement = TRUE) %>%
 sdf_repartition(128) 
 
 sdf_register(bam_input, "bam_input")
+
+print("bam_input complete")
 
 #### The long read and inline barcode 
 bam_unmapped_second <- tbl(sc, "bam_input") %>%
@@ -74,6 +75,8 @@ spark_apply(context=barcodes, f=function(bam, barcodes){
 select(qname, bc_id_2)
 
 sdf_register(bam_unmapped_second, "bam_unmapped_second")
+  
+print("bam_unmapped_second complete")
 
 #### The long read and inline barcode 
 bam_mapped_first <- tbl(sc, "bam_input") %>%
@@ -105,8 +108,8 @@ spark_apply(context=barcodes, f=function(bam, barcodes){
 sdf_register(bam_mapped_first, "bam_mapped_first")
   
 tbl(sc, "bam_mapped_first")
-tbl(sc, "bam_mapped_first") %>%
-glimpse()
+
+print("bam_mapped_first complete")
 
 
 
@@ -134,8 +137,10 @@ sdf_register(bam, "bam")
 
 tbl(sc, "bam")
 tbl(sc, "bam")    
-tbl(sc, "bam") %>%
-glimpse()
+tbl(sc, "bam")
+
+print("bam complete")
+
 
 
 temp <- tbl(sc, "bam")  %>%
@@ -182,10 +187,13 @@ columns=list(
 ))
   
 sdf_register(temp, "temp")
+
 tbl(sc, "temp")
 tbl(sc, "temp")   
-tbl(sc, "temp") %>%
-glimpse()
+tbl(sc, "temp") 
+
+print("temp complete")
+
 
 bam_final <- tbl(sc, "temp") %>%
 ####### count final qc metrics #######
@@ -204,16 +212,20 @@ sdf_repartition(128) %>%
 distinct()
 
 sdf_register(bam_final, "bam_final")
+
 tbl(sc, "bam_final")
 tbl(sc, "bam_final")
-tbl(sc, "bam_final") %>%
-glimpse()
+tbl(sc, "bam_final") 
+
+print("bam_final complete")
+
 
 
 #write csv output
 bam_output = tbl(sc, "bam_final") %>%
 collect() %>%
 distinct() %>%
+glimpse() %>%
 write_csv("illum_typeseqhpv_processed_run.csv")
 
 
