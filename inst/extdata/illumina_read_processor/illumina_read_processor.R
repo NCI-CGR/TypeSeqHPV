@@ -107,7 +107,7 @@ spark_apply(context=barcodes, f=function(bam, barcodes){
                
 sdf_register(bam_mapped_first, "bam_mapped_first")
   
-tbl(sc, "bam_mapped_first")
+#tbl(sc, "bam_mapped_first")
 
 print("bam_mapped_first complete")
 
@@ -135,9 +135,7 @@ select(-display_order, -Owner_Sample_ID, -min_mq)
 
 sdf_register(bam, "bam")
 
-tbl(sc, "bam")
-tbl(sc, "bam")    
-tbl(sc, "bam")
+#tbl(sc, "bam")
 
 print("bam complete")
 
@@ -188,9 +186,7 @@ columns=list(
   
 sdf_register(temp, "temp")
 
-tbl(sc, "temp")
-tbl(sc, "temp")   
-tbl(sc, "temp") 
+#tbl(sc, "temp") 
 
 print("temp complete")
 
@@ -213,9 +209,8 @@ distinct()
 
 sdf_register(bam_final, "bam_final")
 
-tbl(sc, "bam_final")
-tbl(sc, "bam_final")
-tbl(sc, "bam_final") 
+
+#tbl(sc, "bam_final") 
 
 print("bam_final complete")
 
@@ -227,5 +222,4 @@ collect() %>%
 distinct() %>%
 glimpse() %>%
 write_csv("illum_typeseqhpv_processed_run.csv")
-
 
