@@ -142,7 +142,7 @@ print("bam complete")
 
 
 temp <- tbl(sc, "bam")  %>%
-sdf_repartition(128) %>%
+#sdf_repartition(128) %>%
   
 ####### filter by read length #######
 spark_apply(f=function(bam){
@@ -204,7 +204,7 @@ ungroup() %>%
 select(barcode_1, barcode, pre_demultiplexed_reads, total_demultiplex_reads, 
        post_demultiplex_reads, mapq_reads, qualified_barcode_reads, 
        HPV_Type, HPV_Type_count) %>%
-sdf_repartition(128) %>%
+sdf_repartition(32) %>%
 distinct()
 
 sdf_register(bam_final, "bam_final")
@@ -220,6 +220,6 @@ print("bam_final complete")
 bam_output = tbl(sc, "bam_final") %>%
 collect() %>%
 distinct() %>%
-glimpse() %>%
+#glimpse() %>%
 write_csv("illum_typeseqhpv_processed_run.csv")
 
