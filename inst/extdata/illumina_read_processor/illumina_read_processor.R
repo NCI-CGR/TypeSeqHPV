@@ -40,7 +40,7 @@ bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE,
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
-sdf_sample(fraction = 0.05, replacement = TRUE) %>%
+#sdf_sample(fraction = 0.05, replacement = TRUE) %>%
 sdf_repartition(128) 
 
 sdf_register(bam_input, "bam_input")
