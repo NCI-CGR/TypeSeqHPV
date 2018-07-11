@@ -43,7 +43,7 @@ select(-mq)
 
 
 ####### read in bam json #######
-bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE, 
+bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=TRUE, 
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
