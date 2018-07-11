@@ -10,7 +10,6 @@ config=spark_config()
 Sys.setenv("SPARK_MEM" = "200G")
 config$`sparklyr.shell.driver-memory` <- "200G"
 config$sparklyr.cores.local <- "128"
-#config$`spark.cores.max` <- 32
 config$spark.dynamicAllocation.enabled <- TRUE  
 config$spark.shuffle.service.enabled <- TRUE
 #config$spark.memory.fraction <- 0.9
@@ -157,7 +156,7 @@ print("bam complete tbl 3")
 
 
 temp <- tbl(sc, "bam")  %>%
-#sdf_repartition(128) %>%
+sdf_repartition(128) %>%
   
 ####### filter by read length #######
 spark_apply(memory = FALSE, f=function(bam){
