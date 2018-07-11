@@ -34,7 +34,7 @@ write_csv(control_matrix, paste0(final_pn_matrix$Assay_Batch_Code[1], "_control_
 
 write_csv(failed_samples_matrix, paste0(final_pn_matrix$Assay_Batch_Code[1], "_failed_samples_matrix.csv"))
 
-write_csv(final_pn_matrix %>% select(-bc1_id), paste0(final_pn_matrix$Assay_Batch_Code[1], "_full_pn_matrix.csv"))
+write_csv(final_pn_matrix, paste0(final_pn_matrix$Assay_Batch_Code[1], "_full_pn_matrix.csv"))
 
 write_csv(full_lineage_table_with_manifest, paste0(final_pn_matrix$Assay_Batch_Code[1], "_lineage_matrix.csv"))
 }
