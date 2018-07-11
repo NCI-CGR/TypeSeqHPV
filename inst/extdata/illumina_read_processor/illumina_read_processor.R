@@ -150,7 +150,8 @@ print("bam complete tbl 1")
 tbl(sc, "bam")
 print("bam complete tbl 2")
 
-tbl(sc, "bam")
+tbl(sc, "bam") %>%
+glimpse()
 print("bam complete tbl 3")
 
 
@@ -159,7 +160,7 @@ temp <- tbl(sc, "bam")  %>%
 sdf_repartition(128) %>%
   
 ####### filter by read length #######
-spark_apply(memory = FALSE, f=function(bam){
+spark_apply(f=function(bam){
   require(tidyverse)
   require(GenomicAlignments)
 
@@ -169,9 +170,7 @@ spark_apply(memory = FALSE, f=function(bam){
   mutate(cigar_len = str_length(cigar_seq)) %>%
   filter(cigar_len >= min_align_len) %>%
   select(-seq_length, -cigar_len, -cigar_seq, -min_align_len) 
-  
-  print("1 down")
-  
+    
   return(bam_return)
 }, 
 names=c(
