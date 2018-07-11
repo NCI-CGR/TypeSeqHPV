@@ -8,11 +8,11 @@ require(sparklyr)
 
 config=spark_config()
 Sys.setenv("SPARK_MEM" = "200G")
-config$`sparklyr.shell.driver-memory` <- "200G"
+#config$`sparklyr.shell.driver-memory` <- "200G"
 #config$spark.executor.memory <- "7GB"
 config$sparklyr.cores.local <- "32"
-config$`sparklyr.shell.driver-cores` <- "32"
-#config$spark.executor.cores <- 2
+#config$`sparklyr.shell.driver-cores` <- "32"
+config$spark.driver.cores <- 8
 #config$`spark.cores.max` <- 32
 #config$spark.dynamicAllocation.enabled <- TRUE  
 #config$spark.shuffle.service.enabled <- TRUE
