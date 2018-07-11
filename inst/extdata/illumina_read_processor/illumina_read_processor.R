@@ -40,7 +40,7 @@ bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE,
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
-sdf_repartition(64) 
+sdf_repartition(128) 
 
 sdf_register(bam_input, "bam_input")
 
@@ -49,7 +49,7 @@ print("bam_input complete")
 #### The long read and inline barcode 
 bam_unmapped_second <- tbl(sc, "bam_input") %>%
 filter(flag==181) %>%
-sdf_repartition(128) %>%
+#sdf_repartition(128) %>%
 
 ####### add barcode column via fuzzy join #######
 spark_apply(context=barcodes, f=function(bam, barcodes){
@@ -148,7 +148,7 @@ tbl(sc, "bam")
 
 
 temp <- tbl(sc, "bam")  %>%
-sdf_repartition(128) %>%
+#sdf_repartition(128) %>%
   
 ####### filter by read length #######
 spark_apply(f=function(bam){
