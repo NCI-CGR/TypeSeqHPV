@@ -32,7 +32,7 @@ write_csv(hpv_types, paste0(final_pn_matrix$Assay_Batch_Code[1], "_hpv_read_coun
 
 write_csv(control_matrix, paste0(final_pn_matrix$Assay_Batch_Code[1], "_control_results.csv"))
 
-write_csv(failed_samples_matrix %>% select(-control_type), paste0(final_pn_matrix$Assay_Batch_Code[1], "_failed_samples_matrix.csv"))
+write_csv(failed_samples_matrix, paste0(final_pn_matrix$Assay_Batch_Code[1], "_failed_samples_matrix.csv"))
 
 write_csv(final_pn_matrix, paste0(final_pn_matrix$Assay_Batch_Code[1], "_full_pn_matrix.csv"))
 
