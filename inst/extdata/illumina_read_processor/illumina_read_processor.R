@@ -7,10 +7,10 @@ require(sparklyr)
 #sc <- spark_connect(method = "databricks")
 
 config=spark_config()
-#Sys.setenv("SPARK_MEM" = "200G")
-#config$`sparklyr.shell.driver-memory` <- "200G"
-#config$`sparklyr.cores.local` <- "32"
-config$`spark.executor.cores` <- 1
+Sys.setenv("SPARK_MEM" = "200G")
+config$`sparklyr.shell.driver-memory` <- "200G"
+config$`sparklyr.cores.local` <- "32"
+config$`spark.executor.cores` <- 32
 config$`spark.cores.max` <- 32
 config$`spark.dynamicAllocation.enabled` <- TRUE  
 config$`spark.shuffle.service.enabled` <- TRUE
