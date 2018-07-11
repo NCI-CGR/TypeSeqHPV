@@ -5,7 +5,7 @@ prepare_lineage_df <- function(args_lineage_reference_path, args_lineage_table_p
 lineage_reference = read_csv(args_lineage_reference_path) %>%
 mutate(type_lineage = paste0(HPV_Type, "-", Lineage_ID)) %>%
 mutate(reported_type_lineage = paste0(Reported_Type, "-", Lineage_ID)) %>%
-select(HPV_Type, reported_type_lineage, min_lineage_percent, min_lineage_read_count, min_lineage_percent_override_reads) %>%
+select(HPV_Type, type_lineage, reported_type_lineage, min_lineage_percent, min_lineage_read_count, min_lineage_percent_override_reads) %>%
 distinct() %>%
 glimpse()
   
