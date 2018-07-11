@@ -57,6 +57,7 @@ print("bam_input complete")
 bam_unmapped_second <- tbl(sc, "bam_input") %>%
 filter(flag==181) %>%
 #sdf_repartition(128) %>%
+group_by(qname) %>%
 
 ####### add barcode column via fuzzy join #######
 spark_apply(memory = FALSE, context=barcodes, f=function(bam, barcodes){
