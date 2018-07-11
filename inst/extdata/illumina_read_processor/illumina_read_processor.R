@@ -43,6 +43,7 @@ bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE,
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
+filter(rname=="HPV16") %>%
 sdf_repartition(128) 
 
 sdf_register(bam_input, "bam_input")
@@ -137,5 +138,104 @@ left_join(parameters, copy=TRUE) %>%
 ####### filter mapq > min mapq - always summarize by barcode #######
 filter(mapq >= min_mq) %>%
 mutate(mapq_reads = n()) %>%
-select(-display_order, -Owner_Sample_ID, -min_mq) %>%
-spark_write_parquet("bam_pre_temp")
+select(-display_order, -Owner_Sample_ID, -min_mq)
+
+sdf_register(bam, "bam")
+
+
+print("bam complete")
+
+tbl(sc, "bam")
+print("bam complete tbl 1")
+
+tbl(sc, "bam")
+print("bam complete tbl 2")
+
+tbl(sc, "bam") %>%
+glimpse()
+print("bam complete tbl 3")
+
+
+
+temp <- tbl(sc, "bam")  %>%
+sdf_repartition(128) %>%
+  
+####### filter by read length #######
+spark_apply(f=function(bam){
+  require(tidyverse)
+  require(GenomicAlignments)
+
+  bam_return = bam %>% 
+  mutate(seq_length = str_length(seq)) %>%
+  mutate(cigar_seq = as.character(sequenceLayer(DNAStringSet(seq), cigar))) %>%
+  mutate(cigar_len = str_length(cigar_seq)) %>%
+  filter(cigar_len >= min_align_len) %>%
+  select(-seq_length, -cigar_len, -cigar_seq, -min_align_len) 
+    
+  return(bam_return)
+}, 
+names=c(
+  'barcode_1', 
+  'barcode',
+  'qname',
+  'HPV_Type',
+  'seq', 
+  'mapq', 
+  'cigar',
+  'pre_demultiplexed_reads',
+ 'total_demultiplex_reads', 
+  'post_demultiplex_reads',
+  'mapq_reads'), 
+columns=list(
+  barcode_1 = "character",
+  barcode = "character",
+  qname = "character", 
+  HPV_Type = "character",
+  seq = "character",
+  mapq = "integer",
+  cigar= "character",
+  pre_demultiplexed_reads = "integer",
+  total_demultiplex_reads = "integer",
+  post_demultiplex_reads = "integer",
+  mapq_reads = "integer"
+))
+  
+print("temp pre register complete")
+  
+  
+sdf_register(temp, "temp")
+
+tbl(sc, "temp") 
+
+print("temp complete")
+
+
+bam_final <- tbl(sc, "temp") %>%
+####### count final qc metrics #######
+mutate(qualified_barcode_reads = n()) %>%
+
+####### count hpv type read counts #######
+group_by(barcode, HPV_Type) %>%
+mutate(HPV_Type_count = n()) %>%
+ungroup() %>%
+
+##### create final table for outputs #####
+select(barcode_1, barcode, pre_demultiplexed_reads, total_demultiplex_reads, 
+       post_demultiplex_reads, mapq_reads, qualified_barcode_reads, 
+       HPV_Type, HPV_Type_count) %>%
+#sdf_repartition(32) %>%
+summarize()
+
+sdf_register(bam_final, "bam_final")
+
+
+tbl(sc, "bam_final") 
+
+print("bam_final complete")
+
+#write csv output
+bam_output = tbl(sc, "bam_final") %>%
+collect() %>%
+distinct() %>%
+#glimpse() %>%
+write_csv("illum_typeseqhpv_processed_run.csv")
