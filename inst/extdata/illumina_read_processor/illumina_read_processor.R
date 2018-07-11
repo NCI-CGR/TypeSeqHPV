@@ -138,4 +138,4 @@ left_join(parameters, copy=TRUE) %>%
 filter(mapq >= min_mq) %>%
 mutate(mapq_reads = n()) %>%
 select(-display_order, -Owner_Sample_ID, -min_mq) %>%
-write_parquet("bam_pre_temp")
+spark_write_parquet("bam_pre_temp")
