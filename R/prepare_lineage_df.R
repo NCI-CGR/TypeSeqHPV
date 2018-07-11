@@ -4,9 +4,11 @@ prepare_lineage_df <- function(args_lineage_reference_path, args_lineage_table_p
   
 lineage_reference = read_csv(args_lineage_reference_path) %>%
 mutate(type_lineage = paste0(HPV_Type, "-", Lineage_ID)) %>%
-select(HPV_Type, type_lineage, min_lineage_percent, min_lineage_read_count, min_lineage_percent_override_reads) %>%
+mutate(reported_type_lineage = paste0(Reported_Type, "-", Lineage_ID)) %>%
+select(HPV_Type, reported_type_lineage, min_lineage_percent, min_lineage_read_count, min_lineage_percent_override_reads) %>%
 distinct() %>%
 glimpse()
+  
 
 lineage_table = stream_in(file(args_lineage_table_path)) %>%
 group_by(bc1_id, bc2_id, HPV_Type) %>%
@@ -58,7 +60,7 @@ arrange(HPV_Type) %>%
 select(-HPV_Type, -hpvStatus, -Lineage_ID, -lineage_read_count, 
        -min_lineage_percent,  -min_lineage_read_count, -min_lineage_percent_override_reads) %>%
 group_by(barcode) %>%
-spread(type_lineage, lineage_percent, fill=0) %>%
+spread(reported_type_lineage, lineage_percent, fill=0) %>%
 filter(!(is.na(Project))) %>%
 glimpse()
 
