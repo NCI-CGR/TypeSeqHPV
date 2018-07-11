@@ -8,8 +8,7 @@ select(-control_result) %>%
 select(Project, 1:length(.), starts_with("HPV")) 
 
 failed_samples_matrix = samples_only_matrix %>%
-filter(Human_Control == "failed_to_amplify") %>%
-select(-control_type)
+filter(Human_Control == "failed_to_amplify") 
 
 control_matrix = control_results %>%
 left_join(final_pn_matrix) %>%
