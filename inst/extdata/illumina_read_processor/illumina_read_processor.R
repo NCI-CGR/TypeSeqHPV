@@ -9,10 +9,10 @@ require(sparklyr)
 config=spark_config()
 Sys.setenv("SPARK_MEM" = "200G")
 config$`sparklyr.shell.driver-memory` <- "200G"
-config$sparklyr.cores.local <- "128"
+config$sparklyr.cores.local <- "32"
 config$spark.dynamicAllocation.enabled <- TRUE  
 config$spark.shuffle.service.enabled <- TRUE
-#config$spark.memory.fraction <- 0.9
+config$spark.memory.fraction <- 0.9
 
 sc <- spark_connect(master = "local", config = config, version = '2.3.0')
 
