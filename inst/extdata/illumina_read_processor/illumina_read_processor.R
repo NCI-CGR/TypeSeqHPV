@@ -9,7 +9,7 @@ require(sparklyr)
 config=spark_config()
 Sys.setenv("SPARK_MEM" = "200G")
 config$`sparklyr.shell.driver-memory` <- "200G"
-conf$spark.executor.memory <- "7GB"
+config$spark.executor.memory <- "7GB"
 config$sparklyr.cores.local <- "32"
 config$spark.executor.cores <- 2
 #config$`spark.cores.max` <- 32
