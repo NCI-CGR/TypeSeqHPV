@@ -52,7 +52,7 @@ filter(flag==181) %>%
 #sdf_repartition(128) %>%
 
 ####### add barcode column via fuzzy join #######
-spark_apply(context=barcodes, f=function(bam, barcodes){
+spark_apply(memory = FALSE, context=barcodes, f=function(bam, barcodes){
   require(tidyverse)
   library(fuzzyjoin)
   
@@ -85,7 +85,7 @@ filter(flag==121) %>%
 #sdf_repartition(128) %>%
   
 ####### add barcode column via fuzzy join #######
-spark_apply(context=barcodes, f=function(bam, barcodes){
+spark_apply(memory = FALSE, context=barcodes, f=function(bam, barcodes){
   require(tidyverse)
   library(fuzzyjoin)
   
@@ -156,7 +156,7 @@ temp <- tbl(sc, "bam")  %>%
 #sdf_repartition(128) %>%
   
 ####### filter by read length #######
-spark_apply(f=function(bam){
+spark_apply(memory = FALSE, f=function(bam){
   require(tidyverse)
   require(GenomicAlignments)
 
@@ -195,9 +195,12 @@ columns=list(
   mapq_reads = "integer"
 ))
   
+print("temp pre register complete")
+  
+  
 sdf_register(temp, "temp")
 
-#tbl(sc, "temp") 
+tbl(sc, "temp") 
 
 print("temp complete")
 
