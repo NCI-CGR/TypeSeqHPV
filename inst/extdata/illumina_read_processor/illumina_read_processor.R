@@ -170,7 +170,9 @@ spark_apply(f=function(bam){
   mutate(cigar_len = str_length(cigar_seq)) %>%
   filter(cigar_len >= min_align_len) %>%
   select(-seq_length, -cigar_len, -cigar_seq, -min_align_len) 
-    
+  
+  print("1 done")
+  
   return(bam_return)
 }, 
 names=c(
