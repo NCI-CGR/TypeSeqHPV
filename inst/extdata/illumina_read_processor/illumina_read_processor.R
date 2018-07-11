@@ -216,12 +216,12 @@ select(barcode_1, barcode, pre_demultiplexed_reads, total_demultiplex_reads,
        post_demultiplex_reads, mapq_reads, qualified_barcode_reads, 
        HPV_Type, HPV_Type_count) %>%
 #sdf_repartition(32) %>%
-distinct()
+summarize()
 
 sdf_register(bam_final, "bam_final")
 
 
-#tbl(sc, "bam_final") 
+tbl(sc, "bam_final") 
 
 print("bam_final complete")
 
