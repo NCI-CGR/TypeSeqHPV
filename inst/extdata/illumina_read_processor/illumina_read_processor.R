@@ -8,11 +8,8 @@ require(sparklyr)
 
 config=spark_config()
 Sys.setenv("SPARK_MEM" = "200G")
-#config$`sparklyr.shell.driver-memory` <- "200G"
-#config$spark.executor.memory <- "7GB"
-config$sparklyr.cores.local <- "4"
-#config$`sparklyr.shell.driver-cores` <- "32"
-config$spark.driver.cores <- 8
+config$`sparklyr.shell.driver-memory` <- "200G"
+config$sparklyr.cores.local <- "64"
 #config$`spark.cores.max` <- 32
 #config$spark.dynamicAllocation.enabled <- TRUE  
 #config$spark.shuffle.service.enabled <- TRUE
@@ -43,7 +40,7 @@ select(-mq)
 
 
 ####### read in bam json #######
-bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=TRUE, 
+bam_input = spark_read_json(sc, name="bam_tbl", overwrite=TRUE, memory=FALSE, 
                             path=args_bam_json$path) %>%
 select(qname, rname, flag, seq, mapq, cigar)  %>%
 mutate(pre_demultiplex_reads = n())  %>%
@@ -60,7 +57,7 @@ filter(flag==181) %>%
 group_by(qname) %>%
 
 ####### add barcode column via fuzzy join #######
-spark_apply(memory = FALSE, context=barcodes, f=function(bam, barcodes){
+spark_apply(group_by="rname", memory = FALSE, context=barcodes, f=function(bam, barcodes){
   require(tidyverse)
   library(fuzzyjoin)
   
