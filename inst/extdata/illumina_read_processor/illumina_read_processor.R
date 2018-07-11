@@ -142,8 +142,13 @@ sdf_register(bam, "bam")
 print("bam complete")
 
 tbl(sc, "bam")
+print("bam complete tbl 1")
+
 tbl(sc, "bam")
+print("bam complete tbl 2")
+
 tbl(sc, "bam")
+print("bam complete tbl 3")
 
 
 
