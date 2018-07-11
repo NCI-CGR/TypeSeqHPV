@@ -152,7 +152,6 @@ tbl(sc, "bam")
 print("bam complete tbl 2")
 
 tbl(sc, "bam") %>%
-glimpse()
 print("bam complete tbl 3")
 
 
