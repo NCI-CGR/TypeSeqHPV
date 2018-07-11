@@ -157,7 +157,7 @@ print("bam complete tbl 3")
 
 
 temp <- tbl(sc, "bam")  %>%
-sdf_repartition(128) %>%
+#sdf_repartition(128) %>%
   
 ####### filter by read length #######
 spark_apply(f=function(bam){
