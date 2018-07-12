@@ -2,11 +2,14 @@
 #' title: Ion Torrent TypeSeq HPV Report
 #' author: " "
 #' date: "`r format(Sys.time(), '%d %B, %Y')`"
+#' header-includes:
+#' - \usepackage{pdflscape}
+#' - \newcommand{\blandscape}{\begin{landscape}}
+#' - \newcommand{\elandscape}{\end{landscape}}
 #' output:
 #'  pdf_document:
 #'     toc: true
 #'     toc_depth: 3
-#' classoption: landscape
 #' ---
 
 
@@ -70,6 +73,7 @@ get_run_metadata_safe <- possibly(TypeSeqHPV::get_run_metadata, otherwise=data.f
 startPluginDf = get_run_metadata_safe(args_start_plugin_path)
 
 #' \newpage
+#' \blandscape
 #' ## SAMPLE Results Summary
 
 #+ SAMPLE Results Summary, echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", results='asis', eval=TRUE
