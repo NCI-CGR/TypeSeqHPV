@@ -120,14 +120,14 @@ temp = hpv_status_circle_plot_safe(split_deliverables$samples_only_matrix)
 #' \newpage
 #' ## Lineage Plots
 
-#+ lineage table plot 1, echo=FALSE, message=FALSE, warning=FALSE, out.height='10in', out.width='8.2in', fig.width=20, fig.height=9, fig.align = "center"
+#+ lineage table plot 1, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 
 lineage_plot_safe <- possibly(TypeSeqHPV::lineage_plot, otherwise=data.frame())
 
 temp = lineage_plot_safe(lineage_df, 1)
 
 #' \newpage
-#+ normalized lineage table plot, echo=FALSE, message=FALSE, warning=FALSE, out.height='10in', out.width='7.5in', fig.width=16, fig.height=9, fig.align = "center"
+#+ normalized lineage table plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 temp = lineage_plot_safe(lineage_df, 2)
 
 
