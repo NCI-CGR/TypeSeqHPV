@@ -79,7 +79,8 @@ theme(
       axis.line = element_line(colour = "darkblue",  size = 2, linetype = "solid")) +
 theme(strip.background = element_blank(),
       legend.position="none") +
-labs(title="Signal to Noise for Current Ion Torrent Run", x= "HPV Types", y = "Average Counts", size=36) +
+labs(title="Signal to Noise for Current Ion Torrent Run", x= "HPV Types", y = "Average Counts") +
++theme(axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold")) +
 theme(
   panel.background = element_rect(fill = "white"),
   plot.margin = margin(0.5, 0.5, 0.5, 0, "cm"),
