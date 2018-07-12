@@ -27,6 +27,8 @@ theme(
 theme(strip.background = element_blank(),
       legend.position="bottom") +
 labs(title="Lineage Distribution By Type.  Colors Represent Within Type Groupings", x= "Type", y = "Count", size=12) +
+  theme(axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), 
+      plot.title = element_text(size=18, face="bold")) +
 theme(
   panel.background = element_rect(fill = "white"),
   plot.margin = margin(0.5, 0.5, 0.5, 0, "cm"),
@@ -47,6 +49,8 @@ theme(
 theme(strip.background = element_blank(),
       legend.position="bottom") +
 labs(title="Normalized Lineage Distribution By Type.  Colors Represent Within Type Groupings", x= "Type", y="") +
+theme(axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), 
+      plot.title = element_text(size=18, face="bold")) +  
 theme(
   panel.background = element_rect(fill = "white"),
   plot.margin = margin(0.5, 0.5, 0.5, 0, "cm"),
