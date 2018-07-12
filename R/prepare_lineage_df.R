@@ -72,7 +72,7 @@ anti_join(select(lineage_table_with_manifest_spread, barcode))
 # adding back in blank samples
 full_lineage_table_with_manifest_spread = lineage_table_with_manifest_spread %>%
 bind_rows(lineage_negative_samples) %>%
-select(-Control_type) %>%
+select(-Control_type, -type_lineage) %>%
 glimpse()
 
 return(full_lineage_table_with_manifest_spread)
