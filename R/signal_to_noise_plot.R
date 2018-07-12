@@ -87,7 +87,7 @@ theme(
   plot.background = element_rect(
     fill = "grey90",
     colour = "black",
-    size = 14)) +
+    size = 1)) +
 scale_color_igv()
 
 print(returnPlot)
