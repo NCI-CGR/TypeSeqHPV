@@ -43,7 +43,7 @@ geom_bar(stat="identity", position = "fill") +
   
 theme_light() +
 theme(
-      axis.text.y = element_text(angle = 0, hjust = 1, color = "darkblue", size = 9),
+      axis.text.y = element_text(angle = 0, hjust = 1, color = "darkblue", size = 18),
       axis.text.x = element_text(angle = 90, hjust = 0, size = 18, vjust = 0.5),
       axis.line = element_line(colour = "darkblue",  size = 2, linetype = "solid")) +
 theme(strip.background = element_blank(),
@@ -51,6 +51,7 @@ theme(strip.background = element_blank(),
 labs(title="Normalized Lineage Distribution By Type.  Colors Represent Within Type Groupings", x= "Type", y="") +
 theme(axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), 
       plot.title = element_text(size=18, face="bold")) +  
+   
 theme(
   panel.background = element_rect(fill = "white"),
   plot.margin = margin(0.5, 0.5, 0.5, 0, "cm"),
