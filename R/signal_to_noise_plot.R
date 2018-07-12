@@ -80,7 +80,7 @@ theme(
 theme(strip.background = element_blank(),
       legend.position="none") +
 labs(title="Signal to Noise for Current Ion Torrent Run", x= "HPV Types", y = "Average Counts") +
-+theme(axis.text=element_text(size=36), axis.title=element_text(size=18,face="bold")) +
+theme(axis.text=element_text(size=36), axis.title=element_text(size=18,face="bold")) +
 theme(
   panel.background = element_rect(fill = "white"),
   plot.margin = margin(0.5, 0.5, 0.5, 0, "cm"),
