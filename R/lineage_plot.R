@@ -50,7 +50,8 @@ theme(
       axis.line = element_line(colour = "darkblue",  size = 2, linetype = "solid")) +
 theme(strip.background = element_blank(),
       legend.position="bottom", 
-     legend.text=element_text(size=16)) +
+     legend.text=element_text(size=16), 
+      legend.title=element_text(size=16)) +
 labs(title="Normalized Lineage Distribution By Type.  Colors Represent Within Type Groupings", x= "Type", y="") +
 theme(axis.text=element_text(size=18), axis.title=element_text(size=18,face="bold"), 
       plot.title = element_text(size=18, face="bold")) +  
