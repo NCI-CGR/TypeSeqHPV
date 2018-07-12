@@ -6,8 +6,7 @@
 #'  pdf_document:
 #'     toc: true
 #'     toc_depth: 3
-#' documentclass: article
-#' classoption: a3paper
+#' classoption: landscape
 #' ---
 
 
