@@ -101,7 +101,7 @@ temp = coinfection_rate_histogram_safe(split_deliverables$samples_only_matrix)
 
 #' \newpage
 #' ## Signal-to-Noise Plot
-#+ signal to noise plot, echo=FALSE, message=FALSE, warning=FALSE, out.height='10in', out.width='8.2in',fig.width=20, fig.height=9, fig.align = "center"
+#+ signal to noise plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=9, fig.align = "center"
 
 signal_to_noise_plot_safe <- possibly(TypeSeqHPV::signal_to_noise_plot, otherwise=data.frame())
 
