@@ -1,5 +1,5 @@
 {
-  "sbg:id": "dave/cgr-apps/ion-hpv-typeseqer/58",
+  "sbg:id": "dave/cgr-apps/ion-hpv-typeseqer/60",
   "sbg:revisionsInfo": [
     {
       "sbg:modifiedOn": 1526931208,
@@ -354,6 +354,18 @@
       "sbg:modifiedBy": "dave",
       "sbg:revisionNotes": null,
       "sbg:revision": 58
+    },
+    {
+      "sbg:modifiedOn": 1531515803,
+      "sbg:modifiedBy": "dave",
+      "sbg:revisionNotes": "final_2018071301",
+      "sbg:revision": 59
+    },
+    {
+      "sbg:modifiedOn": 1531515884,
+      "sbg:modifiedBy": "dave",
+      "sbg:revisionNotes": null,
+      "sbg:revision": 60
     }
   ],
   "sbg:projectName": "CGR_Apps",
@@ -512,12 +524,12 @@
   "$namespaces": {
     "sbg": "https://sevenbridges.com"
   },
-  "sbg:revision": 58,
-  "sbg:image_url": "https://cgc.sbgenomics.com/ns/brood/images/dave/cgr-apps/ion-hpv-typeseqer/58.png",
+  "sbg:revision": 60,
+  "sbg:image_url": "https://cgc.sbgenomics.com/ns/brood/images/dave/cgr-apps/ion-hpv-typeseqer/60.png",
   "sbg:modifiedBy": "dave",
   "sbg:toolAuthor": "cgrlab",
-  "id": "https://cgc-api.sbgenomics.com/v2/apps/dave/cgr-apps/ion-hpv-typeseqer/58/raw/",
-  "sbg:latestRevision": 58,
+  "id": "https://cgc-api.sbgenomics.com/v2/apps/dave/cgr-apps/ion-hpv-typeseqer/60/raw/",
+  "sbg:latestRevision": 60,
   "sbg:sbgMaintained": false,
   "outputs": [
     {
@@ -2148,7 +2160,9 @@
         "sbg:contributors": [
           "dave"
         ],
-        "sbg:toolAuthor": "Artem Tarasov",
+        "sbg:appVersion": [
+          "sbg:draft-2"
+        ],
         "sbg:job": {
           "inputs": {
             "nthreads": null,
@@ -2464,9 +2478,7 @@
         },
         "sbg:project": "dave/cgrhpv",
         "sbg:modifiedBy": "dave",
-        "sbg:appVersion": [
-          "sbg:draft-2"
-        ],
+        "sbg:toolAuthor": "Artem Tarasov",
         "id": "dave/cgrhpv/sambamba-view-0-5-9/2",
         "sbg:latestRevision": 2,
         "sbg:revisionNotes": "corrected command line and switch to typeseqer docker",
@@ -2553,7 +2565,6 @@
             ]
           }
         ],
-        "sbg:toolkitVersion": "0.5.9",
         "sbg:modifiedOn": 1520743858,
         "sbg:revisionsInfo": [
           {
@@ -2580,6 +2591,7 @@
         "sbg:image_url": null,
         "sbg:validationErrors": [],
         "y": 790.9749145507812,
+        "sbg:sbgMaintained": false,
         "sbg:license": "GNU General Public License v2.0 only",
         "sbg:categories": [
           "SAM/BAM-Processing"
@@ -2587,7 +2599,7 @@
         "sbg:createdBy": "dave",
         "class": "CommandLineTool",
         "sbg:toolkit": "Sambamba",
-        "sbg:sbgMaintained": false
+        "sbg:toolkitVersion": "0.5.9"
       },
       "outputs": [
         {
@@ -2634,7 +2646,9 @@
         "sbg:contributors": [
           "dave"
         ],
-        "sbg:toolAuthor": "Heng Li/Sanger Institute,  Bob Handsaker/Broad Institute, James Bonfield/Sanger Institute,",
+        "sbg:appVersion": [
+          "sbg:draft-2"
+        ],
         "sbg:job": {
           "inputs": {
             "input_bam_or_sam_file": {
@@ -2676,9 +2690,7 @@
         },
         "sbg:project": "dave/cgrhpv",
         "sbg:modifiedBy": "dave",
-        "sbg:appVersion": [
-          "sbg:draft-2"
-        ],
+        "sbg:toolAuthor": "Heng Li/Sanger Institute,  Bob Handsaker/Broad Institute, James Bonfield/Sanger Institute,",
         "id": "dave/cgrhpv/samtools-extract-bam-header-1-3/3",
         "sbg:latestRevision": 3,
         "sbg:revisionNotes": "cgrlab/typeseqer:latest",
@@ -2755,7 +2767,6 @@
             ]
           }
         ],
-        "sbg:toolkitVersion": "v1.3",
         "sbg:modifiedOn": 1520717721,
         "sbg:revisionsInfo": [
           {
@@ -2788,6 +2799,7 @@
         "sbg:image_url": null,
         "sbg:validationErrors": [],
         "y": 48.294185638427734,
+        "sbg:sbgMaintained": false,
         "sbg:license": "BSD License, MIT License",
         "sbg:categories": [
           "SAM/BAM-Processing"
@@ -2795,7 +2807,7 @@
         "sbg:createdBy": "dave",
         "class": "CommandLineTool",
         "sbg:toolkit": "SAMtools",
-        "sbg:sbgMaintained": false
+        "sbg:toolkitVersion": "v1.3"
       },
       "outputs": [
         {
@@ -2804,8 +2816,8 @@
       ]
     },
     {
-      "sbg:x": 1404.75260271116,
-      "sbg:y": 215.98214744137755,
+      "sbg:x": 1391.0024797467852,
+      "sbg:y": 209.73213434325777,
       "id": "#ion_typeseqer_report",
       "inputs": [
         {
@@ -2864,7 +2876,7 @@
         }
       ],
       "run": {
-        "sbg:id": "dave/cgr-apps/ion-typeseqer-report/21",
+        "sbg:id": "dave/cgr-apps/ion-typeseqer-report/22",
         "sbg:revisionsInfo": [
           {
             "sbg:modifiedOn": 1526931198,
@@ -2997,6 +3009,12 @@
             "sbg:modifiedBy": "dave",
             "sbg:revisionNotes": "fixing R package name",
             "sbg:revision": 21
+          },
+          {
+            "sbg:modifiedOn": 1531515784,
+            "sbg:modifiedBy": "dave",
+            "sbg:revisionNotes": "final_2018071301",
+            "sbg:revision": 22
           }
         ],
         "sbg:projectName": "CGR_Apps",
@@ -3203,7 +3221,7 @@
           }
         ],
         "sbg:cmdPreview": "Rscript -e 'require(rmarkdown); render(\"TypeSeqer_report_pdf.R\"); system(paste0(\"cp TypeSeqer_report_pdf.pdf \", pn_matrix$Assay_Batch_Code[1], \"_qc_report.pdf\")); render(\"hpv_typing_html.R\") ' 1>&2",
-        "sbg:revision": 21,
+        "sbg:revision": 22,
         "$namespaces": {
           "sbg": "https://sevenbridges.com"
         },
@@ -3212,9 +3230,9 @@
         "sbg:appVersion": [
           "sbg:draft-2"
         ],
-        "id": "dave/cgr-apps/ion-typeseqer-report/21",
-        "sbg:latestRevision": 21,
-        "sbg:revisionNotes": "fixing R package name",
+        "id": "dave/cgr-apps/ion-typeseqer-report/22",
+        "sbg:latestRevision": 22,
+        "sbg:revisionNotes": "final_2018071301",
         "outputs": [
           {
             "type": [
@@ -3391,7 +3409,7 @@
           },
           {
             "class": "DockerRequirement",
-            "dockerPull": "cgrlab/typeseqerd2:latest"
+            "dockerPull": "cgrlab/typeseqhpv:final_2018071301"
           }
         ],
         "requirements": [
@@ -3423,12 +3441,12 @@
             "class": "CreateFileRequirement"
           }
         ],
-        "sbg:modifiedOn": 1531494329,
-        "x": 1404.75260271116,
+        "sbg:modifiedOn": 1531515784,
+        "x": 1391.0024797467852,
         "cwlVersion": "sbg:draft-2",
         "sbg:project": "dave/cgr-apps",
         "sbg:validationErrors": [],
-        "y": 215.98214744137755,
+        "y": 209.73213434325777,
         "sbg:createdBy": "dave",
         "class": "CommandLineTool",
         "sbg:sbgMaintained": false
@@ -3518,16 +3536,16 @@
               "path": "/path/to/barcode_list.ext",
               "secondaryFiles": []
             },
-            "lineage_reference_table": {
-              "class": "File",
-              "size": 0,
-              "path": "/path/to/lineage_reference_table.ext",
-              "secondaryFiles": []
-            },
             "bam_json": {
               "class": "File",
               "size": 0,
               "path": "path/to/ IonXpress_075_Auto_user_S5XL-0039-25-2017-01-10_RD111_HPV-T_T163_SUCCEED_104_005.split.json",
+              "secondaryFiles": []
+            },
+            "lineage_reference_table": {
+              "class": "File",
+              "size": 0,
+              "path": "/path/to/lineage_reference_table.ext",
               "secondaryFiles": []
             }
           },
@@ -3778,7 +3796,7 @@
       ]
     }
   ],
-  "sbg:modifiedOn": 1531494417,
+  "sbg:modifiedOn": 1531515884,
   "sbg:toolkitVersion": "",
   "description": "",
   "cwlVersion": "sbg:draft-2",
