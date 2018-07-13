@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # TypeSeq HPV Plugin
-VERSION="1.18.07.1301"
+VERSION="1.18.07.1302"
 #autorundisable
 echo Pipeline version $VERSION
 
@@ -11,7 +11,7 @@ cp  ${DIRNAME}/*.txt ./
 
 FILES=`ls *.bam`
 
-/results/plugins/scratch/rabix/rabix -b ./  ${DIRNAME}/TypeSeqer_Ion_Torrent_workflow.cwl -- \
+/results/plugins/scratch/rabix/rabix -b ./  ${DIRNAME}/TypeSeqHPV_ion_torrent_workflow.cwl -- \
 --input `echo $FILES | sed 's/ / --input /g'` \
 --mem_mb 8000 \
 --parameter_file hpv_types_MQ_min_max_len_filters_JUNE2017_30-10bpLen_v6.txt \
