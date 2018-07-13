@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # TypeSeqer-HPV Plugin
-VERSION="1.71301.18"
+VERSION="0.18.07.1301"
 #autorundisable
 echo Pipeline version $VERSION
 
