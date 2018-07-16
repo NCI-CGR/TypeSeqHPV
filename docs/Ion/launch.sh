@@ -20,7 +20,7 @@ FILES=`ls *.bam`
 --control_definitions startplugin.json \
 --report_grouping startplugin.json \
 --scaling_table 2017-11-24_TypeSeqer_Filtering_Scaling_Table_v2.csv \
---barcode_list barcodeList_TypingV1_v2-barcodes.csv \
+--barcode_list barcodeList_v1.txt \
 --lineage_reference_table 20180121_lineage_reference_table_and_filters_2.csv \
 --is_torrent_server | true
 
