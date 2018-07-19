@@ -60,8 +60,7 @@ left_join(parameters_df %>% select(HPV_Type, display_order)) %>% # <- merge with
 mutate(HPV_Type = factor(HPV_Type, levels=unique(HPV_Type[order(display_order)]), ordered=TRUE)) %>%
 select(-display_order) %>%
 group_by(barcode) %>%
-spread(HPV_Type, read_counts) # <- tranform from long form to actual matrix  
- 
+spread(HPV_Type, status) # <- tranform from long form to actual matrix  
   
   
   
