@@ -8,7 +8,7 @@
 #' 
 #' These other outputs are by "batch" (also refered to as "sequencing run")
 
-write_all_csv_files <- function(final_grouped_samples_only_matrix, read_metrics, final_pn_matrix, hpv_types, control_matrix, failed_samples_matrix, full_lineage_table_with_manifest){
+write_all_csv_files <- function(final_grouped_samples_only_matrix, read_metrics, final_pn_matrix, hpv_types, control_matrix, failed_samples_matrix, full_lineage_table_with_manifest, parameters_df){
   
 ################ per project code pn matrices with group/mask information ################
 grouped_samples_only_matrix %>%
@@ -24,6 +24,19 @@ group_by(Project, Panel) %>%
 summarize(count = n())
 
 ############### other outputs that are by batch (sequencing run) ################
+  
+## correct column order in reads matrix
+
+hpv_types = hpv_types%>% 
+select(-bc1_id, -qualified_aligned_reads, -mq, -min_len, -max_len) %>%
+gather("HPV_Type", "read_counts", starts_with("HPV")) %>%
+left_join(parameters_df %>% select(HPV_Type, display_order)) %>% # <- merge with parameters file to get display order
+mutate(HPV_Type = factor(HPV_Type, levels=unique(HPV_Type[order(display_order)]), ordered=TRUE)) %>%
+select(-display_order) %>%
+group_by(barcode) %>%
+spread(HPV_Type, read_counts) # <- tranform from long form to actual matrix  
+
+  
 
 write_csv(read_metrics, paste0(final_pn_matrix$Assay_Batch_Code[1], "_read_metrics.csv")) 
 
