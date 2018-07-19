@@ -53,7 +53,8 @@ TypeSeqHPV::write_all_csv_files(final_grouped_samples_only_matrix=grouped_sample
                      hpv_types = hpv_types_df, 
                      control_matrix = split_deliverables$control_matrix, 
                      failed_samples_matrix=split_deliverables$failed_samples_matrix, 
-                     full_lineage_table_with_manifest=lineage_df)
+                     full_lineage_table_with_manifest=lineage_df,
+                     parameters_df = parameters_df)
 
 #+  display lineage_df, include=FALSE, eval=FALSE, echo=FALSE
 lineage_df %>% display()
