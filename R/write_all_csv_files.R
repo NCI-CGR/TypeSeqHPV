@@ -11,7 +11,7 @@
 write_all_csv_files <- function(final_grouped_samples_only_matrix, read_metrics, final_pn_matrix, hpv_types, control_matrix, failed_samples_matrix, full_lineage_table_with_manifest, parameters_df){
   
 ################ per project code pn matrices with group/mask information ################
-grouped_samples_only_matrix %>%
+final_grouped_samples_only_matrix %>%
 group_by(Project) %>%
 do({
 temp = as_tibble(.)
