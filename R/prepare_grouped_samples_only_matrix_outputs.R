@@ -54,7 +54,16 @@ finalGroupedSamplesOnlyMatrix = bind_rows(maskedSamplesOnlyMatrix,
                                           groupedColumnsSamplesOnlyMatrix) %>%
 merge(num_types_pos_df) %>%
 spread(hpvType, hpvStatus) %>%
-select(-Group_Name, -reportingStatus)
+select(-Group_Name, -reportingStatus) %>%
+gather("HPV_Type", "status", starts_with("HPV")) %>%
+left_join(parameters_df %>% select(HPV_Type, display_order)) %>% # <- merge with parameters file to get display order
+mutate(HPV_Type = factor(HPV_Type, levels=unique(HPV_Type[order(display_order)]), ordered=TRUE)) %>%
+select(-display_order) %>%
+group_by(barcode) %>%
+spread(HPV_Type, read_counts) # <- tranform from long form to actual matrix  
+ 
+  
+  
   
 return(finalGroupedSamplesOnlyMatrix)
 }
