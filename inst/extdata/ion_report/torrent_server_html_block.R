@@ -1,5 +1,5 @@
 #' ---
-#' title: TypeSeqer HPV Typing Report
+#' title: TypeSeq HPV QC Report
 #' author: " "
 #' date: "`r format(Sys.time(), '%d %B, %Y')`"
 #' output:
