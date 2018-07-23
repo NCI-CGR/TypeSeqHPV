@@ -1,4 +1,4 @@
-FROM cgrlab/typeseqer:0.5.02
+FROM cgrlab/typeseqhepv:base_2018062901
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
 #clone repo to get other docs
