@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # TypeSeq HPV Plugin
-VERSION="1.18.07.2401"
+VERSION="1.18.07.2402"
 #autorundisable
 echo Pipeline version $VERSION
 
@@ -29,7 +29,7 @@ rm */root/*/*/*filtered.json | true
 rm */root/*/*/*random.json | true
 rm */root/select_first_file_in_array/*.bam | true
 
-cp */*/ion_typeseqer_report/hpv_typing_html.html ./TypeSeqer_hpv_plugin_block.html
+cp */*/ion_typeseqer_report/torrent_server_html_block.html ./TypeSeqer_hpv_plugin_block.html
 
 cp */*/ion_typeseqer_report/Ion_Torrent_report.pdf ./TypeSeqer_QC_report.pdf
 
