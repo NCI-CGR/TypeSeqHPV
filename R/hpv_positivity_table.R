@@ -22,6 +22,7 @@ distinct() %>%
 mutate(hpv_pos_perc = scales::percent(hpv_pos_rate)) %>%
 select(-hpv_pos_rate) %>%
 left_join(controls_df) %>%
+arrange(Assay_Plate_Code) %>%
 write_csv("hpv_positivity_table.csv")
 
 pandoc.table(samples_and_controls_df, style = "multiline", caption = "HPV Positivity", use.hyphening=TRUE, split.cells=30)
