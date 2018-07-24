@@ -29,9 +29,9 @@ rm */root/*/*/*filtered.json | true
 rm */root/*/*/*random.json | true
 rm */root/select_first_file_in_array/*.bam | true
 
-cp */*/ion_typeseqer_report/torrent_server_html_block.html ./TypeSeqer_hpv_plugin_block.html
+cp */*/ion_typeseqer_report/torrent_server_html_block.html ./TypeSeqHPV_plugin_block.html
 
-cp */*/ion_typeseqer_report/Ion_Torrent_report.pdf ./TypeSeqer_QC_report.pdf
+cp */*/ion_typeseqer_report/Ion_Torrent_report.pdf ./TypeSeqHPV_QC_report.pdf
 
-zip -j TypeSeqer_Report_Files.zip */*/ion_typeseqer_report/*csv */*/ion_typeseqer_report/*qc_report.pdf
+zip -j TypeSeqHPV_Report_Files.zip */*/ion_typeseqer_report/*csv */*/ion_typeseqer_report/*qc_report.pdf
 
