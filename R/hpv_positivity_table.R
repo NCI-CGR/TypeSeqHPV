@@ -25,7 +25,7 @@ left_join(controls_df) %>%
 arrange(Assay_Plate_Code) %>%
 write_csv("hpv_positivity_table.csv")
 
-pandoc.table(samples_and_controls_df, style = "simple", caption = "HPV Positivity", use.hyphening=TRUE)
+pandoc.table(samples_and_controls_df, style = "grid", caption = "HPV Positivity", use.hyphening=TRUE)
   
 return(samples_and_controls_df)
 
