@@ -394,15 +394,27 @@
             "sbg:revision": 62,
             "sbg:modifiedOn": 1532375291,
             "sbg:revisionNotes": null
+        },
+        {
+            "sbg:modifiedBy": "dave",
+            "sbg:revision": 63,
+            "sbg:modifiedOn": 1532394378,
+            "sbg:revisionNotes": "2018072301 docker tag for report app"
+        },
+        {
+            "sbg:modifiedBy": "dave",
+            "sbg:revision": 64,
+            "sbg:modifiedOn": 1532394468,
+            "sbg:revisionNotes": null
         }
     ],
     "sbg:canvas_y": 83,
     "sbg:publisher": "sbg",
-    "sbg:image_url": "https://cgc.sbgenomics.com/ns/brood/images/dave/cgr-apps/ion-hpv-typeseqer/62.png",
-    "sbg:revision": 62,
+    "sbg:image_url": "https://cgc.sbgenomics.com/ns/brood/images/dave/cgr-apps/ion-hpv-typeseqer/64.png",
+    "sbg:revision": 64,
     "sbg:modifiedBy": "dave",
     "cwlVersion": "sbg:draft-2",
-    "id": "https://cgc-api.sbgenomics.com/v2/apps/dave/cgr-apps/ion-hpv-typeseqer/62/raw/",
+    "id": "https://cgc-api.sbgenomics.com/v2/apps/dave/cgr-apps/ion-hpv-typeseqer/64/raw/",
     "label": "hpv typing ion workflow",
     "sbg:toolAuthor": "cgrlab",
     "$namespaces": {
@@ -411,7 +423,7 @@
     "sbg:contributors": [
         "dave"
     ],
-    "sbg:modifiedOn": 1532375291,
+    "sbg:modifiedOn": 1532394468,
     "steps": [
         {
             "id": "#select_first_file_in_array",
@@ -467,7 +479,7 @@
                 "sbg:contributors": [
                     "dave"
                 ],
-                "sbg:image_url": null,
+                "sbg:id": "dave/cgrhpv/select-first-file-in-array/2",
                 "sbg:revision": 2,
                 "sbg:job": {
                     "allocatedResources": {
@@ -520,7 +532,7 @@
                     }
                 ],
                 "class": "CommandLineTool",
-                "sbg:id": "dave/cgrhpv/select-first-file-in-array/2",
+                "sbg:image_url": null,
                 "sbg:validationErrors": [],
                 "inputs": [
                     {
@@ -673,8 +685,7 @@
                 ],
                 "sbg:modifiedBy": "dave",
                 "sbg:publisher": "sbg",
-                "sbg:projectName": "cgrHPV",
-                "sbg:image_url": null,
+                "sbg:id": "dave/cgrhpv/plugin-manifest-parse/9",
                 "sbg:revision": 9,
                 "sbg:job": {
                     "allocatedResources": {
@@ -720,8 +731,9 @@
                     }
                 ],
                 "class": "CommandLineTool",
-                "sbg:id": "dave/cgrhpv/plugin-manifest-parse/9",
                 "y": 447.8442077636719,
+                "sbg:image_url": null,
+                "sbg:validationErrors": [],
                 "inputs": [
                     {
                         "id": "#startplugin_json",
@@ -741,7 +753,7 @@
                 ],
                 "sbg:sbgMaintained": false,
                 "sbg:createdOn": 1500589561,
-                "sbg:validationErrors": [],
+                "sbg:projectName": "cgrHPV",
                 "sbg:cmdPreview": "cp /path/to/startplugin.json ./typing_manifest.csv",
                 "sbg:project": "dave/cgrhpv",
                 "label": "plugin_manifest_parse",
@@ -851,8 +863,7 @@
                 ],
                 "sbg:modifiedBy": "dave",
                 "sbg:publisher": "sbg",
-                "sbg:projectName": "cgrHPV",
-                "sbg:image_url": null,
+                "sbg:id": "dave/cgrhpv/plugin-control-defs-parse/4",
                 "sbg:revision": 4,
                 "sbg:job": {
                     "allocatedResources": {
@@ -899,8 +910,9 @@
                     }
                 ],
                 "class": "CommandLineTool",
-                "sbg:id": "dave/cgrhpv/plugin-control-defs-parse/4",
                 "y": 566.2462158203125,
+                "sbg:image_url": null,
+                "sbg:validationErrors": [],
                 "inputs": [
                     {
                         "id": "#startplugin_json",
@@ -920,7 +932,7 @@
                 ],
                 "sbg:sbgMaintained": false,
                 "sbg:createdOn": 1509812523,
-                "sbg:validationErrors": [],
+                "sbg:projectName": "cgrHPV",
                 "sbg:cmdPreview": "cp /path/to/startplugin.json ./control_defs.csv",
                 "sbg:project": "dave/cgrhpv",
                 "label": "plugin_control-defs-parse",
@@ -1030,8 +1042,7 @@
                 ],
                 "sbg:modifiedBy": "dave",
                 "sbg:publisher": "sbg",
-                "sbg:projectName": "cgrHPV",
-                "sbg:image_url": null,
+                "sbg:id": "dave/cgrhpv/plugin-report-grouping-parse/4",
                 "sbg:revision": 4,
                 "sbg:job": {
                     "allocatedResources": {
@@ -1078,8 +1089,9 @@
                     }
                 ],
                 "class": "CommandLineTool",
-                "sbg:id": "dave/cgrhpv/plugin-report-grouping-parse/4",
                 "y": 318.4773864746094,
+                "sbg:image_url": null,
+                "sbg:validationErrors": [],
                 "inputs": [
                     {
                         "id": "#startplugin_json",
@@ -1099,7 +1111,7 @@
                 ],
                 "sbg:sbgMaintained": false,
                 "sbg:createdOn": 1509820752,
-                "sbg:validationErrors": [],
+                "sbg:projectName": "cgrHPV",
                 "sbg:cmdPreview": "Rscript plugin_report_grouping_parse.R",
                 "sbg:project": "dave/cgrhpv",
                 "label": "plugin_report_grouping_parse",
@@ -1264,6 +1276,26 @@
                 "cwlVersion": "sbg:draft-2",
                 "y": 514.8192749023438,
                 "sbg:modifiedOn": 1505248365,
+                "outputs": [
+                    {
+                        "id": "#merged_json",
+                        "type": [
+                            "null",
+                            "File"
+                        ],
+                        "outputBinding": {
+                            "sbg:inheritMetadataFrom": "#json",
+                            "glob": {
+                                "engine": "#cwl-js-engine",
+                                "class": "Expression",
+                                "script": "\"*merged.json\""
+                            }
+                        }
+                    }
+                ],
+                "class": "CommandLineTool",
+                "sbg:revision": 8,
+                "sbg:image_url": null,
                 "inputs": [
                     {
                         "id": "#prefix_for_output",
@@ -1292,27 +1324,6 @@
                         ]
                     }
                 ],
-                "outputs": [
-                    {
-                        "id": "#merged_json",
-                        "type": [
-                            "null",
-                            "File"
-                        ],
-                        "outputBinding": {
-                            "sbg:inheritMetadataFrom": "#json",
-                            "glob": {
-                                "engine": "#cwl-js-engine",
-                                "class": "Expression",
-                                "script": "\"*merged.json\""
-                            }
-                        }
-                    }
-                ],
-                "class": "CommandLineTool",
-                "sbg:revision": 8,
-                "sbg:image_url": null,
-                "sbg:validationErrors": [],
                 "baseCommand": [
                     "cat",
                     {
@@ -1323,6 +1334,7 @@
                 ],
                 "sbg:sbgMaintained": false,
                 "sbg:createdOn": 1486841449,
+                "sbg:validationErrors": [],
                 "sbg:cmdPreview": "cat *concat.json > HPV_all_vcf_merged.json",
                 "sbg:project": "dave/cgrhpv",
                 "label": "merge read metrics",
@@ -1490,6 +1502,26 @@
                 "cwlVersion": "sbg:draft-2",
                 "y": 628.7393798828125,
                 "sbg:modifiedOn": 1505248365,
+                "outputs": [
+                    {
+                        "id": "#merged_json",
+                        "type": [
+                            "null",
+                            "File"
+                        ],
+                        "outputBinding": {
+                            "sbg:inheritMetadataFrom": "#json",
+                            "glob": {
+                                "engine": "#cwl-js-engine",
+                                "class": "Expression",
+                                "script": "\"*merged.json\""
+                            }
+                        }
+                    }
+                ],
+                "class": "CommandLineTool",
+                "sbg:revision": 8,
+                "sbg:image_url": null,
                 "inputs": [
                     {
                         "id": "#prefix_for_output",
@@ -1518,27 +1550,6 @@
                         ]
                     }
                 ],
-                "outputs": [
-                    {
-                        "id": "#merged_json",
-                        "type": [
-                            "null",
-                            "File"
-                        ],
-                        "outputBinding": {
-                            "sbg:inheritMetadataFrom": "#json",
-                            "glob": {
-                                "engine": "#cwl-js-engine",
-                                "class": "Expression",
-                                "script": "\"*merged.json\""
-                            }
-                        }
-                    }
-                ],
-                "class": "CommandLineTool",
-                "sbg:revision": 8,
-                "sbg:image_url": null,
-                "sbg:validationErrors": [],
                 "baseCommand": [
                     "cat",
                     {
@@ -1549,6 +1560,7 @@
                 ],
                 "sbg:sbgMaintained": false,
                 "sbg:createdOn": 1486841449,
+                "sbg:validationErrors": [],
                 "sbg:cmdPreview": "cat *concat.json > HPV_all_vcf_merged.json",
                 "sbg:project": "dave/cgrhpv",
                 "label": "merge HPV types",
@@ -1716,6 +1728,26 @@
                 "cwlVersion": "sbg:draft-2",
                 "y": 713.4400024414062,
                 "sbg:modifiedOn": 1505248365,
+                "outputs": [
+                    {
+                        "id": "#merged_json",
+                        "type": [
+                            "null",
+                            "File"
+                        ],
+                        "outputBinding": {
+                            "sbg:inheritMetadataFrom": "#json",
+                            "glob": {
+                                "engine": "#cwl-js-engine",
+                                "class": "Expression",
+                                "script": "\"*merged.json\""
+                            }
+                        }
+                    }
+                ],
+                "class": "CommandLineTool",
+                "sbg:revision": 8,
+                "sbg:image_url": null,
                 "inputs": [
                     {
                         "id": "#prefix_for_output",
@@ -1744,27 +1776,6 @@
                         ]
                     }
                 ],
-                "outputs": [
-                    {
-                        "id": "#merged_json",
-                        "type": [
-                            "null",
-                            "File"
-                        ],
-                        "outputBinding": {
-                            "sbg:inheritMetadataFrom": "#json",
-                            "glob": {
-                                "engine": "#cwl-js-engine",
-                                "class": "Expression",
-                                "script": "\"*merged.json\""
-                            }
-                        }
-                    }
-                ],
-                "class": "CommandLineTool",
-                "sbg:revision": 8,
-                "sbg:image_url": null,
-                "sbg:validationErrors": [],
                 "baseCommand": [
                     "cat",
                     {
@@ -1775,6 +1786,7 @@
                 ],
                 "sbg:sbgMaintained": false,
                 "sbg:createdOn": 1486841449,
+                "sbg:validationErrors": [],
                 "sbg:cmdPreview": "cat *concat.json > HPV_all_vcf_merged.json",
                 "sbg:project": "dave/cgrhpv",
                 "label": "merge lineage",
@@ -1849,7 +1861,18 @@
                         "id": "#cwl-js-engine"
                     }
                 ],
-                "sbg:toolAuthor": "Artem Tarasov",
+                "arguments": [
+                    {
+                        "prefix": "-o",
+                        "position": 3,
+                        "separate": true,
+                        "valueFrom": {
+                            "engine": "#cwl-js-engine",
+                            "class": "Expression",
+                            "script": "{\n  fnameRegex = /^(.*?)(?:\\.([^.]+))?$/;\n  if ($job.inputs.input) \n  {\n  \tfile_path = $job.inputs.input.path;\n  \tbase_name = fnameRegex.exec(file_path)[1];\n  \tfile_name = base_name.replace(/^.*[\\\\\\/]/, '');\n  \n  if ($job.inputs.output == 'sam'){\n  \treturn file_name + '.filtered.sam'\n  }\n  else if ($job.inputs.output == 'bam'){\n  \treturn file_name.concat('.filtered.bam')\n  }\n  else if ($job.inputs.output == 'json'){\n  \treturn file_name.concat('.filtered.json')\n  }\n  else if ($job.inputs.output == 'msgpack'){\n  \treturn file_name.concat('.filtered.msgpack')\n  }\n  else\t{\n  \treturn file_name + '.filtered.sam'\n  }\n  }\n}"
+                        }
+                    }
+                ],
                 "sbg:license": "GNU General Public License v2.0 only",
                 "sbg:revisionNotes": "corrected command line and switch to typeseqer docker",
                 "sbg:revisionsInfo": [
@@ -2189,18 +2212,7 @@
                 },
                 "id": "dave/cgrhpv/sambamba-view-0-5-9/2",
                 "sbg:createdBy": "dave",
-                "arguments": [
-                    {
-                        "prefix": "-o",
-                        "position": 3,
-                        "separate": true,
-                        "valueFrom": {
-                            "engine": "#cwl-js-engine",
-                            "class": "Expression",
-                            "script": "{\n  fnameRegex = /^(.*?)(?:\\.([^.]+))?$/;\n  if ($job.inputs.input) \n  {\n  \tfile_path = $job.inputs.input.path;\n  \tbase_name = fnameRegex.exec(file_path)[1];\n  \tfile_name = base_name.replace(/^.*[\\\\\\/]/, '');\n  \n  if ($job.inputs.output == 'sam'){\n  \treturn file_name + '.filtered.sam'\n  }\n  else if ($job.inputs.output == 'bam'){\n  \treturn file_name.concat('.filtered.bam')\n  }\n  else if ($job.inputs.output == 'json'){\n  \treturn file_name.concat('.filtered.json')\n  }\n  else if ($job.inputs.output == 'msgpack'){\n  \treturn file_name.concat('.filtered.msgpack')\n  }\n  else\t{\n  \treturn file_name + '.filtered.sam'\n  }\n  }\n}"
-                        }
-                    }
-                ],
+                "sbg:toolAuthor": "Artem Tarasov",
                 "cwlVersion": "sbg:draft-2",
                 "sbg:contributors": [
                     "dave"
@@ -2361,7 +2373,28 @@
                         "id": "#cwl-js-engine"
                     }
                 ],
-                "sbg:toolAuthor": "Heng Li/Sanger Institute,  Bob Handsaker/Broad Institute, James Bonfield/Sanger Institute,",
+                "arguments": [
+                    {
+                        "prefix": "-o",
+                        "position": 2,
+                        "separate": true,
+                        "valueFrom": {
+                            "engine": "#cwl-js-engine",
+                            "class": "Expression",
+                            "script": "{\n filepath = $job.inputs.input_bam_or_sam_file.path\n\n filename = filepath.split(\"/\").pop();\n\n file_dot_sep = filename.split(\".\");\n file_ext = file_dot_sep[file_dot_sep.length-1];\n\n new_filename = filename.substr(0,filename.lastIndexOf(\".\"));\n \n extension = '.txt'\n             \n return new_filename + extension; \n}"
+                        }
+                    },
+                    {
+                        "prefix": "",
+                        "position": 1,
+                        "separate": true,
+                        "valueFrom": {
+                            "engine": "#cwl-js-engine",
+                            "class": "Expression",
+                            "script": "{\nreturn '-H'\n}"
+                        }
+                    }
+                ],
                 "sbg:license": "BSD License, MIT License",
                 "sbg:revisionNotes": "cgrlab/typeseqer:latest",
                 "sbg:revisionsInfo": [
@@ -2433,28 +2466,7 @@
                 },
                 "id": "dave/cgrhpv/samtools-extract-bam-header-1-3/3",
                 "sbg:createdBy": "dave",
-                "arguments": [
-                    {
-                        "prefix": "-o",
-                        "position": 2,
-                        "separate": true,
-                        "valueFrom": {
-                            "engine": "#cwl-js-engine",
-                            "class": "Expression",
-                            "script": "{\n filepath = $job.inputs.input_bam_or_sam_file.path\n\n filename = filepath.split(\"/\").pop();\n\n file_dot_sep = filename.split(\".\");\n file_ext = file_dot_sep[file_dot_sep.length-1];\n\n new_filename = filename.substr(0,filename.lastIndexOf(\".\"));\n \n extension = '.txt'\n             \n return new_filename + extension; \n}"
-                        }
-                    },
-                    {
-                        "prefix": "",
-                        "position": 1,
-                        "separate": true,
-                        "valueFrom": {
-                            "engine": "#cwl-js-engine",
-                            "class": "Expression",
-                            "script": "{\nreturn '-H'\n}"
-                        }
-                    }
-                ],
+                "sbg:toolAuthor": "Heng Li/Sanger Institute,  Bob Handsaker/Broad Institute, James Bonfield/Sanger Institute,",
                 "cwlVersion": "sbg:draft-2",
                 "sbg:contributors": [
                     "dave"
@@ -2543,7 +2555,7 @@
         {
             "id": "#ion_typeseqer_report",
             "run": {
-                "sbg:revisionNotes": "",
+                "sbg:revisionNotes": "2018072301 docker tag",
                 "requirements": [
                     {
                         "class": "ExpressionEngineRequirement",
@@ -2579,7 +2591,7 @@
                         "value": 2000
                     },
                     {
-                        "dockerPull": "cgrlab/typeseqhpv:final_2018071301",
+                        "dockerPull": "cgrlab/typeseqhpv:final_2018072301",
                         "class": "DockerRequirement"
                     }
                 ],
@@ -2733,12 +2745,18 @@
                         "sbg:revision": 24,
                         "sbg:modifiedOn": 1532375182,
                         "sbg:revisionNotes": ""
+                    },
+                    {
+                        "sbg:modifiedBy": "dave",
+                        "sbg:revision": 25,
+                        "sbg:modifiedOn": 1532394335,
+                        "sbg:revisionNotes": "2018072301 docker tag"
                     }
                 ],
                 "sbg:cmdPreview": "Rscript -e 'require(rmarkdown); render(\"TypeSeqer_report_pdf.R\"); system(paste0(\"cp TypeSeqer_report_pdf.pdf \", pn_matrix$Assay_Batch_Code[1], \"_qc_report.pdf\")); render(\"hpv_typing_html.R\") ' 1>&2",
                 "sbg:publisher": "sbg",
-                "sbg:id": "dave/cgr-apps/ion-typeseqer-report/24",
-                "sbg:revision": 24,
+                "sbg:id": "dave/cgr-apps/ion-typeseqer-report/25",
+                "sbg:revision": 25,
                 "sbg:job": {
                     "allocatedResources": {
                         "cpu": 1,
@@ -2770,12 +2788,7 @@
                             "path": "path/to/run_manifest.csv"
                         },
                         "create_lineage_table_output": true,
-                        "report_grouping_csv": {
-                            "size": 0,
-                            "secondaryFiles": [],
-                            "class": "File",
-                            "path": "/path/to/report_grouping_csv.ext"
-                        },
+                        "min_lineage_read_count": 5,
                         "scaling_table": {
                             "size": 0,
                             "secondaryFiles": [],
@@ -2795,7 +2808,12 @@
                             "path": "path/to/merged_hpv_types.json"
                         },
                         "is_torrent_server": true,
-                        "min_lineage_read_count": 5,
+                        "report_grouping_csv": {
+                            "size": 0,
+                            "secondaryFiles": [],
+                            "class": "File",
+                            "path": "/path/to/report_grouping_csv.ext"
+                        },
                         "parameter_file": {
                             "size": 0,
                             "secondaryFiles": [],
@@ -2816,18 +2834,18 @@
                         }
                     }
                 },
-                "sbg:latestRevision": 24,
+                "sbg:latestRevision": 25,
                 "$namespaces": {
                     "sbg": "https://sevenbridges.com"
                 },
-                "id": "dave/cgr-apps/ion-typeseqer-report/24",
+                "id": "dave/cgr-apps/ion-typeseqer-report/25",
                 "sbg:createdBy": "dave",
-                "x": 1397.2523584960438,
+                "x": 1403.5022360532096,
                 "cwlVersion": "sbg:draft-2",
                 "sbg:contributors": [
                     "dave"
                 ],
-                "sbg:modifiedOn": 1532375182,
+                "sbg:modifiedOn": 1532394335,
                 "inputs": [
                     {
                         "id": "#startplugin_json",
@@ -3101,7 +3119,7 @@
                 ],
                 "sbg:modifiedBy": "dave",
                 "class": "CommandLineTool",
-                "y": 194.73211945699865,
+                "y": 159.73210509228016,
                 "sbg:image_url": null,
                 "sbg:validationErrors": [],
                 "baseCommand": [
@@ -3126,8 +3144,8 @@
                     "sbg:draft-2"
                 ]
             },
-            "sbg:y": 194.73211945699865,
-            "sbg:x": 1397.2523584960438,
+            "sbg:y": 159.73210509228016,
+            "sbg:x": 1403.5022360532096,
             "inputs": [
                 {
                     "id": "#ion_typeseqer_report.startplugin_json",
@@ -3271,13 +3289,7 @@
                         ]
                     }
                 ],
-                "arguments": [
-                    {
-                        "position": 100,
-                        "separate": true,
-                        "valueFrom": "1>&2"
-                    }
-                ],
+                "x": 852.1156005859375,
                 "sbg:revisionNotes": "correteing args.R issue",
                 "sbg:revisionsInfo": [
                     {
@@ -3427,7 +3439,13 @@
                 },
                 "id": "dave/cgr-apps/ion-torrent-typing-read-processor/5",
                 "sbg:createdBy": "dave",
-                "x": 852.1156005859375,
+                "arguments": [
+                    {
+                        "position": 100,
+                        "separate": true,
+                        "valueFrom": "1>&2"
+                    }
+                ],
                 "cwlVersion": "sbg:draft-2",
                 "sbg:contributors": [
                     "dave"
@@ -3669,9 +3687,9 @@
     ],
     "sbg:createdOn": 1526931208,
     "sbg:toolkit": "hpv_typing",
-    "sbg:latestRevision": 62,
+    "sbg:latestRevision": 64,
     "class": "Workflow",
-    "sbg:id": "dave/cgr-apps/ion-hpv-typeseqer/62",
+    "sbg:id": "dave/cgr-apps/ion-hpv-typeseqer/64",
     "sbg:toolkitVersion": "",
     "sbg:validationErrors": [],
     "inputs": [
