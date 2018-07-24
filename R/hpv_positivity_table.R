@@ -24,7 +24,7 @@ select(-hpv_pos_rate) %>%
 left_join(controls_df) %>%
 write_csv("hpv_positivity_table.csv")
 
-pandoc.table(samples_and_controls_df, style = "multiline", justify = c('right', 'left'), caption = "HPV Positivity", use.hyphening=TRUE, split.cells=30)
+pandoc.table(samples_and_controls_df, style = "multiline", caption = "HPV Positivity", use.hyphening=TRUE, split.cells=30)
   
 return(samples_and_controls_df)
 
