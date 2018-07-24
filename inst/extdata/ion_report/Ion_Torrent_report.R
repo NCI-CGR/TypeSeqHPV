@@ -122,7 +122,7 @@ temp = hpv_status_circle_plot_safe(split_deliverables$samples_only_matrix)
 #' \newpage
 #' ## HPV Positivity by Assay Plate Code
 
-#+  hpv positivity table, results='asis', echo=FALSE
+#+  hpv positivity table, echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", results='asis', eval=TRUE
 samples_and_controls_df = hpv_positivity_table(split_deilverables)
 
 
