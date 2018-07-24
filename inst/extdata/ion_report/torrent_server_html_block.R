@@ -33,9 +33,9 @@ run_type = plugin_json$runplugin$run_type
 
 cat('
 
-<a href="./TypeSeqer_QC_report.pdf" target="_blank">QC Report</a>
+<a href="./TypeSeqHPV_QC_report.pdf" target="_blank">QC Report</a>
   
-[TypeSeqer Report Files](./TypeSeqer_Report_Files.zip)  
+[TypeSeq HPV Report Files](./TypeSeqHPV_Report_Files.zip)  
   
 
   
