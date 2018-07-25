@@ -2,13 +2,13 @@
 
 prepare_lineage_df <- function(args_lineage_reference_path, args_lineage_table_path, samples_only_matrix){
   
-lineage_reference = read_csv(args_lineage_reference_path) %>%
+#args_lineage_reference_path, args_lineage_table_path, samples_only_matrix
+  lineage_reference = read_csv(args_lineage_reference_path) %>%
 mutate(type_lineage = paste0(HPV_Type, "-", Lineage_ID)) %>%
 mutate(reported_type_lineage = paste0(Reported_Type, "-", Lineage_ID)) %>%
 select(HPV_Type, type_lineage, reported_type_lineage, min_lineage_percent, min_lineage_read_count, min_lineage_percent_override_reads) %>%
 distinct() %>%
 glimpse()
-  
 
 lineage_table = stream_in(file(args_lineage_table_path)) %>%
 group_by(bc1_id, bc2_id, HPV_Type) %>%
@@ -36,7 +36,7 @@ mutate(type_lineage = paste0(HPV_Type, "-", Lineage_ID))  %>%
 merge(lineage_reference %>% select(-HPV_Type), by="type_lineage") %>%
 select(-bc1_id, -bc2_id, -lineage_tag, -HPV_Type_count)
 
-samples_only_matrix_for_merge = samples_only_matrix %>%
+samples_only_matrix_for_merge = split_deliverables$samples_only_matrix %>%
 gather(hpvType, hpvStatus, starts_with("HPV")) %>%
 arrange(barcode, hpvType) %>%
 glimpse() %>%
@@ -48,31 +48,32 @@ lineage_table_with_mainfest = samples_only_matrix_for_merge %>%
 left_join(lineage_table, by=c("barcode", "HPV_Type")) %>%
 filter(!(is.na(type_lineage))) %>%
 filter(hpvStatus == "pos") %>%
-filter(lineage_read_count >= min_lineage_read_count | lineage_percent >= min_lineage_percent_override_reads) %>%
+filter(lineage_read_count >= min_lineage_read_count) %>% #| lineage_percent >= min_lineage_percent_override_reads) %>%
 filter(lineage_percent >= min_lineage_percent) %>%
 arrange(barcode, type_lineage) %>%
 glimpse() %>%
 bind_rows(lineage_reference) %>%
-glimpse() 
+glimpse()
 
 lineage_table_with_manifest_spread = lineage_table_with_mainfest %>%
 arrange(HPV_Type) %>%
 select(-HPV_Type, -hpvStatus, -Lineage_ID, -lineage_read_count, 
-       -min_lineage_percent,  -min_lineage_read_count, -min_lineage_percent_override_reads) %>%
+       -min_lineage_percent,  -min_lineage_read_count, -min_lineage_percent_override_reads,
+      -type_lineage) %>%
 group_by(barcode) %>%
 spread(reported_type_lineage, lineage_percent, fill=0) %>%
 filter(!(is.na(Project))) %>%
 glimpse()
-
 # find samples missing from lineage table
-lineage_negative_samples = samples_only_matrix %>% 
+lineage_negative_samples = split_deliverables$samples_only_matrix %>% 
 select(-starts_with("HPV")) %>%
 anti_join(select(lineage_table_with_manifest_spread, barcode)) 
 
 # adding back in blank samples
 full_lineage_table_with_manifest_spread = lineage_table_with_manifest_spread %>%
 bind_rows(lineage_negative_samples) %>%
-select(-Control_type, -type_lineage) %>%
+select(-Control_type) %>%
+replace_na(to="0") %>%
 glimpse()
 
 return(full_lineage_table_with_manifest_spread)
