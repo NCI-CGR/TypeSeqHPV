@@ -24,6 +24,6 @@ panderOptions("table.split.cells", 5)
        
 pandoc.table(as_tibble(sampleSummary), style = "multiline", justify=c("right", "left", "left", "left", "left", "left"),  
              caption = "SAMPLE Summary", 
-             use.hyphening=TRUE)
+             use.hyphening=FALSE)
 
 }
