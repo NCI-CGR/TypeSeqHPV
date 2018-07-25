@@ -19,6 +19,11 @@ arrange(Project_ID) %>%
 mutate(`Perc Passed` = paste0(round(`Number Passed`/`Number Samples Tested` * 100, digits=2), "%"))  %>%
 mutate(`Perc Failed` = paste0(round(`Number Failed`/`Number Samples Tested` * 100, digits=2), "%"))
 
-pandoc.table(as_tibble(sampleSummary), style = "multiline", justify=c("right", "left", "left", "left", "left", "left"),  caption = "SAMPLE Summary", use.hyphening=TRUE, split.cells=30)
+panderOptions("table.split.table", 100)
+panderOptions("table.split.cells", 5)
+       
+pandoc.table(as_tibble(sampleSummary), style = "multiline", justify=c("right", "left", "left", "left", "left", "left"),  
+             caption = "SAMPLE Summary", 
+             use.hyphening=TRUE)
 
 }
