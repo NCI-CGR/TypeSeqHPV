@@ -1,8 +1,580 @@
 {
-  "class": "Workflow",
+  "$namespaces": {
+    "sbg": "https://sevenbridges.com"
+  },
+  "sbg:revisionsInfo": [
+    {
+      "sbg:revisionNotes": "Copy of dave/rd111-typing-v2/ion-hpv-typeseqer/8",
+      "sbg:revision": 0,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1526931208
+    },
+    {
+      "sbg:revisionNotes": "moving to cgr apps folder",
+      "sbg:revision": 1,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1526931776
+    },
+    {
+      "sbg:revisionNotes": "exposed minimum lineage read count",
+      "sbg:revision": 2,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1526932910
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 3,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1526933968
+    },
+    {
+      "sbg:revisionNotes": "hpv_typing_report (Revision 1)  \"added conditional display\"",
+      "sbg:revision": 4,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527090949
+    },
+    {
+      "sbg:revisionNotes": "added temporarily bam json output for testing",
+      "sbg:revision": 5,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527091933
+    },
+    {
+      "sbg:revisionNotes": "hpv_typing_report \"fixing num types pos for grouped output\"",
+      "sbg:revision": 6,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527192246
+    },
+    {
+      "sbg:revisionNotes": "",
+      "sbg:revision": 7,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527192677
+    },
+    {
+      "sbg:revisionNotes": "added lineage code back in",
+      "sbg:revision": 8,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527620139
+    },
+    {
+      "sbg:revisionNotes": "added scatter to bam_json",
+      "sbg:revision": 9,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527621216
+    },
+    {
+      "sbg:revisionNotes": "read processor \"corrected lineage path args.R\"",
+      "sbg:revision": 10,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527625427
+    },
+    {
+      "sbg:revisionNotes": "processor - \"removed and args.R typo\"",
+      "sbg:revision": 11,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527693072
+    },
+    {
+      "sbg:revisionNotes": "added json splitter",
+      "sbg:revision": 12,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527694469
+    },
+    {
+      "sbg:revisionNotes": "removed json splitter",
+      "sbg:revision": 13,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527696804
+    },
+    {
+      "sbg:revisionNotes": "processor - \"correteing args.R issue\"",
+      "sbg:revision": 14,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527697105
+    },
+    {
+      "sbg:revisionNotes": "added lineage table output",
+      "sbg:revision": 15,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527870673
+    },
+    {
+      "sbg:revisionNotes": "report app - \"added lineage refernce table input\"",
+      "sbg:revision": 16,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527871225
+    },
+    {
+      "sbg:revisionNotes": "",
+      "sbg:revision": 17,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527873571
+    },
+    {
+      "sbg:revisionNotes": "fixing dag",
+      "sbg:revision": 18,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527875212
+    },
+    {
+      "sbg:revisionNotes": "",
+      "sbg:revision": 19,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527875232
+    },
+    {
+      "sbg:revisionNotes": "",
+      "sbg:revision": 20,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527875261
+    },
+    {
+      "sbg:revisionNotes": "",
+      "sbg:revision": 21,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527875271
+    },
+    {
+      "sbg:revisionNotes": "exposed pass through",
+      "sbg:revision": 22,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527876630
+    },
+    {
+      "sbg:revisionNotes": "",
+      "sbg:revision": 23,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527876947
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 24,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527877327
+    },
+    {
+      "sbg:revisionNotes": "exposed params",
+      "sbg:revision": 25,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527877694
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 26,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1527877735
+    },
+    {
+      "sbg:revisionNotes": "\"added safe lineage plot funciton\"",
+      "sbg:revision": 27,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528136626
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 28,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528136847
+    },
+    {
+      "sbg:revisionNotes": "\"removed last line of rscript syntax error\"",
+      "sbg:revision": 29,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528139561
+    },
+    {
+      "sbg:revisionNotes": "cgc fix",
+      "sbg:revision": 30,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528139626
+    },
+    {
+      "sbg:revisionNotes": "exposed is_torrent_server",
+      "sbg:revision": 31,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528142036
+    },
+    {
+      "sbg:revisionNotes": "exposed is_torrent_server",
+      "sbg:revision": 32,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528142443
+    },
+    {
+      "sbg:revisionNotes": "\"added is_tn\"",
+      "sbg:revision": 33,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528168503
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 34,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528168600
+    },
+    {
+      "sbg:revisionNotes": "dag stuff",
+      "sbg:revision": 35,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528301212
+    },
+    {
+      "sbg:revisionNotes": "docs",
+      "sbg:revision": 36,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528914156
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 37,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1528914196
+    },
+    {
+      "sbg:revisionNotes": "fixed get args in report",
+      "sbg:revision": 38,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529007013
+    },
+    {
+      "sbg:revisionNotes": "fixed get args",
+      "sbg:revision": 39,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529007096
+    },
+    {
+      "sbg:revisionNotes": "corrected args.R",
+      "sbg:revision": 40,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529009499
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 41,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529009758
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 42,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529010040
+    },
+    {
+      "sbg:revisionNotes": "\"better lineage matrix and plots\"",
+      "sbg:revision": 43,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529264599
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 44,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1529264691
+    },
+    {
+      "sbg:revisionNotes": "\"switched to TypeSeqer package\"",
+      "sbg:revision": 45,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530021378
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 46,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530021871
+    },
+    {
+      "sbg:revisionNotes": "corrected final_pn_matrix cp cmd",
+      "sbg:revision": 47,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530026561
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 48,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530026618
+    },
+    {
+      "sbg:revisionNotes": "put cp back in for ts",
+      "sbg:revision": 49,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530037446
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 50,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530037482
+    },
+    {
+      "sbg:revisionNotes": "removed links from tn html block",
+      "sbg:revision": 51,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530046778
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 52,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530046927
+    },
+    {
+      "sbg:revisionNotes": "corrected html page for thumbnail",
+      "sbg:revision": 53,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530099923
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 54,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1530101389
+    },
+    {
+      "sbg:revisionNotes": "hpv_typing_report (Revision 19)  \"updated R package name\"",
+      "sbg:revision": 55,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1531490670
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 56,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1531490811
+    },
+    {
+      "sbg:revisionNotes": "fixing TypeSeqHPV R package name",
+      "sbg:revision": 57,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1531494365
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 58,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1531494417
+    },
+    {
+      "sbg:revisionNotes": "final_2018071301",
+      "sbg:revision": 59,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1531515803
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 60,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1531515884
+    },
+    {
+      "sbg:revisionNotes": "html block now in TypeSeq pakcage",
+      "sbg:revision": 61,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532375241
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 62,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532375291
+    },
+    {
+      "sbg:revisionNotes": "2018072301 docker tag for report app",
+      "sbg:revision": 63,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532394378
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 64,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532394468
+    },
+    {
+      "sbg:revisionNotes": "\"added a require TypeSeqHPV\"",
+      "sbg:revision": 65,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532532188
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 66,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532532232
+    },
+    {
+      "sbg:revisionNotes": "\"added another require TypeSeqHPV\"",
+      "sbg:revision": 67,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532541846
+    },
+    {
+      "sbg:revisionNotes": null,
+      "sbg:revision": 68,
+      "sbg:modifiedBy": "dave",
+      "sbg:modifiedOn": 1532541890
+    }
+  ],
+  "inputs": [
+    {
+      "id": "#parameter_file",
+      "sbg:x": 154.1618194580078,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:y": 851.0724487304688,
+      "label": "parameter_file"
+    },
+    {
+      "id": "#lineage_reference_table",
+      "sbg:x": 53.055274963378906,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:y": 982.7135620117188,
+      "label": "lineage_reference_table"
+    },
+    {
+      "id": "#input",
+      "sbg:x": 63.477474212646484,
+      "label": "bam",
+      "sbg:fileTypes": "BAM, SAM",
+      "sbg:y": -22.762008666992188,
+      "sbg:includeInPorts": true,
+      "secondaryFiles": [
+        ".bai"
+      ],
+      "type": [
+        {
+          "items": "File",
+          "type": "array"
+        }
+      ]
+    },
+    {
+      "id": "#run_manifest",
+      "sbg:x": -38.45930480957031,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:y": 174.097900390625,
+      "label": "run_manifest"
+    },
+    {
+      "id": "#barcode_list",
+      "sbg:x": 232.76622009277344,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:y": 1024.540283203125,
+      "label": "barcode_list"
+    },
+    {
+      "id": "#control_definitions",
+      "sbg:x": -81.65652465820312,
+      "sbg:y": 303.99859619140625,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:includeInPorts": true,
+      "label": "control_definitions"
+    },
+    {
+      "id": "#report_grouping",
+      "sbg:x": -26.0455265045166,
+      "sbg:y": 63.10072326660156,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:includeInPorts": true,
+      "label": "report_grouping"
+    },
+    {
+      "id": "#scaling_table",
+      "sbg:x": 367.56280517578125,
+      "sbg:y": 1086.0753173828125,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:includeInPorts": true,
+      "sbg:fileTypes": "CSV",
+      "label": "#scaling_table"
+    },
+    {
+      "id": "#pos_neg_filtering_criteria_path",
+      "sbg:x": 10.055275917053223,
+      "sbg:y": 751.422119140625,
+      "type": [
+        "null",
+        "File"
+      ],
+      "sbg:includeInPorts": true,
+      "label": "#pos_neg_filtering_criteria_path"
+    },
+    {
+      "id": "#manifest_json_parse_passthrough",
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    {
+      "id": "#control_def_json_parse_passthrough",
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    {
+      "id": "#report_grouping_json_parse_passthrough",
+      "type": [
+        "null",
+        "boolean"
+      ]
+    },
+    {
+      "sbg:category": "Execution",
+      "id": "#mem_mb",
+      "sbg:toolDefaultValue": "1024",
+      "description": "Memory in MB.",
+      "sbg:suggestedValue": 8000,
+      "label": "Memory in MB",
+      "sbg:stageInput": null,
+      "type": [
+        "null",
+        "int"
+      ]
+    },
+    {
+      "id": "#is_torrent_server",
+      "type": [
+        "null",
+        "boolean"
+      ]
+    }
+  ],
   "steps": [
     {
       "id": "#select_first_file_in_array",
+      "sbg:x": 532.7239379882812,
+      "inputs": [
+        {
+          "id": "#select_first_file_in_array.files",
+          "source": [
+            "#input"
+          ]
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -134,24 +706,29 @@
         "sbg:modifiedOn": 1492712213,
         "label": "select first file in array"
       },
-      "inputs": [
-        {
-          "id": "#select_first_file_in_array.files",
-          "source": [
-            "#input"
-          ]
-        }
-      ],
       "outputs": [
         {
           "id": "#select_first_file_in_array.first_file"
         }
       ],
-      "sbg:x": 532.7239379882812,
       "sbg:y": 20.915002822875977
     },
     {
       "id": "#plugin_manifest_parse",
+      "sbg:x": 240.45729064941406,
+      "inputs": [
+        {
+          "id": "#plugin_manifest_parse.startplugin_json",
+          "source": "#run_manifest"
+        },
+        {
+          "default": false,
+          "id": "#plugin_manifest_parse.manifest_json_parse_passthrough",
+          "source": [
+            "#manifest_json_parse_passthrough"
+          ]
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -337,29 +914,29 @@
         "sbg:modifiedOn": 1509814378,
         "label": "plugin_manifest_parse"
       },
-      "inputs": [
-        {
-          "id": "#plugin_manifest_parse.startplugin_json",
-          "source": "#run_manifest"
-        },
-        {
-          "id": "#plugin_manifest_parse.manifest_json_parse_passthrough",
-          "default": false,
-          "source": [
-            "#manifest_json_parse_passthrough"
-          ]
-        }
-      ],
       "outputs": [
         {
           "id": "#plugin_manifest_parse.manifest_csv"
         }
       ],
-      "sbg:x": 240.45729064941406,
       "sbg:y": 447.8442077636719
     },
     {
       "id": "#plugin_control_defs_parse",
+      "sbg:x": 205.0703582763672,
+      "inputs": [
+        {
+          "id": "#plugin_control_defs_parse.startplugin_json",
+          "source": "#control_definitions"
+        },
+        {
+          "default": false,
+          "id": "#plugin_control_defs_parse.control_def_json_parse_passthrough",
+          "source": [
+            "#control_def_json_parse_passthrough"
+          ]
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -516,29 +1093,29 @@
         "sbg:modifiedOn": 1509815990,
         "label": "plugin_control-defs-parse"
       },
-      "inputs": [
-        {
-          "id": "#plugin_control_defs_parse.startplugin_json",
-          "source": "#control_definitions"
-        },
-        {
-          "id": "#plugin_control_defs_parse.control_def_json_parse_passthrough",
-          "default": false,
-          "source": [
-            "#control_def_json_parse_passthrough"
-          ]
-        }
-      ],
       "outputs": [
         {
           "id": "#plugin_control_defs_parse.control_defs"
         }
       ],
-      "sbg:x": 205.0703582763672,
       "sbg:y": 566.2462158203125
     },
     {
       "id": "#plugin_report_grouping_parse",
+      "sbg:x": 249.80401611328125,
+      "inputs": [
+        {
+          "id": "#plugin_report_grouping_parse.startplugin_json",
+          "source": "#report_grouping"
+        },
+        {
+          "default": false,
+          "id": "#plugin_report_grouping_parse.report_grouping_json_parse_passthrough",
+          "source": [
+            "#report_grouping_json_parse_passthrough"
+          ]
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -695,29 +1272,32 @@
         "sbg:modifiedOn": 1509823186,
         "label": "plugin_report_grouping_parse"
       },
-      "inputs": [
-        {
-          "id": "#plugin_report_grouping_parse.startplugin_json",
-          "source": "#report_grouping"
-        },
-        {
-          "id": "#plugin_report_grouping_parse.report_grouping_json_parse_passthrough",
-          "default": false,
-          "source": [
-            "#report_grouping_json_parse_passthrough"
-          ]
-        }
-      ],
       "outputs": [
         {
           "id": "#plugin_report_grouping_parse.report_grouping"
         }
       ],
-      "sbg:x": 249.80401611328125,
       "sbg:y": 318.4773864746094
     },
     {
       "id": "#merge_read_metrics",
+      "sbg:x": 984.531005859375,
+      "inputs": [
+        {
+          "default": "read_metrics",
+          "id": "#merge_read_metrics.prefix_for_output"
+        },
+        {
+          "id": "#merge_read_metrics.json",
+          "source": [
+            "#ion_torrent_typing_read_processor_1.read_metrics"
+          ]
+        },
+        {
+          "default": "read_metrics.json",
+          "id": "#merge_read_metrics.input_suffix_and_extension"
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -918,32 +1498,32 @@
         "sbg:modifiedOn": 1505248365,
         "label": "merge read metrics"
       },
-      "inputs": [
-        {
-          "id": "#merge_read_metrics.prefix_for_output",
-          "default": "read_metrics"
-        },
-        {
-          "id": "#merge_read_metrics.json",
-          "source": [
-            "#ion_torrent_typing_read_processor_1.read_metrics"
-          ]
-        },
-        {
-          "id": "#merge_read_metrics.input_suffix_and_extension",
-          "default": "read_metrics.json"
-        }
-      ],
       "outputs": [
         {
           "id": "#merge_read_metrics.merged_json"
         }
       ],
-      "sbg:x": 984.531005859375,
       "sbg:y": 514.8192749023438
     },
     {
       "id": "#merge_HPV_types",
+      "sbg:x": 1048.531005859375,
+      "inputs": [
+        {
+          "default": "bc2_demultiplex",
+          "id": "#merge_HPV_types.prefix_for_output"
+        },
+        {
+          "id": "#merge_HPV_types.json",
+          "source": [
+            "#ion_torrent_typing_read_processor_1.hpv_types"
+          ]
+        },
+        {
+          "default": "bc2_demultiplex.json",
+          "id": "#merge_HPV_types.input_suffix_and_extension"
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -1144,32 +1724,32 @@
         "sbg:modifiedOn": 1505248365,
         "label": "merge HPV types"
       },
-      "inputs": [
-        {
-          "id": "#merge_HPV_types.prefix_for_output",
-          "default": "bc2_demultiplex"
-        },
-        {
-          "id": "#merge_HPV_types.json",
-          "source": [
-            "#ion_torrent_typing_read_processor_1.hpv_types"
-          ]
-        },
-        {
-          "id": "#merge_HPV_types.input_suffix_and_extension",
-          "default": "bc2_demultiplex.json"
-        }
-      ],
       "outputs": [
         {
           "id": "#merge_HPV_types.merged_json"
         }
       ],
-      "sbg:x": 1048.531005859375,
       "sbg:y": 628.7393798828125
     },
     {
       "id": "#merge_lineage",
+      "sbg:x": 1131.457763671875,
+      "inputs": [
+        {
+          "default": "lineage",
+          "id": "#merge_lineage.prefix_for_output"
+        },
+        {
+          "id": "#merge_lineage.json",
+          "source": [
+            "#ion_torrent_typing_read_processor_1.hpv_lineage"
+          ]
+        },
+        {
+          "default": "hpv_lineage.json",
+          "id": "#merge_lineage.input_suffix_and_extension"
+        }
+      ],
       "run": {
         "sbg:revisionsInfo": [
           {
@@ -1370,32 +1950,72 @@
         "sbg:modifiedOn": 1505248365,
         "label": "merge lineage"
       },
-      "inputs": [
-        {
-          "id": "#merge_lineage.prefix_for_output",
-          "default": "lineage"
-        },
-        {
-          "id": "#merge_lineage.json",
-          "source": [
-            "#ion_torrent_typing_read_processor_1.hpv_lineage"
-          ]
-        },
-        {
-          "id": "#merge_lineage.input_suffix_and_extension",
-          "default": "hpv_lineage.json"
-        }
-      ],
       "outputs": [
         {
           "id": "#merge_lineage.merged_json"
         }
       ],
-      "sbg:x": 1131.457763671875,
       "sbg:y": 713.4400024414062
     },
     {
       "id": "#Sambamba_View",
+      "sbg:x": 682.8693237304688,
+      "inputs": [
+        {
+          "id": "#Sambamba_View.with_header"
+        },
+        {
+          "id": "#Sambamba_View.valid"
+        },
+        {
+          "id": "#Sambamba_View.subsampling_seed"
+        },
+        {
+          "id": "#Sambamba_View.subsample"
+        },
+        {
+          "id": "#Sambamba_View.sam_input"
+        },
+        {
+          "id": "#Sambamba_View.reserved_threads"
+        },
+        {
+          "id": "#Sambamba_View.regions"
+        },
+        {
+          "id": "#Sambamba_View.ref_filename"
+        },
+        {
+          "default": "json",
+          "id": "#Sambamba_View.output"
+        },
+        {
+          "id": "#Sambamba_View.nthreads"
+        },
+        {
+          "id": "#Sambamba_View.mem_mb",
+          "source": [
+            "#mem_mb"
+          ]
+        },
+        {
+          "id": "#Sambamba_View.input",
+          "source": "#input"
+        },
+        {
+          "id": "#Sambamba_View.filter"
+        },
+        {
+          "id": "#Sambamba_View.cram_input"
+        },
+        {
+          "id": "#Sambamba_View.count"
+        },
+        {
+          "id": "#Sambamba_View.compression_level"
+        }
+      ],
+      "scatter": "#Sambamba_View.input",
       "run": {
         "sbg:license": "GNU General Public License v2.0 only",
         "$namespaces": {
@@ -1856,72 +2476,22 @@
         "sbg:modifiedOn": 1520743858,
         "label": "Sambamba View"
       },
-      "inputs": [
-        {
-          "id": "#Sambamba_View.with_header"
-        },
-        {
-          "id": "#Sambamba_View.valid"
-        },
-        {
-          "id": "#Sambamba_View.subsampling_seed"
-        },
-        {
-          "id": "#Sambamba_View.subsample"
-        },
-        {
-          "id": "#Sambamba_View.sam_input"
-        },
-        {
-          "id": "#Sambamba_View.reserved_threads"
-        },
-        {
-          "id": "#Sambamba_View.regions"
-        },
-        {
-          "id": "#Sambamba_View.ref_filename"
-        },
-        {
-          "id": "#Sambamba_View.output",
-          "default": "json"
-        },
-        {
-          "id": "#Sambamba_View.nthreads"
-        },
-        {
-          "id": "#Sambamba_View.mem_mb",
-          "source": [
-            "#mem_mb"
-          ]
-        },
-        {
-          "id": "#Sambamba_View.input",
-          "source": "#input"
-        },
-        {
-          "id": "#Sambamba_View.filter"
-        },
-        {
-          "id": "#Sambamba_View.cram_input"
-        },
-        {
-          "id": "#Sambamba_View.count"
-        },
-        {
-          "id": "#Sambamba_View.compression_level"
-        }
-      ],
       "outputs": [
         {
           "id": "#Sambamba_View.filtered"
         }
       ],
-      "sbg:x": 682.8693237304688,
-      "sbg:y": 790.9749145507812,
-      "scatter": "#Sambamba_View.input"
+      "sbg:y": 790.9749145507812
     },
     {
       "id": "#SAMtools_extract_SAM_BAM_header",
+      "sbg:x": 706.9485473632812,
+      "inputs": [
+        {
+          "id": "#SAMtools_extract_SAM_BAM_header.input_bam_or_sam_file",
+          "source": "#select_first_file_in_array.first_file"
+        }
+      ],
       "run": {
         "sbg:license": "BSD License, MIT License",
         "$namespaces": {
@@ -2114,22 +2684,72 @@
         "sbg:modifiedOn": 1520717721,
         "label": "SAMtools extract SAM/BAM header"
       },
-      "inputs": [
-        {
-          "id": "#SAMtools_extract_SAM_BAM_header.input_bam_or_sam_file",
-          "source": "#select_first_file_in_array.first_file"
-        }
-      ],
       "outputs": [
         {
           "id": "#SAMtools_extract_SAM_BAM_header.output_header_file"
         }
       ],
-      "sbg:x": 706.9485473632812,
       "sbg:y": 48.294185638427734
     },
     {
       "id": "#ion_typeseqer_report",
+      "sbg:x": 1401.0019930301862,
+      "inputs": [
+        {
+          "id": "#ion_typeseqer_report.startplugin_json",
+          "source": "#run_manifest"
+        },
+        {
+          "id": "#ion_typeseqer_report.scaling_table",
+          "source": "#scaling_table"
+        },
+        {
+          "id": "#ion_typeseqer_report.run_manifest",
+          "source": "#plugin_manifest_parse.manifest_csv"
+        },
+        {
+          "id": "#ion_typeseqer_report.report_grouping_csv",
+          "source": "#plugin_report_grouping_parse.report_grouping"
+        },
+        {
+          "id": "#ion_typeseqer_report.read_metrics_json",
+          "source": "#merge_read_metrics.merged_json"
+        },
+        {
+          "id": "#ion_typeseqer_report.pos_neg_filtering_criteria_path",
+          "source": "#pos_neg_filtering_criteria_path"
+        },
+        {
+          "id": "#ion_typeseqer_report.parameter_file",
+          "source": "#parameter_file"
+        },
+        {
+          "id": "#ion_typeseqer_report.lineage_table_json",
+          "source": "#merge_lineage.merged_json"
+        },
+        {
+          "id": "#ion_typeseqer_report.lineage_reference_table",
+          "source": "#lineage_reference_table"
+        },
+        {
+          "id": "#ion_typeseqer_report.is_torrent_server",
+          "source": [
+            "#is_torrent_server"
+          ]
+        },
+        {
+          "id": "#ion_typeseqer_report.hpv_types_json",
+          "source": "#merge_HPV_types.merged_json"
+        },
+        {
+          "id": "#ion_typeseqer_report.control_defs",
+          "source": "#plugin_control_defs_parse.control_defs"
+        },
+        {
+          "id": "#ion_typeseqer_report.bam_header_file",
+          "source": "#SAMtools_extract_SAM_BAM_header.output_header_file"
+        }
+      ],
       "run": {
         "sbg:modifiedOn": 1532541774,
         "$namespaces": {
@@ -2732,62 +3352,6 @@
         "sbg:project": "dave/cgr-apps",
         "label": "hpv_typing_report"
       },
-      "inputs": [
-        {
-          "id": "#ion_typeseqer_report.startplugin_json",
-          "source": "#run_manifest"
-        },
-        {
-          "id": "#ion_typeseqer_report.scaling_table",
-          "source": "#scaling_table"
-        },
-        {
-          "id": "#ion_typeseqer_report.run_manifest",
-          "source": "#plugin_manifest_parse.manifest_csv"
-        },
-        {
-          "id": "#ion_typeseqer_report.report_grouping_csv",
-          "source": "#plugin_report_grouping_parse.report_grouping"
-        },
-        {
-          "id": "#ion_typeseqer_report.read_metrics_json",
-          "source": "#merge_read_metrics.merged_json"
-        },
-        {
-          "id": "#ion_typeseqer_report.pos_neg_filtering_criteria_path",
-          "source": "#pos_neg_filtering_criteria_path"
-        },
-        {
-          "id": "#ion_typeseqer_report.parameter_file",
-          "source": "#parameter_file"
-        },
-        {
-          "id": "#ion_typeseqer_report.lineage_table_json",
-          "source": "#merge_lineage.merged_json"
-        },
-        {
-          "id": "#ion_typeseqer_report.lineage_reference_table",
-          "source": "#lineage_reference_table"
-        },
-        {
-          "id": "#ion_typeseqer_report.is_torrent_server",
-          "source": [
-            "#is_torrent_server"
-          ]
-        },
-        {
-          "id": "#ion_typeseqer_report.hpv_types_json",
-          "source": "#merge_HPV_types.merged_json"
-        },
-        {
-          "id": "#ion_typeseqer_report.control_defs",
-          "source": "#plugin_control_defs_parse.control_defs"
-        },
-        {
-          "id": "#ion_typeseqer_report.bam_header_file",
-          "source": "#SAMtools_extract_SAM_BAM_header.output_header_file"
-        }
-      ],
       "outputs": [
         {
           "id": "#ion_typeseqer_report.samples_only_matrix"
@@ -2817,11 +3381,33 @@
           "id": "#ion_typeseqer_report.control_matrix"
         }
       ],
-      "sbg:x": 1401.0019930301862,
       "sbg:y": 182.23207569229092
     },
     {
       "id": "#ion_torrent_typing_read_processor_1",
+      "sbg:x": 852.1156005859375,
+      "inputs": [
+        {
+          "id": "#ion_torrent_typing_read_processor_1.parameter_file",
+          "source": "#parameter_file"
+        },
+        {
+          "id": "#ion_torrent_typing_read_processor_1.lineage_reference_table",
+          "source": "#lineage_reference_table"
+        },
+        {
+          "id": "#ion_torrent_typing_read_processor_1.create_lineage_table_output"
+        },
+        {
+          "id": "#ion_torrent_typing_read_processor_1.barcode_list",
+          "source": "#barcode_list"
+        },
+        {
+          "id": "#ion_torrent_typing_read_processor_1.bam_json",
+          "source": "#Sambamba_View.filtered"
+        }
+      ],
+      "scatter": "#ion_torrent_typing_read_processor_1.bam_json",
       "run": {
         "$namespaces": {
           "sbg": "https://sevenbridges.com"
@@ -3098,27 +3684,6 @@
         "sbg:modifiedOn": 1527697061,
         "label": "ion_torrent_typing_read_processor"
       },
-      "inputs": [
-        {
-          "id": "#ion_torrent_typing_read_processor_1.parameter_file",
-          "source": "#parameter_file"
-        },
-        {
-          "id": "#ion_torrent_typing_read_processor_1.lineage_reference_table",
-          "source": "#lineage_reference_table"
-        },
-        {
-          "id": "#ion_torrent_typing_read_processor_1.create_lineage_table_output"
-        },
-        {
-          "id": "#ion_torrent_typing_read_processor_1.barcode_list",
-          "source": "#barcode_list"
-        },
-        {
-          "id": "#ion_torrent_typing_read_processor_1.bam_json",
-          "source": "#Sambamba_View.filtered"
-        }
-      ],
       "outputs": [
         {
           "id": "#ion_torrent_typing_read_processor_1.read_metrics"
@@ -3130,718 +3695,10 @@
           "id": "#ion_torrent_typing_read_processor_1.hpv_lineage"
         }
       ],
-      "sbg:x": 852.1156005859375,
-      "sbg:y": 670.492431640625,
-      "scatter": "#ion_torrent_typing_read_processor_1.bam_json"
+      "sbg:y": 670.492431640625
     }
   ],
-  "requirements": [
-    {
-      "class": "sbg:Metadata"
-    },
-    {
-      "class": "sbg:Metadata"
-    }
-  ],
-  "inputs": [
-    {
-      "id": "#parameter_file",
-      "sbg:x": 154.1618194580078,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:y": 851.0724487304688,
-      "label": "parameter_file"
-    },
-    {
-      "id": "#lineage_reference_table",
-      "sbg:x": 53.055274963378906,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:y": 982.7135620117188,
-      "label": "lineage_reference_table"
-    },
-    {
-      "id": "#input",
-      "sbg:x": 63.477474212646484,
-      "label": "bam",
-      "sbg:fileTypes": "BAM, SAM",
-      "sbg:y": -22.762008666992188,
-      "sbg:includeInPorts": true,
-      "secondaryFiles": [
-        ".bai"
-      ],
-      "type": [
-        {
-          "items": "File",
-          "type": "array"
-        }
-      ]
-    },
-    {
-      "id": "#run_manifest",
-      "sbg:x": -38.45930480957031,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:y": 174.097900390625,
-      "label": "run_manifest"
-    },
-    {
-      "id": "#barcode_list",
-      "sbg:x": 232.76622009277344,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:y": 1024.540283203125,
-      "label": "barcode_list"
-    },
-    {
-      "id": "#control_definitions",
-      "sbg:x": -81.65652465820312,
-      "sbg:y": 303.99859619140625,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:includeInPorts": true,
-      "label": "control_definitions"
-    },
-    {
-      "id": "#report_grouping",
-      "sbg:x": -26.0455265045166,
-      "sbg:y": 63.10072326660156,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:includeInPorts": true,
-      "label": "report_grouping"
-    },
-    {
-      "id": "#scaling_table",
-      "sbg:x": 367.56280517578125,
-      "sbg:y": 1086.0753173828125,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:includeInPorts": true,
-      "sbg:fileTypes": "CSV",
-      "label": "#scaling_table"
-    },
-    {
-      "id": "#pos_neg_filtering_criteria_path",
-      "sbg:x": 10.055275917053223,
-      "sbg:y": 751.422119140625,
-      "type": [
-        "null",
-        "File"
-      ],
-      "sbg:includeInPorts": true,
-      "label": "#pos_neg_filtering_criteria_path"
-    },
-    {
-      "id": "#manifest_json_parse_passthrough",
-      "type": [
-        "null",
-        "boolean"
-      ]
-    },
-    {
-      "id": "#control_def_json_parse_passthrough",
-      "type": [
-        "null",
-        "boolean"
-      ]
-    },
-    {
-      "id": "#report_grouping_json_parse_passthrough",
-      "type": [
-        "null",
-        "boolean"
-      ]
-    },
-    {
-      "sbg:category": "Execution",
-      "id": "#mem_mb",
-      "sbg:toolDefaultValue": "1024",
-      "description": "Memory in MB.",
-      "sbg:suggestedValue": 8000,
-      "label": "Memory in MB",
-      "sbg:stageInput": null,
-      "type": [
-        "null",
-        "int"
-      ]
-    },
-    {
-      "id": "#is_torrent_server",
-      "type": [
-        "null",
-        "boolean"
-      ]
-    }
-  ],
-  "outputs": [
-    {
-      "id": "#read_metrics_csv",
-      "sbg:x": 2000.58447265625,
-      "required": false,
-      "sbg:y": 654.3377075195312,
-      "type": [
-        "null",
-        "File"
-      ],
-      "label": "#read_metrics_csv",
-      "source": [
-        "#ion_typeseqer_report.read_metrics_csv"
-      ]
-    },
-    {
-      "id": "#hpv_read_counts_matrix",
-      "sbg:x": 2031.8892831868293,
-      "required": false,
-      "sbg:y": 1003.5979641319502,
-      "type": [
-        "null",
-        "File"
-      ],
-      "label": "#hpv_read_counts_matrix",
-      "source": [
-        "#ion_typeseqer_report.hpv_read_counts_matrix"
-      ]
-    },
-    {
-      "id": "#pos_neg_matrix",
-      "sbg:x": 2072.39208984375,
-      "required": false,
-      "sbg:y": 776.9196166992188,
-      "type": [
-        "null",
-        "File"
-      ],
-      "label": "#pos_neg_matrix",
-      "source": [
-        "#ion_typeseqer_report.pos_neg_matrix"
-      ]
-    },
-    {
-      "id": "#pdf_report",
-      "sbg:x": 2117.765380859375,
-      "required": false,
-      "sbg:y": 249.97389221191406,
-      "type": [
-        "null",
-        {
-          "items": "File",
-          "type": "array"
-        }
-      ],
-      "label": "#pdf_report",
-      "source": [
-        "#ion_typeseqer_report.pdf_report"
-      ]
-    },
-    {
-      "id": "#samples_only_matrix",
-      "sbg:x": 1896.36181640625,
-      "required": false,
-      "sbg:y": 21.809043884277344,
-      "type": [
-        "null",
-        {
-          "items": "File",
-          "type": "array"
-        }
-      ],
-      "label": "#samples_only_matrix",
-      "source": [
-        "#ion_typeseqer_report.samples_only_matrix"
-      ]
-    },
-    {
-      "id": "#failed_samples_matrix",
-      "sbg:x": 2016.3116455078125,
-      "required": false,
-      "sbg:y": 330.0703125,
-      "type": [
-        "null",
-        "File"
-      ],
-      "label": "#failed_samples_matrix",
-      "source": [
-        "#ion_typeseqer_report.failed_samples_matrix"
-      ]
-    },
-    {
-      "id": "#control_matrix",
-      "sbg:x": 1887.3902587890625,
-      "required": false,
-      "sbg:y": 409.1229553222656,
-      "type": [
-        "null",
-        "File"
-      ],
-      "label": "#control_matrix",
-      "source": [
-        "#ion_typeseqer_report.control_matrix"
-      ]
-    },
-    {
-      "id": "#plot_data",
-      "sbg:x": 2094.200927734375,
-      "type": [
-        "null",
-        {
-          "items": "File",
-          "type": "array"
-        }
-      ],
-      "required": false,
-      "sbg:y": 878.2462158203125,
-      "sbg:includeInPorts": true,
-      "label": "#plot_data",
-      "source": [
-        "#ion_typeseqer_report.plot_data"
-      ]
-    },
-    {
-      "id": "#lineage_table",
-      "sbg:x": 2022.542724609375,
-      "required": false,
-      "sbg:y": 51.64321517944336,
-      "type": [
-        "null",
-        "File"
-      ],
-      "label": "#lineage_table",
-      "source": [
-        "#ion_typeseqer_report.lineage_table"
-      ]
-    }
-  ],
-  "sbg:revisionsInfo": [
-    {
-      "sbg:revisionNotes": "Copy of dave/rd111-typing-v2/ion-hpv-typeseqer/8",
-      "sbg:revision": 0,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1526931208
-    },
-    {
-      "sbg:revisionNotes": "moving to cgr apps folder",
-      "sbg:revision": 1,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1526931776
-    },
-    {
-      "sbg:revisionNotes": "exposed minimum lineage read count",
-      "sbg:revision": 2,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1526932910
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 3,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1526933968
-    },
-    {
-      "sbg:revisionNotes": "hpv_typing_report (Revision 1)  \"added conditional display\"",
-      "sbg:revision": 4,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527090949
-    },
-    {
-      "sbg:revisionNotes": "added temporarily bam json output for testing",
-      "sbg:revision": 5,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527091933
-    },
-    {
-      "sbg:revisionNotes": "hpv_typing_report \"fixing num types pos for grouped output\"",
-      "sbg:revision": 6,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527192246
-    },
-    {
-      "sbg:revisionNotes": "",
-      "sbg:revision": 7,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527192677
-    },
-    {
-      "sbg:revisionNotes": "added lineage code back in",
-      "sbg:revision": 8,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527620139
-    },
-    {
-      "sbg:revisionNotes": "added scatter to bam_json",
-      "sbg:revision": 9,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527621216
-    },
-    {
-      "sbg:revisionNotes": "read processor \"corrected lineage path args.R\"",
-      "sbg:revision": 10,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527625427
-    },
-    {
-      "sbg:revisionNotes": "processor - \"removed and args.R typo\"",
-      "sbg:revision": 11,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527693072
-    },
-    {
-      "sbg:revisionNotes": "added json splitter",
-      "sbg:revision": 12,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527694469
-    },
-    {
-      "sbg:revisionNotes": "removed json splitter",
-      "sbg:revision": 13,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527696804
-    },
-    {
-      "sbg:revisionNotes": "processor - \"correteing args.R issue\"",
-      "sbg:revision": 14,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527697105
-    },
-    {
-      "sbg:revisionNotes": "added lineage table output",
-      "sbg:revision": 15,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527870673
-    },
-    {
-      "sbg:revisionNotes": "report app - \"added lineage refernce table input\"",
-      "sbg:revision": 16,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527871225
-    },
-    {
-      "sbg:revisionNotes": "",
-      "sbg:revision": 17,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527873571
-    },
-    {
-      "sbg:revisionNotes": "fixing dag",
-      "sbg:revision": 18,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527875212
-    },
-    {
-      "sbg:revisionNotes": "",
-      "sbg:revision": 19,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527875232
-    },
-    {
-      "sbg:revisionNotes": "",
-      "sbg:revision": 20,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527875261
-    },
-    {
-      "sbg:revisionNotes": "",
-      "sbg:revision": 21,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527875271
-    },
-    {
-      "sbg:revisionNotes": "exposed pass through",
-      "sbg:revision": 22,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527876630
-    },
-    {
-      "sbg:revisionNotes": "",
-      "sbg:revision": 23,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527876947
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 24,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527877327
-    },
-    {
-      "sbg:revisionNotes": "exposed params",
-      "sbg:revision": 25,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527877694
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 26,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1527877735
-    },
-    {
-      "sbg:revisionNotes": "\"added safe lineage plot funciton\"",
-      "sbg:revision": 27,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528136626
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 28,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528136847
-    },
-    {
-      "sbg:revisionNotes": "\"removed last line of rscript syntax error\"",
-      "sbg:revision": 29,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528139561
-    },
-    {
-      "sbg:revisionNotes": "cgc fix",
-      "sbg:revision": 30,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528139626
-    },
-    {
-      "sbg:revisionNotes": "exposed is_torrent_server",
-      "sbg:revision": 31,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528142036
-    },
-    {
-      "sbg:revisionNotes": "exposed is_torrent_server",
-      "sbg:revision": 32,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528142443
-    },
-    {
-      "sbg:revisionNotes": "\"added is_tn\"",
-      "sbg:revision": 33,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528168503
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 34,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528168600
-    },
-    {
-      "sbg:revisionNotes": "dag stuff",
-      "sbg:revision": 35,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528301212
-    },
-    {
-      "sbg:revisionNotes": "docs",
-      "sbg:revision": 36,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528914156
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 37,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1528914196
-    },
-    {
-      "sbg:revisionNotes": "fixed get args in report",
-      "sbg:revision": 38,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529007013
-    },
-    {
-      "sbg:revisionNotes": "fixed get args",
-      "sbg:revision": 39,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529007096
-    },
-    {
-      "sbg:revisionNotes": "corrected args.R",
-      "sbg:revision": 40,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529009499
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 41,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529009758
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 42,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529010040
-    },
-    {
-      "sbg:revisionNotes": "\"better lineage matrix and plots\"",
-      "sbg:revision": 43,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529264599
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 44,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1529264691
-    },
-    {
-      "sbg:revisionNotes": "\"switched to TypeSeqer package\"",
-      "sbg:revision": 45,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530021378
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 46,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530021871
-    },
-    {
-      "sbg:revisionNotes": "corrected final_pn_matrix cp cmd",
-      "sbg:revision": 47,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530026561
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 48,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530026618
-    },
-    {
-      "sbg:revisionNotes": "put cp back in for ts",
-      "sbg:revision": 49,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530037446
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 50,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530037482
-    },
-    {
-      "sbg:revisionNotes": "removed links from tn html block",
-      "sbg:revision": 51,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530046778
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 52,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530046927
-    },
-    {
-      "sbg:revisionNotes": "corrected html page for thumbnail",
-      "sbg:revision": 53,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530099923
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 54,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1530101389
-    },
-    {
-      "sbg:revisionNotes": "hpv_typing_report (Revision 19)  \"updated R package name\"",
-      "sbg:revision": 55,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1531490670
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 56,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1531490811
-    },
-    {
-      "sbg:revisionNotes": "fixing TypeSeqHPV R package name",
-      "sbg:revision": 57,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1531494365
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 58,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1531494417
-    },
-    {
-      "sbg:revisionNotes": "final_2018071301",
-      "sbg:revision": 59,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1531515803
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 60,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1531515884
-    },
-    {
-      "sbg:revisionNotes": "html block now in TypeSeq pakcage",
-      "sbg:revision": 61,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532375241
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 62,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532375291
-    },
-    {
-      "sbg:revisionNotes": "2018072301 docker tag for report app",
-      "sbg:revision": 63,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532394378
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 64,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532394468
-    },
-    {
-      "sbg:revisionNotes": "\"added a require TypeSeqHPV\"",
-      "sbg:revision": 65,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532532188
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 66,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532532232
-    },
-    {
-      "sbg:revisionNotes": "\"added another require TypeSeqHPV\"",
-      "sbg:revision": 67,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532541846
-    },
-    {
-      "sbg:revisionNotes": null,
-      "sbg:revision": 68,
-      "sbg:modifiedBy": "dave",
-      "sbg:modifiedOn": 1532541890
-    }
-  ],
+  "description": "",
   "sbg:latestRevision": 68,
   "sbg:createdOn": 1526931208,
   "sbg:categories": [
@@ -3857,22 +3714,158 @@
     "dave"
   ],
   "sbg:projectName": "CGR_Apps",
-  "sbg:image_url": null,
+  "sbg:image_url": "https://cgc.sbgenomics.com/ns/brood/images/dave/cgr-apps/ion-hpv-typeseqer/68.png",
+  "cwlVersion": "sbg:draft-2",
   "sbg:revision": 68,
   "sbg:canvas_zoom": 0.7999999999999998,
   "sbg:publisher": "sbg",
+  "outputs": [
+    {
+      "id": "#read_metrics_csv",
+      "sbg:x": 2000.58447265625,
+      "required": false,
+      "sbg:y": 654.3377075195312,
+      "source": [
+        "#ion_typeseqer_report.read_metrics_csv"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "label": "#read_metrics_csv"
+    },
+    {
+      "id": "#hpv_read_counts_matrix",
+      "sbg:x": 2031.8892831868293,
+      "required": false,
+      "sbg:y": 1003.5979641319502,
+      "source": [
+        "#ion_typeseqer_report.hpv_read_counts_matrix"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "label": "#hpv_read_counts_matrix"
+    },
+    {
+      "id": "#pos_neg_matrix",
+      "sbg:x": 2072.39208984375,
+      "required": false,
+      "sbg:y": 776.9196166992188,
+      "source": [
+        "#ion_typeseqer_report.pos_neg_matrix"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "label": "#pos_neg_matrix"
+    },
+    {
+      "id": "#pdf_report",
+      "sbg:x": 2117.765380859375,
+      "required": false,
+      "sbg:y": 249.97389221191406,
+      "source": [
+        "#ion_typeseqer_report.pdf_report"
+      ],
+      "type": [
+        "null",
+        {
+          "items": "File",
+          "type": "array"
+        }
+      ],
+      "label": "#pdf_report"
+    },
+    {
+      "id": "#samples_only_matrix",
+      "sbg:x": 1896.36181640625,
+      "required": false,
+      "sbg:y": 21.809043884277344,
+      "source": [
+        "#ion_typeseqer_report.samples_only_matrix"
+      ],
+      "type": [
+        "null",
+        {
+          "items": "File",
+          "type": "array"
+        }
+      ],
+      "label": "#samples_only_matrix"
+    },
+    {
+      "id": "#failed_samples_matrix",
+      "sbg:x": 2016.3116455078125,
+      "required": false,
+      "sbg:y": 330.0703125,
+      "source": [
+        "#ion_typeseqer_report.failed_samples_matrix"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "label": "#failed_samples_matrix"
+    },
+    {
+      "id": "#control_matrix",
+      "sbg:x": 1887.3902587890625,
+      "required": false,
+      "sbg:y": 409.1229553222656,
+      "source": [
+        "#ion_typeseqer_report.control_matrix"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "label": "#control_matrix"
+    },
+    {
+      "id": "#plot_data",
+      "sbg:x": 2094.200927734375,
+      "type": [
+        "null",
+        {
+          "items": "File",
+          "type": "array"
+        }
+      ],
+      "required": false,
+      "sbg:y": 878.2462158203125,
+      "source": [
+        "#ion_typeseqer_report.plot_data"
+      ],
+      "sbg:includeInPorts": true,
+      "label": "#plot_data"
+    },
+    {
+      "id": "#lineage_table",
+      "sbg:x": 2022.542724609375,
+      "required": false,
+      "sbg:y": 51.64321517944336,
+      "source": [
+        "#ion_typeseqer_report.lineage_table"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "label": "#lineage_table"
+    }
+  ],
   "sbg:id": "dave/cgr-apps/ion-hpv-typeseqer/68",
   "sbg:toolkit": "hpv_typing",
   "sbg:canvas_y": 83,
   "sbg:toolAuthor": "cgrlab",
+  "class": "Workflow",
   "sbg:validationErrors": [],
+  "id": "https://cgc-api.sbgenomics.com/v2/apps/dave/cgr-apps/ion-hpv-typeseqer/68/raw/",
   "sbg:modifiedOn": 1532541890,
   "sbg:toolkitVersion": "",
-  "sbg:modifiedBy": "dave",
-  "sbg:project": "dave/cgr-apps",
-  "id": "dave/cgr-apps/ion-hpv-typeseqer/68",
-  "label": "hpv typing ion workflow",
-  "description": "",
   "hints": [
     {
       "class": "sbg:AWSInstanceType",
@@ -3882,5 +3875,13 @@
       "class": "sbg:maxNumberOfParallelInstances",
       "value": "12"
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "class": "sbg:Metadata"
+    }
+  ],
+  "sbg:modifiedBy": "dave",
+  "sbg:project": "dave/cgr-apps",
+  "label": "hpv typing ion workflow"
 }
