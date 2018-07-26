@@ -18,7 +18,7 @@ signalNoiseDf = signalNoiseDf1 %>%
 mutate(plotOrder = ifelse(hpvStatus == "pos", posOrder, negOrder)) %>%
 select(HPV_Type, hpvStatus, HPV_Type_count, plotOrder) %>%
 # select top five lowest count positives and 5 highest negatives () -
-filter(plotOrder <= 5) %>%
+filter(plotOrder <= 10) %>%
 group_by(HPV_Type, hpvStatus) %>%
 # find mean!
 summarize(meanCount = mean(HPV_Type_count)) %>%
