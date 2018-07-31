@@ -21,7 +21,7 @@ dynamic_require_bioc = function(x){
   }
 }
 
-dynamic_require_bioc("graph") 
+dynamic_require_bioc("graph", "GenomicAlignments") 
   
   
   
