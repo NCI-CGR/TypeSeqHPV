@@ -1,6 +1,6 @@
 #'
 
-prepare_grouped_samples_only_matrix_outputs <- function(args_custom_groups_path, samples_only_matrix){
+prepare_grouped_samples_only_matrix_outputs <- function(args_custom_groups_path, samples_only_matrix, parameters_df){
 
 ########### make groupsDf and long form Samples Matrix and merge #################
 groupsDf = read_csv(args_custom_groups_path) %>%
