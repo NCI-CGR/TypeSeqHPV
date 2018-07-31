@@ -27,7 +27,7 @@ mutate(cigar_len = str_length(cigar_seq)) %>%
 filter(cigar_len >= min_len & cigar_len <= max_len) %>%
 
 # Filter 4 - mapq is greater than specific parameters ----
-filter(mapq >= min_mq)
+filter(mapq >= mq)
 
  # filter 5 - barcode is perfect match ----
 
