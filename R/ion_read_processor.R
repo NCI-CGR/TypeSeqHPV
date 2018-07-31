@@ -1,7 +1,7 @@
 #'
 
-ion_read_processor <- function(args_parameter_file$path, args_lineage_reference_path, args_barcode_list,
-                               args_bam_json$name, parameters_df){
+ion_read_processor <- function(args_parameter_file, args_lineage_reference_path, args_barcode_list,
+                               args_bam_json, parameters_df){
 
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
 map_if(is.factor, as.character) %>% 
