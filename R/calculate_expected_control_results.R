@@ -1,12 +1,13 @@
 #
 calculate_expected_control_results <- function(args_control_defs, initial_pn_matrix){
-
+require(tidyverse)
+           
 # 1.  read in control defs
 control_defs = read_csv(args_control_defs) %>%
 map_if(is.factor, as.character) %>%
 as_tibble() %>%
 ungroup() %>%
-gather("type", "status", -Control_Code, -Control_type) %>%
+tidyr::gather("type", "status", -Control_Code, -Control_type) %>%
 arrange(Control_Code)
 
 
