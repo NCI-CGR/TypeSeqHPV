@@ -21,7 +21,7 @@ read_metrics_df = df %>%
 ts_read_metrics(parameters_df, page)
   
 bc2_demultiplex_df = df %>% 
-ts_demultiplex_bc2(parameters_df, barcode_list, page)
+ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table)
 
 stream_out(read_metrics_df, read_metrics_output, verbose = TRUE) 
   
