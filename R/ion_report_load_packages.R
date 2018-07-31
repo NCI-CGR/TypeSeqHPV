@@ -6,6 +6,26 @@
 
 ion_report_load_packages <- function(){
 # load packages
+ 
+dynamic_require_bioc = function(x){
+  for( i in x ){
+    #  require returns TRUE invisibly if it was able to load package
+    if( ! require( i , character.only = TRUE ) ){
+      #  If package was not able to be loaded then re-install
+      source("https://bioconductor.org/biocLite.R")
+      biocLite(i)
+      install.packages( i , dependencies = TRUE )
+      #  Load package after installing
+      require( i , character.only = TRUE )
+    }
+  }
+}
+
+dynamic_require_bioc("graph") 
+  
+  
+  
+  
 dynamic_require = function(x){
   for( i in x ){
     #  require returns TRUE invisibly if it was able to load package
@@ -33,6 +53,7 @@ dynamic_require(c("tidyverse",
                   "txtq",
                   "webshot",
                   "networkD3",
+                  "future",
                   "drake"                  
                   ))
 sessionInfo()
