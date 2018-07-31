@@ -1,6 +1,6 @@
 #+
 
-ts_read_metrics <- function(bam_json_input, parameters_df_input){
+ts_read_metrics <- function(bam_json_input, parameters_df_input, page){
 
 # only used in a jsonlite streaming function
 
