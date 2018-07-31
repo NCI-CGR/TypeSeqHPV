@@ -4,7 +4,7 @@ create_inital_pos_neg_matrix <- function(hpv_types, factoring_table, filtering_c
 
 # read in hpv_types and left join with filtering criteria csv
 pn_matrix = hpv_types %>%
-gather("type_id", "read_counts", starts_with("HPV")) %>%
+dplyr::gather("type_id", "read_counts", starts_with("HPV")) %>%
 left_join(filtering_criteria) %>%
 
 # calculate total reads and individual type percentage
