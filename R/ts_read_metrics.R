@@ -35,10 +35,10 @@ mutate(pass_seq_length = ifelse(
   pass_za == 1, 1, 0), 0), 0)) %>%
   
 # mapq is greater than specific parameters
-mutate(pass_mapq = ifelse(mapq >= min_mq, 1, 0)) %>%
+mutate(pass_mapq = ifelse(mapq >= mq, 1, 0)) %>%
 
 mutate(pass_mapq = ifelse(
-  mapq >= min_mq, ifelse(
+  mapq >= mq, ifelse(
   pass_seq_length == 1, ifelse(
   pass_za == 1, 1, 0), 0), 0)) %>%
 
