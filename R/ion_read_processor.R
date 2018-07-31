@@ -1,6 +1,6 @@
 #'
 
-ion_read_processor <- function((args_parameter_file$path, args_lineage_reference_path, args_barcode_list,
+ion_read_processor <- function(args_parameter_file$path, args_lineage_reference_path, args_barcode_list,
                                args_bam_json$name, parameters_df){
 
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
