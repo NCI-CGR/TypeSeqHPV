@@ -27,7 +27,13 @@ dynamic_require(c("tidyverse",
                   "knitr",
                   "rmarkdown",
                   "fuzzyjoin",
-                  "ggsci"
+                  "ggsci",
+                  "CodeDepends",
+                  "visNetwork",
+                  "txtq",
+                  "webshot",
+                  "networkD3",
+                  "drake"                  
                   ))
 sessionInfo()
   
