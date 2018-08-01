@@ -5,7 +5,7 @@ ion_read_processor <- function(bam_json_path, args_lineage_reference_path, args_
 
 args_bam_json = data_frame(path = bam_json_path, name = bam_json_path) 
   
-args_bam_json
+print(args_bam_json)
   
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
 map_if(is.factor, as.character) %>% 
