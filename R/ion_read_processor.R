@@ -41,6 +41,7 @@ close(read_metrics_output)
 close(bc2_demultiplex_output)
 close(lineage_output)
   
-#return(barcode_list)  
+return(bam_json_path)  
+  
    
 }
