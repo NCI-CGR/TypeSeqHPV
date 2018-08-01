@@ -1,7 +1,7 @@
 #'
 create_full_run_read_metrics_df <- function(read_metrics_path, hpv_type_counts){
   
-read_metrics = stream_in(file(read_metrics_path)) %>%
+read_metrics = stream_in(file("read_metrics_merged.json")) %>%
 group_by(bc1_id, file_name) %>%
 do({
 df = .
