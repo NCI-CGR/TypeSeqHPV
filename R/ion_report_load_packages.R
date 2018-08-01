@@ -55,7 +55,8 @@ dynamic_require(c("tidyverse",
                   "webshot",
                   "networkD3",
                   "future",
-                  "drake"                  
+                  "drake", 
+                  "parallel"                  
                   ))
 sessionInfo()
   
