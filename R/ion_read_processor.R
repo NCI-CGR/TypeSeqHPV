@@ -2,10 +2,6 @@
 
 ion_read_processor <- function(bam_json_path, ...){
 
-args_bam_json = data_frame(path = bam_json_path, name = bam_json_path) 
-  
-print(args_bam_json)
-  
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
 map_if(is.factor, as.character) %>% 
 as_tibble() %>% 
@@ -14,9 +10,9 @@ glimpse()
 barcode_list = read_csv(args_barcode_list)
 page = 1
   
-read_metrics_output = file(paste0(args_bam_json$name,"_read_metrics.json"), open = "wb")
-bc2_demultiplex_output = file(paste0(args_bam_json$name,"_bc2_demultiplex.json"), open = "wb")
-lineage_output = file(paste0(args_bam_json$name,"_hpv_lineage.json"),open = "wb")
+read_metrics_output = file(paste0(bam_json_path,"_read_metrics.json"), open = "wb")
+bc2_demultiplex_output = file(paste0(bam_json_path,"_bc2_demultiplex.json"), open = "wb")
+lineage_output = file(paste0(bam_json_path,"_hpv_lineage.json"),open = "wb")
   
 stream_in(file(args_bam_json$path), handler = function(df){
 
