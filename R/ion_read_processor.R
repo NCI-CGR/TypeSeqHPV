@@ -1,7 +1,7 @@
 #'
 
-ion_read_processor <- function(args_parameter_file, args_lineage_reference_path, args_barcode_list,
-                               bam_json_path, parameters_df){
+ion_read_processor <- function(bam_json_path, args_parameter_file, args_lineage_reference_path, args_barcode_list,
+                               parameters_df){
 
 args_bam_json = data_frame(path = bam_json_path, name = bam_json_path) 
   
