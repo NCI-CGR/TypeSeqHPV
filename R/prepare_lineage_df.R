@@ -2,15 +2,15 @@
 
 prepare_lineage_df <- function(args_lineage_reference_path, args_lineage_table_path, samples_only_matrix){
   
-#args_lineage_reference_path, args_lineage_table_path, samples_only_matrix
-  lineage_reference = read_csv(args_lineage_reference_path) %>%
+
+lineage_reference = read_csv(args_lineage_reference_path) %>%
 mutate(type_lineage = paste0(HPV_Type, "-", Lineage_ID)) %>%
 mutate(reported_type_lineage = paste0(Reported_Type, "-", Lineage_ID)) %>%
 select(HPV_Type, type_lineage, reported_type_lineage, min_lineage_percent, min_lineage_read_count, min_lineage_percent_override_reads) %>%
 distinct() %>%
 glimpse()
 
-lineage_table = stream_in(file(args_lineage_table_path)) %>%
+lineage_table = stream_in(file("hpv_lineage_merged.json")) %>%
 group_by(bc1_id, bc2_id, HPV_Type) %>%
 do({
 
