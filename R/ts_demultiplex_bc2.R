@@ -10,7 +10,7 @@ mutate(page_num = page) %>%
 bind_cols(ZA_df) %>%
 mutate(ZA = ifelse(is.na(ZA), 0, ZA)) %>%
 mutate(bc1_id = args_A_barcode) %>%
-mutate(file_name = bam_json_input$name) %>%
+#mutate(file_name = bam_json_input$name) %>%
 mutate(total_reads = n()) %>%
 mutate(seq_length = str_length(seq)) %>%
 left_join(parameters_df) %>%
@@ -75,7 +75,7 @@ distinct()
   
 #### finish the bc2 demultiplex df ####
 hpv_types_output = bam_json_with_barcode %>%  
-select(file_name, page_num, bc1_id, bc2_id, qualified_barcode_reads, HPV_Type, HPV_Type_count, display_order) %>%
+select(page_num, bc1_id, bc2_id, qualified_barcode_reads, HPV_Type, HPV_Type_count, display_order) %>%
 distinct()
   
 ### make a list output ###
