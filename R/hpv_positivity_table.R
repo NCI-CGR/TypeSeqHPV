@@ -30,9 +30,7 @@ write_csv("hpv_positivity_table.csv")
 panderOptions("table.split.table", 100)
 panderOptions("table.split.cells", 5)
 
-pandoc.table(samples_and_controls_df, style = "multiline", caption = "HPV Positivity", 
+temp = pandoc.table(samples_and_controls_df, style = "multiline", caption = "HPV Positivity", 
              justify = c('right', 'left', 'left', 'left'))
   
-return(samples_and_controls_df)
-
 }
