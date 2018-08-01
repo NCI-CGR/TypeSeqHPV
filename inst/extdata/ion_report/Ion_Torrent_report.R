@@ -45,17 +45,14 @@ coinfection_rate_histogram_out
 #' ## Signal-to-Noise Plot
 #+ signal to noise plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=9, fig.align = "center"
 
-signal_to_noise_plot_safe <- possibly(TypeSeqHPV::signal_to_noise_plot, otherwise=data.frame())
+signal_to_noise_plot_out
 
-temp = signal_to_noise_plot_safe(hpv_types_df %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")), 
-                            final_pn_matrix, 
-                            scaling_list$filtering_criteria)
 #' \newpage
 #' ## Distribution of Sample HPV Positivity by Project
 
 #+ HPV Status Circle Plot, echo=FALSE, message=FALSE, warning=FALSE, out.width = '200%', fig.align = "center"
 
-signal_to_noise_plot_out
+hpv_status_circle_plot_out
 
 #' \newpage
 #' ## HPV Positivity by Assay Plate Code
