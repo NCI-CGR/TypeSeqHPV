@@ -47,7 +47,7 @@ filter(three_prime_seq == bc_sequence)
 }) %>%
 ungroup() %>%
 mutate(qualified_barcode_reads = n()) %>%
-group_by(file_name, bc1_id, bc2_id, HPV_Type) %>%
+group_by(bc1_id, bc2_id, HPV_Type) %>%
 mutate(HPV_Type_count = n()) %>%
 ungroup()
 
