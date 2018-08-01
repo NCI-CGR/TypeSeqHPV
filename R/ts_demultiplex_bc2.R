@@ -10,7 +10,7 @@ mutate(page_num = page) %>%
 bind_cols(ZA_df) %>%
 mutate(ZA = ifelse(is.na(ZA), 0, ZA)) %>%
 mutate(bc1_id = args_A_barcode) %>%
-mutate(file_name = bam_json_input) %>%
+mutate(file_name = bam_json_input$path) %>%
 mutate(total_reads = n()) %>%
 mutate(seq_length = str_length(seq)) %>%
 left_join(parameters_df) %>%
