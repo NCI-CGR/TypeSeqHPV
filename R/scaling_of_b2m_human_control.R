@@ -8,7 +8,7 @@ sum_pass_filter_reads = sum(read_metrics_df$qualified_aligned_reads)
 
 #2.  count number of samples in each run using the manifest (count rows I guess)
 
-temp = read_csv(args_run_manifest_path) %>%
+temp = read_csv(run_manifest_path) %>%
 mutate(sample_num = n())
 
 number_of_samples = temp$sample_num[1]
