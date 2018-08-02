@@ -11,7 +11,7 @@ select(qname, HPV_Type = rname, seq, mapq, cigar) %>%
 mutate(page_num = page) %>%
 bind_cols(ZA_df) %>%
 mutate(ZA = ifelse(is.na(ZA), 0, ZA)) %>%
-mutate(bc1_id = args_A_barcode) %>%
+#mutate(bc1_id = args_A_barcode) %>%
 #mutate(file_name = bam_json_input$name) %>%
 mutate(total_reads = n()) %>%
   
@@ -47,7 +47,7 @@ mutate(pass_za = sum(pass_za)) %>%
 mutate(pass_seq_length = sum(pass_seq_length)) %>%
 mutate(pass_mapq = sum(pass_mapq)) %>%
 # select the final colums and compress down to 1 row with distinct()
-select(page_num, bc1_id, total_reads, mapq_greater_than_zero, pass_za, pass_seq_length, pass_mapq) %>%
+select(page_num, total_reads, mapq_greater_than_zero, pass_za, pass_seq_length, pass_mapq) %>%
 distinct()
   
     
