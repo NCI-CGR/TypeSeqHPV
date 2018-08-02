@@ -11,7 +11,7 @@ mutate(name = path) %>%
 do({
   temp = as_tibble(.)
   
-  parallel::mclapply(temp$path, bam_json_func, bam_dir = bam_dir, mc.cores=8)
+  parallel::mclapply(temp$path, bam_json_func, bam_dir = bam_dir, mc.cores=24)
 
   temp = temp
 
