@@ -52,7 +52,7 @@ mutate(pass_za = sum(pass_za)) %>%
 mutate(pass_seq_length = sum(pass_seq_length)) %>%
 mutate(pass_mapq = sum(pass_mapq)) %>%
 # select the final colums and compress down to 1 row with distinct()
-select(file_name, page_num, total_reads, mapq_greater_than_zero, pass_za, pass_seq_length, pass_mapq) %>%
+select(file_name, bc1_id, page_num, total_reads, mapq_greater_than_zero, pass_za, pass_seq_length, pass_mapq) %>%
 distinct()
   
     
