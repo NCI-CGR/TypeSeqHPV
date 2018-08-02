@@ -56,7 +56,8 @@ dynamic_require(c("tidyverse",
                   "networkD3",
                   "future",
                   "drake", 
-                  "parallel"                  
+                  "parallel",
+                  "optigrab"
                   ))
 sessionInfo()
   
