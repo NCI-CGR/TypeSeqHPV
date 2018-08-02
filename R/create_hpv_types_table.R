@@ -1,4 +1,4 @@
-create_hpv_types_table <- function(hpv_types_json_path, run_manifest_path, bam_header, parameters_df, args_run_manifest_path){
+create_hpv_types_table <- function(hpv_types_json_path, run_manifest_path, bam_header, parameters_df){
 
 hpv_type_counts = stream_in(file("bc2_demultiplex_merged.json")) %>%
 mutate(barcode = paste0(bc1_id, bc2_id)) %>%
@@ -13,7 +13,7 @@ ungroup() %>%
 arrange(barcode, HPV_Type) 
 
 #create hpv types longform
-hpv_types_long = read_csv(args_run_manifest_path, col_names=TRUE) %>%
+hpv_types_long = read_csv(run_manifest_path, col_names=TRUE) %>%
 filter(!is.na(Owner_Sample_ID)) %>%
 mutate(barcode = paste0(BC1, BC2)) %>%
 select(-BC1,-BC2)  %>%
