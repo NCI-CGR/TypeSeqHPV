@@ -1,4 +1,4 @@
-create_hpv_types_table <- function(hpv_types_json_path, run_manifest_path, bam_header, parameters_df){
+create_hpv_types_table <- function(hpv_types_json_path, run_manifest_path, bam_header, parameters_df, args_run_manifest_path){
 
 hpv_type_counts = stream_in(file("bc2_demultiplex_merged.json")) %>%
 mutate(barcode = paste0(bc1_id, bc2_id)) %>%
