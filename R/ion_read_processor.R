@@ -1,7 +1,7 @@
 #'
 
 ion_read_processor <- function(bam_json_path, args_lineage_reference_path, args_barcode_list, parameters_df){
-
+#test
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
 map_if(is.factor, as.character) %>% 
 as_tibble() %>% 
