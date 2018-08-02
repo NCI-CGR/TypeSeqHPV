@@ -2,6 +2,8 @@
 
 ion_read_processor_apply <- function(bam_json, args_df, parameters_df){
 
+require(TypeSeqHPV)         
+         
 temp = bam_json %>%
 mutate(path = paste0(path, ".json")) %>%
 do({
