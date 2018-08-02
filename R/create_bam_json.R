@@ -2,7 +2,7 @@
 
 create_bam_json <- function(bam_file_input) {
   
-bam_json <- function(path){
+bam_json_func <- function(path){
   system(paste0("./sambamba view --nthreads=8 --format=json ", path, " -o ", path,".json"))
 }  
 
