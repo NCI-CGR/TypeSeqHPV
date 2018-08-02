@@ -2,7 +2,7 @@
 
 ts_read_metrics <- function(bam_json_input, parameters_df_input, page, bam_json_path){
 
-# only used in a jsonlite streaming function
+# only used in a jsonlite streaming function test
 
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
 
