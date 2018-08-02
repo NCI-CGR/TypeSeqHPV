@@ -22,13 +22,13 @@ mean_qualified_reads
 
 #4.  Set B2M min (inclusive) read numbers to min in factoring table
 
-factoring_table = read_csv(args_scaling_table) %>%
+factoring_table = read_csv(scaling_table) %>%
 filter(min_avg_reads_boundary <= mean_qualified_reads & max_avg_reads_boundary >= mean_qualified_reads) %>%
 glimpse()
 
 #5.  apply factor based on scaling table to the min HPV total and type reads
 
-filtering_criteria = read_tsv(args_pos_neg_filtering_criteria_path) %>%
+filtering_criteria = read_tsv(pos_neg_filtering_criteria_path) %>%
 map_if(is.factor, as.character) %>%
 as_tibble() %>%
 rename(type_id = TYPE) %>%
