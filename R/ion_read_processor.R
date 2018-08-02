@@ -17,10 +17,10 @@ lineage_output = file(paste0(bam_json_path,"_hpv_lineage.json"),open = "wb")
 stream_in(file(bam_json_path), handler = function(df){
 
 read_metrics_df = df %>% 
-ts_read_metrics(parameters_df, page)
+ts_read_metrics(parameters_df, page, bam_json_path)
   
 bc2_demultiplex_df = df %>% 
-ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table)
+ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table, bam_json_path)
 
 stream_out(read_metrics_df, read_metrics_output, verbose = TRUE) 
   
