@@ -1,5 +1,5 @@
 #'
-percent_positive_histogram <- function(df){
+percent_positive_histogram <- function(df, bam_header){
 
 percentPositveHistrogramDf = df %>%
 group_by(Project) %>%
