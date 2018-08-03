@@ -75,7 +75,7 @@ scale_y_log10(labels = comma, breaks=c(0,1,10, 100, 1000, 10000, 100000, 1e6)) +
 theme_light() +
 theme(
       axis.text.y = element_text(angle = 0, hjust = 1, color = "darkblue", size = 18),
-      axis.text.x = element_text(angle = 90, hjust = 0, color = temp$textColor, size = 18, vjust = 0.5),
+      axis.text.x = element_text(angle = 90, hjust = 0, color = signalNoiseDf$textColor, size = 18, vjust = 0.5),
       axis.line = element_line(colour = "darkblue",  size = 2, linetype = "solid")) +
 theme(strip.background = element_blank(),
       legend.position="none") +
