@@ -38,7 +38,7 @@ temp = control_summary_safe(control_results$control_results_final)
 #+ Counts and Percent Types Positive by Project, echo=FALSE, message=FALSE, warning=FALSE, out.width = '200%', fig.align = "center"
 percent_positive_histogram_safe <- possibly(TypeSeqHPV::percent_positive_histogram, otherwise=data.frame())
 
-temp = percent_positive_histogram(split_deliverables$samples_only_matrix, bam_header) 
+temp = percent_positive_histogram(split_deliverables$samples_only_matrix, bam_header_df) 
 
 #' \newpage
 #' ## Coinfection Rate Histogram
