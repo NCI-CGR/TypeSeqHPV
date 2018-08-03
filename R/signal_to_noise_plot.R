@@ -1,4 +1,4 @@
-signal_to_noise_plot <- function(hpv_types, final_pn_matrix, filtering_criteria){
+signal_to_noise_plot <- function(hpv_types, final_pn_matrix, scaling_list){
 
 # merge final pn matrix and hpv_types
 signalNoiseDf1 = hpv_types %>%
@@ -26,7 +26,7 @@ ungroup() %>%
 do({
 temp = as_tibble(.)
 
-tempReturn = filtering_criteria %>%
+tempReturn = scaling_list$filtering_criteria %>%
 mutate(hpvStatus = "min_reads") %>%
 select(HPV_Type = type_id, hpvStatus, meanCount = factored_min_reads_per_type) %>%
 semi_join(temp, by="HPV_Type") %>%
