@@ -53,7 +53,7 @@ temp = coinfection_rate_histogram_safe(split_deliverables$samples_only_matrix)
 
 signal_to_noise_plot_safe <- possibly(TypeSeqHPV::signal_to_noise_plot, otherwise=data.frame())
 
-temp = signal_to_noise_plot_safe(hpv_types_df %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")), 
+temp = signal_to_noise_plot(hpv_types_df %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")), 
                             final_pn_matrix, 
                             scaling_list$filtering_criteria)
 #' \newpage
