@@ -59,7 +59,12 @@ dynamic_require(c("tidyverse",
                   "future",
                   "drake", 
                   "parallel",
-                  "optigrab"
+                  "optigrab",
+                  "formatR",
+                  "remotes",
+                  "stringi",
+                  "V8",
+                  "DT"
                   ))
 sessionInfo()
   
