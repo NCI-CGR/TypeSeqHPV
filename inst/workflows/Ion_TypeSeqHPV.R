@@ -11,6 +11,7 @@ setwd("/")
 
 
 args_df = data_frame(
+bam_files_dir = opt_get('bam_files_dir'),
 lineage_reference = opt_get('lineage_reference'),
 barcode_list =opt_get('barcode_list'),
 control_defs =opt_get('control_defs'),
