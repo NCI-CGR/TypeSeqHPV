@@ -22,7 +22,7 @@ args_df %>%
 glimpse()
 
 
-pkgconfig::set_config("drake::strings_in_dots" = "literals")
+#pkgconfig::set_config("drake::strings_in_dots" = "literals")
 
 ion_plan <- drake_plan(
 ################################# bam input #################################
