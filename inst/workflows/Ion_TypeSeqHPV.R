@@ -1,4 +1,5 @@
 require(TypeSeqHPV)
+library(optigrab)
 #TypeSeqHPV::ion_report_load_packages()
 #detach("package:drake", unload=TRUE)
 #detach("package:tidyr", unload=TRUE)
