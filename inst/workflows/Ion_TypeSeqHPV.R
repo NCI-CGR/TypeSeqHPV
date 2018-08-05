@@ -1,11 +1,13 @@
 require(TypeSeqHPV)
 library(optigrab)
-#TypeSeqHPV::ion_report_load_packages()
-#detach("package:drake", unload=TRUE)
-#detach("package:tidyr", unload=TRUE)
-#detach("package:dplyr", unload=TRUE)
+TypeSeqHPV::ion_report_load_packages()
+detach("package:drake", unload=TRUE)
+detach("package:tidyr", unload=TRUE)
 library(drake)
 library(tidyverse)
+library(igraph)
+
+setwd("/")
 
 
 args_df = data_frame(
@@ -23,8 +25,7 @@ custom_groups_path =opt_get('custom_groups_path'))
 args_df %>%
 glimpse()
 
-
-#pkgconfig::set_config("drake::strings_in_dots" = "literals")
+pkgconfig::set_config("drake::strings_in_dots" = "literals")
 
 ion_plan <- drake_plan(
 ################################# bam input #################################
