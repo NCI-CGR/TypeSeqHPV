@@ -1,6 +1,9 @@
-suppressMessages(library(optigrab))
-suppressMessages(library(tidyverse))
-suppressMessages(library(drake))
+require(TypeSeqHPV)
+TypeSeqHPV::ion_report_load_packages()
+detach("package:drake", unload=TRUE)
+detach("package:tidyr", unload=TRUE)
+library(drake)
+library(tidyr)
 
 
 args_df = data_frame(
