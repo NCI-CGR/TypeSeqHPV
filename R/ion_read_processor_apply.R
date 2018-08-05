@@ -1,6 +1,6 @@
 #+
 
-ion_read_processor_apply <- function(bam_json, args_df, parameters_df){
+ion_read_processor_apply <- function(bam_json, args_lineage_reference, args_barcode_list, parameters_df){
 
 require(TypeSeqHPV)         
          
@@ -10,8 +10,8 @@ do({
 temp = as_tibble(.)  
 
 mclapply(temp$path, ion_read_processor, 
-         args_lineage_reference_path=args_df$lineage_reference,
-         args_barcode_list=args_df$barcode_list, 
+         args_lineage_reference_path=args_lineage_reference,
+         args_barcode_list=args_barcode_list, 
          parameters_df=parameters_df, mc.cores=detectCores()) 
   
 system("cat *read_metrics.json > read_metrics_merged.json")  
