@@ -4,7 +4,7 @@ require(TypeSeqHPV)
 #detach("package:tidyr", unload=TRUE)
 #detach("package:dplyr", unload=TRUE)
 library(drake)
-library(tidyr)
+library(tidyverse)
 
 
 args_df = data_frame(
