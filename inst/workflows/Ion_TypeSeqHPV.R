@@ -1,5 +1,7 @@
 suppressMessages(library(optigrab))
 suppressMessages(library(tidyverse))
+suppressMessages(library(drake))
+
 
 args_df = data_frame(
 lineage_reference = opt_get('lineage_reference'),
