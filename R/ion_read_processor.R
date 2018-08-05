@@ -1,6 +1,7 @@
 #'
 
 ion_read_processor <- function(bam_json_path, args_lineage_reference_path, args_barcode_list, parameters_df){
+ require(jsonlite)
 
  print(bam_json_path)
  
@@ -22,13 +23,15 @@ read_metrics_output = file(paste0(bam_json_path,"_read_metrics.json"), open = "w
 bc2_demultiplex_output = file(paste0(bam_json_path,"_bc2_demultiplex.json"), open = "wb")
 lineage_output = file(paste0(bam_json_path,"_hpv_lineage.json"),open = "wb")
   
-stream_in(file(bam_json_path), handler = function(df){
+stream_in(file(bam_json_path), handler = function(df, page, bam_json_path, parameters_df, barcode_list, lineage_reference_table){
 
 read_metrics_df = df %>% 
-ts_read_metrics(parameters_df, page, bam_json_path)
+ts_read_metrics(parameters_df, page, bam_json_path) %>%
+glimpse()
   
 bc2_demultiplex_df = df %>% 
-ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table, bam_json_path)
+ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table, bam_json_path) %>%
+glimpse()
 
 stream_out(read_metrics_df, read_metrics_output, verbose = TRUE) 
   
