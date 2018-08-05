@@ -5,6 +5,7 @@ ion_read_processor_apply <- function(bam_json, args_lineage_reference, args_barc
 require(TypeSeqHPV)         
          
 temp = bam_json %>%
+filter(!(str_detect(path, "bam.json"))) %>%
 mutate(path = paste0(path, ".json")) %>%
 glimpse() %>%
 do({
