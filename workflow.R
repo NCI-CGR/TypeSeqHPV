@@ -37,18 +37,19 @@ bam_file_input = data_frame(path = dir(args_df$bam_files_dir, pattern=".bam")),
 bam_json = create_bam_json(bam_file_input, args_df$bam_files_dir), 
   
 ################################# ion_read_processing #################################
-ion_read_processing_df = ion_read_processor_apply(bam_json, args_df, parameters_df)
-  )
+ion_read_processing_df = ion_read_processor_apply(bam_json, args_df, parameters_df),
+  
+################################# parameters file input #################################
+parameters_csv_input = args_df$parameter_file,
+
+################################# parameters dataframe #################################
+parameters_df = TypeSeqHPV::read_in_parameters_csv(parameters_csv_input)
+  
+)
 
 make(ion_plan)
 
 report_plan <- drake_plan(
-
-################################# parameters file input #################################
-parameters_csv_input = args_df$parameter_file,  
-  
-################################# parameters dataframe #################################
-parameters_df = TypeSeqHPV::read_in_parameters_csv(parameters_csv_input),
 
 ################################# bam header df  #################################
 bam_header_df = TypeSeqHPV::read_in_bam_header(file_in(args_df$bam_header)),
