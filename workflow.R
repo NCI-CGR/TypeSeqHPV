@@ -18,10 +18,10 @@ control_defs =opt_get('control_defs'),
 run_manifest =opt_get('run_manifest'),
 pos_neg_filtering_criteria =opt_get('pos_neg_filtering_criteria'),
 scaling_table =opt_get('scaling_table'),
-parameter_file =opt_get('parameter_file_path'),
+parameter_file =opt_get('parameter_file'),
 is_torrent_server =opt_get('is_torrent_server'),
-start_plugin =opt_get('start_plugin_path'),
-custom_groups =opt_get('custom_groups_path'))
+start_plugin =opt_get('start_plugin'),
+custom_groups =opt_get('custom_groups'))
 
 args_df %>%
 glimpse()
