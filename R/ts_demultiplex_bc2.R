@@ -1,7 +1,12 @@
 #+
 
-ts_demultiplex_bc2 = function(bam_json_input, parameters_df_input, barcode_list, page, lineage_reference_table, bam_json_path){
+ts_demultiplex_bc2 = function(bam_json_input, parameters_df, barcode_list, page, lineage_reference_table, bam_json_path){
 
+print(barcode_list)
+print(page)
+print(lineage_reference_table)
+print(bam_json_path)
+   
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
 
 temp = data_frame(path = bam_json_path) %>%
