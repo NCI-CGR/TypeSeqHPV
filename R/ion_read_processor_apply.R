@@ -6,6 +6,7 @@ require(TypeSeqHPV)
          
 temp = bam_json %>%
 mutate(path = paste0(path, ".json")) %>%
+glimpse() %>%
 do({
 temp = as_tibble(.)  
 
