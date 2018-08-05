@@ -7,8 +7,7 @@ library(drake)
 library(tidyverse)
 library(igraph)
 
-setwd("/")
-
+setwd("/mnt")
 
 args_df = data_frame(
 bam_files_dir = opt_get('bam_files_dir'),
