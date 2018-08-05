@@ -2,7 +2,8 @@
 
 ion_read_processor <- function(bam_json_path, args_lineage_reference_path, args_barcode_list, parameters_df){
 
- bam_json_path
+ print(bam_json_path)
+ 
  parameters_df %>%
  glimpse()
   
