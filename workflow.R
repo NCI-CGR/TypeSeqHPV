@@ -34,7 +34,7 @@ bam_file_input = data_frame(path = dir(args_bam_files_dir, pattern=".bam")),
 bam_json = create_bam_json(bam_file_input, args_bam_files_dir), 
   
 ################################# ion_read_processing #################################
-ion_read_processing_df = ion_read_processor_apply(bam_json, args_df, parameters_df),
+ion_read_processing_df = ion_read_processor_apply(bam_json, args_lineage_reference, args_barcode_list, parameters_df),
   
 ################################# parameters file input #################################
 parameters_csv_input = args_parameter_file,
