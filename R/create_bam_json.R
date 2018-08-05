@@ -3,7 +3,7 @@
 create_bam_json <- function(bam_file_input, bam_dir) {
   
 bam_json_func <- function(path, bam_dir){
-  system(paste0("./sambamba view --nthreads=8 --format=json ", bam_dir, "/", path, " -o ", path,".json"))
+  system(paste0("/sambamba view --nthreads=8 --format=json ", bam_dir, "/", path, " -o ", path,".json"))
 }  
 
 temp = bam_file_input %>%
