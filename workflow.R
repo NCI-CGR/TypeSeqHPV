@@ -1,3 +1,5 @@
+require(devtools)
+install_github(cgrlab/TypeSeqHPV, force=TRUE)
 require(TypeSeqHPV)
 library(optigrab)
 TypeSeqHPV::ion_report_load_packages()
