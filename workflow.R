@@ -14,6 +14,7 @@ setwd("/mnt")
 args_df = data_frame(
 bam_files_dir = opt_get('bam_files_dir'),
 lineage_reference = opt_get('lineage_reference'),
+bam_header = opt-get('bam_header'),
 barcode_list =opt_get('barcode_list'),
 control_defs =opt_get('control_defs'),
 run_manifest =opt_get('run_manifest'),
