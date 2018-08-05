@@ -35,7 +35,12 @@ bam_file_input = data_frame(path = dir(args_df$bam_files_dir, pattern=".bam")),
 bam_json = create_bam_json(bam_file_input, args_df$bam_files_dir), 
   
 ################################# ion_read_processing #################################
-ion_read_processing_df = ion_read_processor_apply(bam_json, args_df, parameters_df), 
+ion_read_processing_df = ion_read_processor_apply(bam_json, args_df, parameters_df)
+  )
+
+make(ion_plan)
+
+report_plan <- drake_plan(
 
 ################################# parameters file input #################################
 parameters_csv_input = args_df$parameter_file,  
@@ -57,7 +62,7 @@ read_metrics_df = TypeSeqHPV::create_full_run_read_metrics_df(ion_read_processin
 scaling_list = TypeSeqHPV::scaling_of_b2m_human_control(read_metrics_df, 
                                                   args_df$run_manifest, 
                                                   args_df$scaling_table, 
-                                                  args_df$pos_neg_filtering_criteria),
+                                                  args_df$pos_neg_filtering_criteria) %>% glimpse(),
 
 #################################initial pn matrix #################################
 initial_pn_matrix = TypeSeqHPV::create_inital_pos_neg_matrix(hpv_types_df, 
@@ -67,20 +72,19 @@ initial_pn_matrix = TypeSeqHPV::create_inital_pos_neg_matrix(hpv_types_df,
 ################################# expected control results #################################
 control_results = TypeSeqHPV::calculate_expected_control_results(args_df$control_defs, initial_pn_matrix),
  
-
 ################################# finalize pn matrix #################################
 final_pn_matrix = TypeSeqHPV::finalize_pn_matrix(initial_pn_matrix, 
-                                                   scaling_list$filtering_criteria, 
-                                                   control_results$control_results_final),
+                                                 scaling_list$filtering_criteria, 
+                                                 control_results$control_results_final),
 
 ################################# split pn matrix outputs #################################
 split_deliverables = TypeSeqHPV::split_pn_matrix_into_multiple_deliverables(final_pn_matrix, 
-                                                                              control_results$control_results_final),
+                                                                            control_results$control_results_final),
 
 ################################# prep grouped samples #################################
 grouped_samples_only_matrix = TypeSeqHPV::prepare_grouped_samples_only_matrix_outputs(args_df$custom_groups, 
-                                                                                        split_deliverables$samples_only_matrix,
-                                                                                     parameters_df),
+                                                                                      split_deliverables$samples_only_matrix,
+                                                                                      parameters_df),
 ################################# lineage df #################################
 lineage_df = TypeSeqHPV::prepare_lineage_df(args_df$lineage_reference, 
                                               ion_read_processing, split_deliverables$samples_only_matrix),
@@ -102,10 +106,11 @@ ion_qc_report = render_ion_qc_report(args_start_plugin_path=args_df$start_plugin
                               control_results=control_results, 
                               hpv_types_df=hpv_types_df,
                               final_pn_matrix=final_pn_matrix,
-                              scailing_list = scailing_list,
-                             lineage_df=lineage_df) %>% ({file_out('Ion_Torrent_report.pdf')})
+                              scaling_list = scaling_list,
+                             lineage_df=lineage_df,
+                             bam_header_df = bam_header_df)
   )
 
+make(report_plan)
 
-make(ion_plan)
 
