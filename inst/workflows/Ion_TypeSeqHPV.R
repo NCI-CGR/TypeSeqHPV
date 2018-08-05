@@ -1,8 +1,8 @@
 require(TypeSeqHPV)
 #TypeSeqHPV::ion_report_load_packages()
-detach("package:drake", unload=TRUE)
-detach("package:tidyr", unload=TRUE)
-detach("package:dplyr", unload=TRUE)
+#detach("package:drake", unload=TRUE)
+#detach("package:tidyr", unload=TRUE)
+#detach("package:dplyr", unload=TRUE)
 library(drake)
 library(tidyr)
 
