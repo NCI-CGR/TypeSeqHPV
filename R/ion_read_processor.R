@@ -19,8 +19,8 @@ glimpse()
   
 page = 1
  
- paste0(bam_json_path,"_read_metrics.json")
- paste0(bam_json_path[1],"_read_metricstest.json")
+ print(paste0(bam_json_path,"_read_metrics.json"))
+ print(paste0(bam_json_path[1],"_read_metricstest.json"))
   
 read_metrics_output = file(paste0(bam_json_path,"_read_metrics.json"), open = "wb")
 bc2_demultiplex_output = file(paste0(bam_json_path,"_bc2_demultiplex.json"), open = "wb")
