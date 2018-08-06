@@ -25,6 +25,10 @@ args_custom_groups =opt_get('custom_groups')
 
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 
+parse_startplugin_plan <- drake_plan(
+  parse = startplugin_parse(args_start_plugin))
+
+
 ion_plan <- drake_plan(
 ################################# bam input #################################
 bam_file_input = data_frame(path = dir(args_bam_files_dir, pattern=".bam", full.names = FALSE)),
@@ -104,8 +108,8 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
                              bam_header_df = bam_header_df)
   )
 
-drake::clean(ion_read_processing_df)  
 
+parse_startplugin_plan
 make(ion_plan)
 
 
