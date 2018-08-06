@@ -3,7 +3,7 @@ startplugin_parse <- function(args_start_plugin){
 require(jsonlite)
 require(tidyverse)
 
-plugin_json = fromJSON(args_start_plugin_path, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
+plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
 manifest = data_frame(values = plugin_json$pluginconfig$typing_manifest) %>%
 mutate(values = str_replace(values, "\n", "" )) %>%
