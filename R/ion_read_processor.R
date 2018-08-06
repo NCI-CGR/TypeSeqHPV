@@ -22,7 +22,7 @@ stream_in(file(bam_json_path[1]), handler = function(df){
 read_metrics_df = df #%>% 
 ts_read_metrics(parameters_df, page, bam_json_path)
   
-#bc2_demultiplex_df = df #%>% 
+#bc2_demultiplex_df = df %>% 
 #ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table, bam_json_path)
 
 stream_out(read_metrics_df, read_metrics_output, verbose = TRUE) 
