@@ -111,5 +111,6 @@ ion_qc_report = render_ion_qc_report(args_start_plugin_path=args_start_plugin,
   )
 
 make(ion_plan)
+make(report_plan)
 
 
