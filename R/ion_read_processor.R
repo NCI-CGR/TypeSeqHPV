@@ -19,8 +19,6 @@ lineage_output = file(paste0(bam_json_path,"_hpv_lineage.json"),open = "wb")
   
 stream_in(file(bam_json_path[1]), handler = function(df, page, bam_json_path, parameters_df, barcode_list, lineage_reference_table){
 
-print(df[1,]) 
- 
 read_metrics_df = df %>% 
 ts_read_metrics(parameters_df, page, bam_json_path) %>%
 glimpse()
