@@ -10,6 +10,8 @@ mutate(path = paste0(path, ".json")) %>%
 glimpse() %>%
 do({
 temp = as_tibble(.)  
+         
+print(temp)
 
 mclapply(temp$path, ion_read_processor, 
          args_lineage_reference_path=args_lineage_reference,
