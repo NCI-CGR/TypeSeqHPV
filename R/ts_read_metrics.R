@@ -3,14 +3,15 @@
 ts_read_metrics <- function(bam_json_input, parameters_df, page, bam_json_path){
 
 require(TypeSeqHPV)
+library(GenomicAlignments)
 
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
 
+print(temp)  
+  
 temp = data_frame(path = bam_json_path) %>%
 tidyr::separate(path, remove=FALSE, sep="IonXpress_", into=c("temp", "bc1_id")) 
   
-print(temp)  
-
 temp = temp %>%
 mutate(bc1_id = paste0("A", str_sub(bc1_id, start=2, end=3))) %>%
 select(-temp) %>%

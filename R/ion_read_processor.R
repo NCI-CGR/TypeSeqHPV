@@ -3,7 +3,7 @@
 ion_read_processor <- function(bam_json_path, args_lineage_reference_path, args_barcode_list, parameters_df){
  require(jsonlite)
 
- print(bam_json_path)
+print(bam_json_path)
  
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
 map_if(is.factor, as.character) %>% 
@@ -39,6 +39,6 @@ close(read_metrics_output)
 close(bc2_demultiplex_output)
 close(lineage_output)
  
- return(bam_json_path)  
+return(bam_json_path)  
   
 }
