@@ -95,7 +95,7 @@ collection_of_csv_files = TypeSeqHPV::write_all_csv_files(final_grouped_samples_
                      parameters_df = parameters_df),
 
 ################################# ion qc knitr report #################################
-ion_qc_report = render_ion_qc_report(args_start_plugin_path=args_start_plugin, 
+ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin, 
                               split_deliverables=split_deliverables, 
                               samples_and_controls_df_out=samples_and_controls_df_out, 
                               control_results=control_results, 
