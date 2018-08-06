@@ -66,7 +66,7 @@ mutate(pass_mapq = sum(pass_mapq)) %>%
 select(file_name, bc1_id, page_num, total_reads, mapq_greater_than_zero, pass_za, pass_seq_length, pass_mapq) %>%
 distinct()
  
-print("finished")
+print(bam_json)
   
     
 }
