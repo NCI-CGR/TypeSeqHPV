@@ -104,6 +104,8 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
                              bam_header_df = bam_header_df)
   )
 
+drake::clean(ion_read_processing_df)  
+
 make(ion_plan)
 
 
