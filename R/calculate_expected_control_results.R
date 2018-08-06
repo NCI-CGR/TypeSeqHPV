@@ -1,6 +1,8 @@
 #
 calculate_expected_control_results <- function(args_control_defs, initial_pn_matrix){
 require(tidyverse)
+require(fuzzyjoin)
+
            
 # 1.  read in control defs
 control_defs = read_csv(args_control_defs) %>%
