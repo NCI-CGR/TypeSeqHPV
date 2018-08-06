@@ -7,5 +7,3 @@ RUN mkdir /TypeSeqHPV && \
 cd /TypeSeqHPV && \
 git init && \
 git pull https://github.com/cgrlab/TypeSeqHPV.git
-
-RUN cp --backup=numbered /TypeSeqHPV/docs/*/*txt /TypeSeqHPV/docs/*/*csv /opt
