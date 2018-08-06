@@ -3,6 +3,9 @@
 ts_read_metrics <- function(bam_json_input, parameters_df, page, bam_json_path){
 
 require(TypeSeqHPV)
+  
+print(bam_json_path)
+bam_json_input[1,]
 
 # only used in a jsonlite streaming function test
 
