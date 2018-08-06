@@ -1,5 +1,5 @@
 require(devtools)
-install_github("cgrlab/TypeSeqHPV", force=TRUE)
+#install_github("cgrlab/TypeSeqHPV", force=TRUE)
 require(TypeSeqHPV)
 library(optigrab)
 library(drake)
