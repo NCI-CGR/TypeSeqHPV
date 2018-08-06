@@ -19,7 +19,7 @@ read_metrics_output = file(paste0(bam_json_path,"_read_metrics.json"), open = "w
   
 stream_in(file(bam_json_path[1]), handler = function(df){
 
-read_metrics_df = df #%>% 
+read_metrics_df = df %>% 
 ts_read_metrics(parameters_df, page, bam_json_path)
   
 #bc2_demultiplex_df = df %>% 
