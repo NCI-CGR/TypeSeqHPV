@@ -29,9 +29,9 @@ bc2_demultiplex_df = df #%>%
 
 stream_out(read_metrics_df, read_metrics_output, verbose = TRUE) 
   
-stream_out(bc2_demultiplex_df$hpv_types_output, bc2_demultiplex_output, verbose = TRUE) 
+#stream_out(bc2_demultiplex_df$hpv_types_output, bc2_demultiplex_output, verbose = TRUE) 
   
-stream_out(bc2_demultiplex_df$lineage_output, lineage_output, verbose = TRUE) 
+#stream_out(bc2_demultiplex_df$lineage_output, lineage_output, verbose = TRUE) 
   
 page <<- page + 1
 
