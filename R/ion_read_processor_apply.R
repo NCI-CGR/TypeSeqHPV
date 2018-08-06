@@ -17,8 +17,8 @@ mclapply(temp$path, ion_read_processor,
          parameters_df=parameters_df, mc.cores=4) 
   
 system("cat *read_metrics.json > read_metrics_merged.json")  
-system("cat *hpv_lineage.json > hpv_lineage_merged.json")  
-system("cat *bc2_demultiplex.json > bc2_demultiplex_merged.json")  
+#system("cat *hpv_lineage.json > hpv_lineage_merged.json")  
+#system("cat *bc2_demultiplex.json > bc2_demultiplex_merged.json")  
 
 temp = temp
 })
