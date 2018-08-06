@@ -9,6 +9,7 @@ library(drake)
 library(tidyverse)
 library(igraph)
 library(jsonlite)
+library(parallel)
 
 setwd("/mnt")
 
