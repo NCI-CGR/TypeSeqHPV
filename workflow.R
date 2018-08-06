@@ -43,8 +43,13 @@ parameters_csv_input = args_parameter_file,
 parameters_df = TypeSeqHPV::read_in_parameters_csv(parameters_csv_input),
   
 ################################# bam header df  #################################
-bam_header_df = TypeSeqHPV::read_in_bam_header(file_in(args_bam_header)),
+bam_header_df = TypeSeqHPV::read_in_bam_header(file_in(args_bam_header))
 
+)
+  
+report_plan <- drake_plan(  
+  
+  
 ################################# hpv types dataframe #################################
 hpv_types_df = TypeSeqHPV::create_hpv_types_table(ion_read_processing_df, args_run_manifest, bam_header_df, parameters_df),
 
