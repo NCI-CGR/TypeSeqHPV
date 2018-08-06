@@ -2,15 +2,17 @@
 
 ts_demultiplex_bc2 = function(bam_json_input, parameters_df, barcode_list, page, lineage_reference_table, bam_json_path){
 
-print(page)
-print(bam_json_path)
-   
+library("GenomicAlignments")
+
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
 
 temp = data_frame(path = bam_json_path) %>%
 tidyr::separate(path, remove=FALSE, sep="IonXpress_", into=c("temp", "bc1_id")) %>%
 mutate(bc1_id = paste0("A", str_sub(bc1_id, start=2, end=3))) %>%
 select(-temp) 
+   
+print(page)
+print(bam_json_path)   
   
 bam_json = bam_json_input %>%
 select(qname, HPV_Type = rname, seq, mapq, cigar) %>%
