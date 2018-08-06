@@ -24,8 +24,7 @@ read_metrics_df = df #%>%
 #glimpse()
   
 bc2_demultiplex_df = df #%>% 
-#ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table, bam_json_path) %>%
-#glimpse()
+ts_demultiplex_bc2(parameters_df, barcode_list, page, lineage_reference_table, bam_json_path)
 
 stream_out(read_metrics_df, read_metrics_output, verbose = TRUE) 
   
