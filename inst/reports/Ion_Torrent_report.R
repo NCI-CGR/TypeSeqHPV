@@ -15,7 +15,7 @@
 
 get_run_metadata_safe <- possibly(TypeSeqHPV::get_run_metadata, otherwise=data.frame())
 
-startPluginDf = get_run_metadata_safe(args_start_plugin_path)
+startPluginDf = get_run_metadata(args_start_plugin_path)
 
 #' \newpage
 #' ## SAMPLE Results Summary
