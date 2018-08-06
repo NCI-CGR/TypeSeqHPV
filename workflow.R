@@ -110,7 +110,6 @@ ion_qc_report = render_ion_qc_report(args_start_plugin_path=args_start_plugin,
                              bam_header_df = bam_header_df)
   )
 
-make(ion_plan)
-make(report_plan)
+make(bind_plans(ion_plan, report_plan))
 
 
