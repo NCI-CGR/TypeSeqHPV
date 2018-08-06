@@ -5,8 +5,6 @@ ts_read_metrics <- function(bam_json_input, parameters_df, page, bam_json_path){
 require(TypeSeqHPV)
 
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
-
-print(temp)  
   
 temp = data_frame(path = bam_json_path) %>%
 tidyr::separate(path, remove=FALSE, sep="IonXpress_", into=c("temp", "bc1_id")) 
