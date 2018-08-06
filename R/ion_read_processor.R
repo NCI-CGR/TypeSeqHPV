@@ -38,7 +38,9 @@ page <<- page + 1
 close(read_metrics_output)
 #close(bc2_demultiplex_output)
 #close(lineage_output)
-  
+ 
+print("almost done") 
+ 
 return(bam_json_path)  
   
    
