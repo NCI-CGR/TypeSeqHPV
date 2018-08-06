@@ -6,7 +6,7 @@ require(rmarkdown)
 require(TypeSeqHPV)
 require(scales)
 require(ggsci)
-require(pander)
+library(pander)
   
 render(input=system.file("reports", "Ion_Torrent_report.R", 
                          package = "TypeSeqHPV"), 
