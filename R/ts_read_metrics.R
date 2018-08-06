@@ -11,17 +11,13 @@ if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_in
 print("past ZA")
   
 temp = data_frame(path = bam_json_path) %>%
-glimpse() 
-
-print(temp)
-  
-temp = temp  %>%
+glimpse()  %>%
 separate(path, remove=FALSE, sep="IonXpress_", into=c("temp", "bc1_id")) %>%
 mutate(bc1_id = paste0("A", str_sub(bc1_id, start=2, end=3))) %>%
 select(-temp) %>%
 glimpse()
   
- print("temp")
+print("temp")
  
   
 bam_json = bam_json_input %>%
