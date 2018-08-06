@@ -1,5 +1,5 @@
 #'
-plugin_manifest_parse <- function(args_start_plugin){
+startplugin_parse <- function(args_start_plugin){
 require(jsonlite)
 require(tidyverse)
 
@@ -10,5 +10,15 @@ mutate(values = str_replace(values, "\n", "" )) %>%
 separate(col=values, sep=",", into = unlist(str_split(.$values[1], ","))) %>%
 slice(2:n()) %>%
 write_csv("typing_manifest.csv")
+  
+  
+report_grouping = data_frame(values = plugin_json$pluginconfig$report_grouping_definitions) %>%
+mutate(values = str_replace(values, "\n", "" )) %>%
+separate(col=values, sep=",", into = unlist(str_split(.$values[1], ","))) %>%
+slice(2:n()) %>%
+write_csv("report_grouping.csv")
+  
+  
+  
 
 }
