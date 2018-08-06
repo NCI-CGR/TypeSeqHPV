@@ -1,7 +1,7 @@
 #+
 
-ts_read_metrics <- function(bam_json_input, parameters_df_input, page, bam_json_path){
-  
+ts_read_metrics <- function(bam_json_input, parameters_df, page, bam_json_path){
+
 require(TypeSeqHPV)
 
 # only used in a jsonlite streaming function test
@@ -23,7 +23,7 @@ mutate(file_name = temp$path) %>%
 mutate(total_reads = n()) %>%
   
 # left join with parameters file that contians qualifying criteria for each hpv contig
-left_join(parameters_df_input) %>%
+left_join(parameters_df) %>%
   
 # mapq greater than 0 - count multi-mapped / 0 mapping quaity and filter becuase cigar will be 0 so we cannot include past here
 mutate(mapq_greater_than_zero = ifelse(mapq != 0, 1, 0)) %>%
