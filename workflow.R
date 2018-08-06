@@ -34,7 +34,7 @@ bam_file_input = data_frame(path = dir(args_bam_files_dir, pattern=".bam", full.
 #bam_json = create_bam_json(bam_file_input, args_bam_files_dir), 
   
 ################################# ion_read_processing #################################
-ion_read_processing_df = ion_read_processor_apply(bam_file_input, args_lineage_reference, args_barcode_list, parameters_df),
+#ion_read_processing_df = ion_read_processor_apply(bam_file_input, args_lineage_reference, args_barcode_list, parameters_df),
   
 ################################# parameters file input #################################
 parameters_csv_input = args_parameter_file,
@@ -43,15 +43,10 @@ parameters_csv_input = args_parameter_file,
 parameters_df = TypeSeqHPV::read_in_parameters_csv(parameters_csv_input),
   
 ################################# bam header df  #################################
-bam_header_df = TypeSeqHPV::read_in_bam_header(file_in(args_bam_header))
+bam_header_df = TypeSeqHPV::read_in_bam_header(file_in(args_bam_header)),
 
-)
-  
-report_plan <- drake_plan(  
-  
-  
 ################################# hpv types dataframe #################################
-hpv_types_df = TypeSeqHPV::create_hpv_types_table(ion_read_processing_df, args_run_manifest, bam_header_df, parameters_df),
+hpv_types_df = TypeSeqHPV::create_hpv_types_table(bam_file_input, args_run_manifest, bam_header_df, parameters_df),
 
 ################################# read metrics df #################################
 read_metrics_df = TypeSeqHPV::create_full_run_read_metrics_df(ion_read_processing_df, 
@@ -110,6 +105,6 @@ ion_qc_report = render_ion_qc_report(args_start_plugin_path=args_start_plugin,
                              bam_header_df = bam_header_df)
   )
 
-make(bind_plans(ion_plan, report_plan))
+make(ion_plan)
 
 
