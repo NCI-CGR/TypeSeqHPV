@@ -30,7 +30,7 @@ pkgconfig::set_config("drake::strings_in_dots" = "literals")
 
 ion_plan <- drake_plan(
 ################################# bam input #################################
-bam_file_input = data_frame(path = dir(args_bam_files_dir, pattern=".bam", full.names = TRUE)),
+bam_file_input = data_frame(path = dir(args_bam_files_dir, pattern=".bam", full.names = FALSE)),
 
 ################################# bam_json #################################
 bam_json = create_bam_json(bam_file_input, args_bam_files_dir), 
