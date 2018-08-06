@@ -3,22 +3,22 @@
 ts_read_metrics <- function(bam_json_input, parameters_df, page, bam_json_path){
 
 require(TypeSeqHPV)
-  
-print(bam_json_path)
-print("inside read metrics")
-
-print(bam_json_input[1,])
 
 # only used in a jsonlite streaming function test
 
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
 
+print("past ZA")
+  
 temp = data_frame(path = bam_json_path) %>%
 glimpse() %>%
 separate(path, remove=FALSE, sep="IonXpress_", into=c("temp", "bc1_id")) %>%
 mutate(bc1_id = paste0("A", str_sub(bc1_id, start=2, end=3))) %>%
 select(-temp) %>%
 glimpse()
+  
+ print("temp")
+ 
   
 bam_json = bam_json_input %>%
 select(qname, HPV_Type = rname, seq, mapq, cigar) %>%
@@ -63,6 +63,8 @@ mutate(pass_mapq = sum(pass_mapq)) %>%
 # select the final colums and compress down to 1 row with distinct()
 select(file_name, bc1_id, page_num, total_reads, mapq_greater_than_zero, pass_za, pass_seq_length, pass_mapq) %>%
 distinct()
+ 
+print("finished")
   
     
 }
