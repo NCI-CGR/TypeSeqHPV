@@ -109,7 +109,7 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
   )
 
 
-parse_startplugin_plan
+make(parse_startplugin_plan)
 make(ion_plan)
 
 
