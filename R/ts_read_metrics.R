@@ -3,7 +3,6 @@
 ts_read_metrics <- function(bam_json_input, parameters_df, page, bam_json_path){
 
 require(TypeSeqHPV)
-library(GenomicAlignments)
 
 if("ZA" %in% colnames(bam_json_input$tags)){ ZA_df = data_frame(ZA = bam_json_input$tags$ZA)}else{ZA_df = data_frame(ZA = rep(0, length(bam_json_input$qname)))}
 
@@ -19,6 +18,9 @@ glimpse()
   
 print(temp)
  
+library(GenomicAlignments)
+  
+  
 bam_json = bam_json_input %>%
 select(qname, HPV_Type = rname, seq, mapq, cigar) %>%
 mutate(page_num = page) %>%
