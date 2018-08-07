@@ -18,10 +18,10 @@ The only requirement for either workflow is either ```docker``` or ```singularit
 
 
 
-TypeSeqHPV Ion Torrent Plugin
+Ion Torrent Plugin
 ================
 
-We also include a wrapper for the Ion Torrent server that can be uploaded via the provided zip file.  The prerequisite for running the Ion Torrent Plugin sucessfully is to install docker on the server ahead of time.
+We also include a wrapper for the Ion Torrent server that can be uploaded via the provided zip file.  The prerequisite for running the Ion Torrent Plugin successfully is to install docker on the server ahead of time.
 
 ### Install docker
 
@@ -33,48 +33,14 @@ We also include a wrapper for the Ion Torrent server that can be uploaded via th
     docker login (with any docker user id)
     su ionadmin
 
-### Make Docker storage more robust on torrent server
-
-    sudo service docker stop
-    cd /var/lib
-    sudo rsync -a docker /results/plugins/scratch/
-    sudo rm -rf docker
-    sudo ln -s docker /results/plugins/scratch/docker
-    sudo vi /etc/default/docker
-
-Modify this line
-
-    #DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
-
-Changing it to this
-
-    DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 -g /results/plugins/scratch/docker"
-
-Restart Docker
-
-    sudo service docker start 
-    
-## Download and Unpack Rabix
-
-This plugin has only been tested with a specific pre-realease version of rabix bunny.
-
-https://github.com/rabix/bunny/releases/tag/v1.0.0-rc2
-
-A backup copy of this release is stored here
-
-https://s3.amazonaws.com/typeseqer/rabix-1.0.0-rc2.tar.gz
-    
 
 ## Download and add hpv-typing plugin via torrent server gui
 
-https://github.com/davidroberson/TypeSeqer-private/releases/tag/v1.33001.180
+https://github.com/davidroberson/TypeSeqHPV-private/releases/tag/v1.33001.180
 
 
-# TypeSeqer_HPV
-***CGR laboratory's HPV typing TypeSeqer analysis workflows***
-
-## Instructions For Running Illumina TypeSeqer
-
+Illumina Workflow
+================
 ### 1. Generate fastq files from raw sequencing data using modified parameters
   
 The Illumina fastq files need to be regenerated using the following custom bcl2fastq parameters:  
@@ -101,10 +67,10 @@ The workflow will need to utilize a fresh working directory. Make sure that the 
    2. Common workflow language file (in archive)
    3. The Singularity image (in archive)
    4. Pair of fastq files (provided by user)
-   5. TypeSeqer run manifest (provided by user)
+   5. TypeSeqHPV run manifest (provided by user)
    6. Control definitions file (provided by user)
    
-As an alternative the user can genearate the singularity image by building from the Dockerfile.  The user will still need to download the latest cwl and shell script from this reposititory.     
+As an alternative the user can generate the singularity image by building from the Dockerfile.  The user will still need to download the latest cwl and shell script from this repository.     
     
 ### 3. Adjust the Shell Variables  
 
@@ -122,15 +88,15 @@ interactive node but the shell script can easily be adjusted for a batch job. Fo
 to use at least 16 or 24 cores and at least 60 GB RAM. A typical MiSeq run should complete in 45
 minutes with 24 cores.
   
-The workflow will generate a subdirectory with the name of the cwl file and a timestamp (e.g.
-illumina_TypeSeqer-2018-03-15-185300.647).  
+The workflow will generate a sub directory with the name of the cwl file and a time stamp (e.g.
+Illumina_TypeSeqHPV-2018-03-15-185300.647).  
 
-Inside this folder will be subfolders for each of the tools in the workflow. The illumina_Typeseqer* folder
-and its subdirectories can be considered temporary files and may be deleted as soon the workflow
+Inside this folder will be sub folders for each of the tools in the workflow. The Illumina_TypeSeqHPV* folder
+and its sub directories can be considered temporary files and may be deleted as soon the workflow
 finishes. This folder will need about 50 GB of disk space but will be reduced to about 2GB after the run
 completes (these are typical sizes for MiSeq runs; NextSeq runs will require more space).  
   
-The folder the end user should keep is called illumina_typeseqer_output and will be about 1 MB. This
+The folder the end user should keep is called Illumina_TypeSeq_output and will be about 1 MB. This
 will contain a report PDF and CSV tables.  
 
 The version of Singularity we used to run the container is 2.4.4
