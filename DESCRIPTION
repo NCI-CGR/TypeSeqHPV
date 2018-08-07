@@ -1,5 +1,5 @@
 Package: TypeSeqHPV
-Title: What the Package Does (one line, title case)
+Title: TypeSeqHPV Analysis Functions and Workflows
 Version: 0.0.0.9001
 Authors@R: person("David", "Roberson", email = "david.roberson@nih.gov", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
