@@ -3,9 +3,9 @@
 
 TypeSeq HPV is an R package that includes  
 
---several helper functions for working with TypeSeq data  
---contains a "make" based pipeline for processing Ion or Illumina runs  
---contains a docker build file that includes all the dependencies inside a single container  
+* several helper functions for working with TypeSeq data  
+* contains a "make" based pipeline for processing Ion or Illumina runs  
+* contains a docker build file that includes all the dependencies inside a single container  
   
 We recomennd running the pipeline inside the docker continer ```cgrlab/typeseqhpv:final_2018080604``` as it contains all the required dependenciesa in the correct locations.
 
