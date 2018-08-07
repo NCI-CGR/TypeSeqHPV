@@ -1,16 +1,27 @@
 # TypeSeq HPV
 ***NCI CGR laboratory HPV typing analysis workflows and R package***
 
-TypeSeqer Plugin Described by CWL
+TypeSeq HPV is an R package that includes  
+
+--several helper functions for working with TypeSeq data
+--contains a "make" based pipeline for processing Ion or Illumina runs
+--contains a docker build file that includes all the dependencies inside a single container.
+
+We recomend running the pipeline inside the docker continer ```cgrlab/typeseqhpv:final_2018080604``` as it contains all the required dependenciesa in the correct locations.
+
+The workflow manager we use is **drake** https://github.com/ropensci/drake
+
+
+There are currently two main workflows each supporting either the Ion Torrent or Illlumina NGS platforms.  Since TypeSeqHPV can be used on either platform we therefore have analysis for either. 
+
+The only requirement for either workflow is either ```docker``` or ```singularity```
+
+
+
+TypeSeqer Ion Torrent Plugin
 ================
 
--   Install docker
--   Make Docker storage more robust on torrent server
--   download and unpack latest Rabix release
--   download and add hpv-typing plugin via torrent server gui
-
-Detailed Installation Instructions
-----------------------------------
+We also include a wrapper for the Ion Torrent server that can be uploaded via the provided zip file.  The prerequisite for running the Ion Torrent Plugin sucessfully is to install docker on the server ahead of time.
 
 ### Install docker
 
