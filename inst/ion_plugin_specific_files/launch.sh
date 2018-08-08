@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # TypeSeq HPV Plugin
-VERSION="1.18.08.0601"
+VERSION="1.18.08.0701"
 #autorundisable
 echo Pipeline version $VERSION
 
