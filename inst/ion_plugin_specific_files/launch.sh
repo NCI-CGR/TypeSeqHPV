@@ -18,7 +18,7 @@ docker run -v $(pwd):/mnt cgrlab/typeseqhpv:final_2018080701 Rscript /TypeSeqHPV
 --custom_groups /mnt/report_grouping.csv \
 --control_defs /mnt/control_defs.csv \
 --run_manifest /mnt/typing_manifest.csv \
---bam_header /mnt/TypeSeqHPV/docs/Ion/IonXpress_087_rawlib.txt \
+--bam_header /TypeSeqHPV/docs/Ion/IonXpress_087_rawlib.txt \
 --is_torrent_server "yes" | true
 
 # check to see if this is still required
