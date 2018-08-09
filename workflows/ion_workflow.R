@@ -26,10 +26,6 @@ args_custom_groups =opt_get('custom_groups')
 
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 
-
-
-
-
 parse_startplugin_plan <- drake_plan(
   parse = startplugin_parse(args_start_plugin))
 
@@ -116,9 +112,7 @@ rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assa
 
 ################################# create plugin html block #################################
 
-#html_block = render(system.file("ion_plugin_specific_files", "torrent_server_html_block.R", package = "TypeSeqHPV"))
-
-html_block = render("/mnt/TypeSeqHPV/inst/reports/torrent_server_html_block.R", output_dir = "/mnt")
+html_block = render("/TypeSeqHPV/inst/reports/torrent_server_html_block.R", output_dir = "/mnt")
 
 )
 
