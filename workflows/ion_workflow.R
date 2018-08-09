@@ -7,6 +7,7 @@ library(tidyverse)
 library(igraph)
 library(jsonlite)
 library(parallel)
+library(rmarkdown)
 
 setwd("/mnt")
 
@@ -24,6 +25,10 @@ args_start_plugin =opt_get('start_plugin')
 args_custom_groups =opt_get('custom_groups')
 
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
+
+
+
+
 
 parse_startplugin_plan <- drake_plan(
   parse = startplugin_parse(args_start_plugin))
@@ -113,11 +118,7 @@ rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assa
 
 html_block = render(system.file("reports", "torrent_server_html_block.R", package = "TypeSeqHPV"))
 
-  
-
-
-
-  )
+)
 
 
 make(parse_startplugin_plan)
