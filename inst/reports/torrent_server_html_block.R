@@ -15,14 +15,8 @@ library(scales)
 sessionInfo()
 
 
-#+ get args, echo=FALSE, include = FALSE
-read_lines("args.R") %>% 
-writeLines()
-source("args.R")
-
-
 #+ determine run type, echo=FALSE
-plugin_json = fromJSON(args_start_plugin_path, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
+plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
 run_type = plugin_json$runplugin$run_type
 
