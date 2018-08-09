@@ -105,7 +105,18 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
                               final_pn_matrix=final_pn_matrix,
                               scaling_list = scaling_list,
                              lineage_df=lineage_df,
-                             bam_header_df = bam_header_df)
+                             bam_header_df = bam_header_df),
+
+rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assay_Batch_Code[1], "_qc_report.pdf")),
+
+################################# create plugin html block #################################
+
+html_block = render(system.file("reports", "torrent_server_html_block.R", package = "TypeSeqHPV"))
+
+  
+
+
+
   )
 
 
