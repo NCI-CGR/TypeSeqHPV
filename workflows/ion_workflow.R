@@ -116,7 +116,7 @@ rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assa
 
 ################################# create plugin html block #################################
 
-html_block = render(system.file("reports", "torrent_server_html_block.R", package = "TypeSeqHPV"))
+html_block = render(system.file("ion_specific_plugin_files", "torrent_server_html_block.R", package = "TypeSeqHPV"))
 
 )
 
