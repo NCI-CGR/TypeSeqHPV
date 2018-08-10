@@ -64,21 +64,24 @@ RUN add-apt-repository ppa:webupd8team/java
 RUN apt-get install -y default-jre default-jdk
 
 RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander", "scales","knitr", "koRpus", \
-           "pandoc",\
-           "rmarkdown",\
-                  "fuzzyjoin",\
-                  "ggsci",\
-                  "CodeDepends",\
-                  "visNetwork",\
-                  "txtq",\
-                  "webshot",\
-                  "networkD3",\
-                  "future",\
-                  "drake", \
-                  "parallel",\
-                  "optigrab",\
-                  "formatR",\
-                  "remotes",\
-                  "stringi",\
-                  "V8",\
-                  "DT"))'
+"pandoc",\
+"rmarkdown",\
+"fuzzyjoin",\
+"ggsci",\
+"CodeDepends",\
+"visNetwork",\
+"txtq",\
+"webshot",\
+"networkD3",\
+"future",\
+"drake", \
+"parallel",\
+"optigrab",\
+"formatR",\
+"remotes",\
+"stringi",\
+"V8",\
+"sparklyr",\
+"DT"))'
+
+RUN Rscript -e 'library(sparklyr); spark_install(version = "2.1.0")'
