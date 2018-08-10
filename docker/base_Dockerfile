@@ -81,7 +81,6 @@ RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander"
 "remotes",\
 "stringi",\
 "V8",\
-"sparklyr",\
 "DT"))'
 
-RUN Rscript -e 'library(sparklyr); spark_install(version = "2.1.0")'
+RUN Rscript -e 'install.packages("sparklyr"); library(sparklyr); spark_install(version = "2.1.0")'
