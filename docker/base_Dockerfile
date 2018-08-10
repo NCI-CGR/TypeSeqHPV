@@ -59,3 +59,7 @@ RUN tar xvjf sambamba_v0.6.7_linux.tar.bz2
 #install gatk 4.0
 RUN wget https://github.com/broadinstitute/gatk/releases/download/4.0.6.0/gatk-4.0.6.0.zip && \ 
 unzip gatk-4.0.6.0.zip
+
+RUN add-apt-repository ppa:webupd8team/java
+RUN apt-get update && apt-get install oracle-java8-installer
+
