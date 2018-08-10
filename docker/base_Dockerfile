@@ -81,4 +81,4 @@ RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander"
                   "remotes",\
                   "stringi",\
                   "V8",\
-                  "DT"))
+                  "DT"))'
