@@ -3,7 +3,7 @@ RUN apt-get install -y lmodern
 
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
-RUN Rscript -e 'install.packages("furrr", "future")'
+RUN Rscript -e 'install.packages("furrr")'
 
 RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignments")'
 
