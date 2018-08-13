@@ -17,15 +17,15 @@ read_metrics_output = file(paste0(bam_json_path$path[1],"_read_metrics.json"), o
 bc2_demultiplex_output = file(paste0(bam_json_path$path[1],"_bc2_demultiplex.json"), open = "wb")
 lineage_output = file(paste0(bam_json_path$path[1],"_hpv_lineage.json"),open = "wb")
   
-   print("mark")
 
  
 stream_in(file(bam_json_path$path[1]), handler = function(df){
  
+   print("mark")
 
  
 read_metrics_df = df %>% 
-ts_read_metrics(parameters_df, page, bam_json_path$path)
+ts_read_metrics(parameters_df, page, bam_json_path$path[1])
  
  
  
