@@ -3,18 +3,18 @@
 ion_read_processor <- function(bam_json_path, args_lineage_reference_path, args_barcode_list, parameters_df){
  require(jsonlite)
 
-print("pre lineage_reference_table")
 
  
 lineage_reference_table = read_csv(args_lineage_reference_path) %>%
 map_if(is.factor, as.character) %>% 
 as_tibble() 
  
-print("imported lineage_reference_table")
-  
 barcode_list = read_csv(args_barcode_list)
  
 page = 1
+ 
+ print("mark")
+
   
 read_metrics_output = file(paste0(bam_json_path$path,"_read_metrics.json"), open = "wb")
 bc2_demultiplex_output = file(paste0(bam_json_path$path,"_bc2_demultiplex.json"), open = "wb")
