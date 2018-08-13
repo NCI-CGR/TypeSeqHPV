@@ -1,6 +1,10 @@
 FROM cgrlab/typeseqhpv:base_2018081002
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
+RUN Rscript -e 'install.packages("furrr", "future")'
+
+#install GenomicsAlignments
+
 #clone repo to get other docs
 RUN mkdir /TypeSeqHPV && \
 cd /TypeSeqHPV && \
