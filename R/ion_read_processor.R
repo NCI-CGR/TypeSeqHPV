@@ -13,13 +13,12 @@ barcode_list = read_csv(args_barcode_list)
  
 page = 1
  
+read_metrics_output = file(paste0(bam_json_path$path[1],"_read_metrics.json"), open = "wb")
+bc2_demultiplex_output = file(paste0(bam_json_path$path[1],"_bc2_demultiplex.json"), open = "wb")
+lineage_output = file(paste0(bam_json_path$path[1],"_hpv_lineage.json"),open = "wb")
+  
  print("mark")
-
-  
-read_metrics_output = file(paste0(bam_json_path$path,"_read_metrics.json"), open = "wb")
-bc2_demultiplex_output = file(paste0(bam_json_path$path,"_bc2_demultiplex.json"), open = "wb")
-lineage_output = file(paste0(bam_json_path$path,"_hpv_lineage.json"),open = "wb")
-  
+ 
 stream_in(file(bam_json_path$path), handler = function(df){
  
 read_metrics_df = df %>% 
