@@ -1,9 +1,11 @@
 FROM cgrlab/typeseqhpv:base_2018081002
+RUN apt-get install -y lmodern
+
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
 RUN Rscript -e 'install.packages("furrr", "future")'
 
-#install GenomicsAlignments
+RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignments")'
 
 #clone repo to get other docs
 RUN mkdir /TypeSeqHPV && \
