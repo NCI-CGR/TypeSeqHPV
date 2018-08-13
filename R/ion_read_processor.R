@@ -19,7 +19,7 @@ lineage_output = file(paste0(bam_json_path$path[1],"_hpv_lineage.json"),open = "
   
 
  
-stream_in(file(bam_json_path$path[1]), handler = function(df){
+stream_in(file(bam_json_path$path[1]), fileEncoding="latin1", handler = function(df){
  
    print("mark")
 
