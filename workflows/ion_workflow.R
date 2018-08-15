@@ -27,6 +27,13 @@ args_start_plugin =opt_get('start_plugin')
 args_custom_groups =opt_get('custom_groups')
 
 ################################# analysis plan #################################
+extract_header <- function(bam_dir, bam_files){
+  require(dplyr)
+  system(paste0("samtools view ", bam_dir, "/", bam_files$path[1], " -H -o bam_header.txt"))
+  df = data_frame(path = "/mnt/bam_header.txt")
+}  
+
+
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake_plan(
 parse = startplugin_parse(args_start_plugin),
@@ -56,8 +63,10 @@ temp = as_tibble(.)}),
 parameters_df = TypeSeqHPV::read_in_parameters_csv(args_parameter_file),
 
 ###  
-bam_header_df = extract_header(data_frame(path = dir("/mnt", pattern=".bam", full.names = FALSE))[1], args_bam_files_dir, ) %>%
-                read_in_bam_header(extract_header()),
+bam_header_df = extract_header(args_bam_files_dir, data_frame(path = dir("/mnt", pattern=".bam", full.names = FALSE))) %>%
+                glimpse() %>%
+                read_in_bam_header()
+,
 
 ###
 hpv_types_df = TypeSeqHPV::create_hpv_types_table(ion_read_processing_df, args_run_manifest, bam_header_df, parameters_df),
