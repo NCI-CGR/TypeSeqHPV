@@ -1,6 +1,6 @@
 ################################# load packages #################################
 require(devtools)
-#install_github("cgrlab/TypeSeqHPV", force=TRUE)
+install_github("cgrlab/TypeSeqHPV", force=TRUE)
 require(TypeSeqHPV)
 library(optigrab)
 library(drake)
@@ -12,7 +12,7 @@ library(rmarkdown)
 library(furrr)
 library(future)
 
-################################# get comman line arguments #################################
+################################# get command line arguments #################################
 args_bam_files_dir = opt_get('bam_files_dir')
 args_lineage_reference = opt_get('lineage_reference')
 args_bam_header = opt_get('bam_header')
@@ -53,10 +53,11 @@ system("cat *bc2_demultiplex.json > bc2_demultiplex_merged.json")
 temp = as_tibble(.)}),
 
 ###
-parameters_df = TypeSeqHPV::read_in_parameters_csv(file_in(args_parameter_file)),
+parameters_df = TypeSeqHPV::read_in_parameters_csv(args_parameter_file),
 
 ###  
-bam_header_df = TypeSeqHPV::read_in_bam_header(file_in(args_bam_header)),
+bam_header_df = extract_header(data_frame(path = dir("/mnt", pattern=".bam", full.names = FALSE))[1], args_bam_files_dir, ) %>%
+                read_in_bam_header(extract_header()),
 
 ###
 hpv_types_df = TypeSeqHPV::create_hpv_types_table(ion_read_processing_df, args_run_manifest, bam_header_df, parameters_df),
