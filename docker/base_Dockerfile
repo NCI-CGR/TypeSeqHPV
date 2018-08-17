@@ -84,4 +84,10 @@ RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander"
 "V8",\
 "DT"))'
 
-RUN Rscript -e 'install.packages("sparklyr"); library(sparklyr); spark_install(version = "2.1.0")'
+RUN apt-get install -y lmodern
+
+RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
+
+RUN Rscript -e 'install.packages("furrr")'
+
+RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignments")'
