@@ -33,7 +33,7 @@ ion_plan <- drake_plan(
 parse = if(args_is_torrent_server=="yes"){startplugin_parse(args_start_plugin)}else{"not torrent server"},
   
 #### 2. bam_json ####
-bam_json = data_frame(path = dir("/mnt", pattern=".bam", full.names = FALSE))  %>%
+bam_json = data_frame(path = dir(args_bam_files_dir, pattern=".bam", full.names = FALSE))  %>%
 filter(!(str_detect(path, "json"))) %>%
 split(.$path) %>%
 future_map_dfr(convert_bam_to_json, args_bam_files_dir),
@@ -57,7 +57,7 @@ temp = as_tibble(.)}),
 parameters_df = read_in_parameters_csv(args_parameter_file),
 
 #### 5. bam header ####
-bam_header_df = extract_header(args_bam_files_dir, data_frame(path = dir("/mnt", pattern=".bam", full.names = FALSE))) %>%
+bam_header_df = extract_header(args_bam_files_dir, data_frame(path = dir(args_bam_files_dir, pattern=".bam", full.names = FALSE))) %>%
                 glimpse() %>%
                 read_in_bam_header(),
 
@@ -131,6 +131,6 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
 rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assay_Batch_Code[1], "_qc_report.pdf")))
 
 #### C. execute plan ####
-setwd("/mnt")
+if(args_is_torrent_server=="yes"){setwd("/mnt")}
 future::plan(multiprocess)
 make(ion_plan)
