@@ -30,7 +30,7 @@ args_custom_groups =opt_get('custom_groups')
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake_plan(
   
-parse = startplugin_parse(args_start_plugin),
+parse = if(args_is_torrent_server=="yes"){startplugin_parse(args_start_plugin)}else{"not torrent server"},
   
 #### 2. bam_json ####
 bam_json = data_frame(path = dir("/mnt", pattern=".bam", full.names = FALSE))  %>%
@@ -130,7 +130,7 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
 #rename_report
 rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assay_Batch_Code[1], "_qc_report.pdf")))
 
-#### execute plan ####
+#### C. execute plan ####
 setwd("/mnt")
 future::plan(multiprocess)
 make(ion_plan)
