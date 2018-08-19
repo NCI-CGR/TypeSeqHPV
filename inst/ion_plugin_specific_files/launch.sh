@@ -21,10 +21,7 @@ docker run -i -v $(pwd):/mnt cgrlab/typeseqhpv:final_2018081301 Rscript /TypeSeq
 --bam_header /TypeSeqHPV/docs/Ion/IonXpress_087_rawlib.txt \
 --is_torrent_server "yes"
 
-# check to see if this is still required
 rm *.bam* | true
 
-mv Ion_Torrent_report.pdf ./TypeSeqHPV_QC_report.pdf
 
-zip -j TypeSeqHPV_Report_Files.zip *csv *qc_report.pdf
 

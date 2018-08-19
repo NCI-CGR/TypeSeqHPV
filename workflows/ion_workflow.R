@@ -125,12 +125,15 @@ ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
                                      final_pn_matrix=final_pn_matrix,
                                      scaling_list = scaling_list,
                                      lineage_df=lineage_df,
-                                     bam_header_df = bam_header_df),
+                                     bam_header_df = bam_header_df))
 
-#rename_report
-rename_report = system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assay_Batch_Code[1], "_qc_report.pdf")))
 
 #### C. execute plan ####
 if(args_is_torrent_server=="yes"){setwd("/mnt")}
 future::plan(multiprocess)
 make(ion_plan)
+system(paste0("cp Ion_Torrent_report.pdf ", final_pn_matrix$Assay_Batch_Code[1], "_qc_report.pdf"))
+
+
+
+
