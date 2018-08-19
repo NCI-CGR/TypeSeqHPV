@@ -1,11 +1,6 @@
-FROM cgrlab/typeseqhpv:base_2018081002
-RUN apt-get install -y lmodern
+FROM cgrlab/typeseqhpv:base_18081701
 
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
-
-RUN Rscript -e 'install.packages("furrr")'
-
-RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignments")'
 
 #clone repo to get other docs
 RUN mkdir /TypeSeqHPV && \
