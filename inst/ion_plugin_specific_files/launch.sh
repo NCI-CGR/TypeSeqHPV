@@ -18,9 +18,11 @@ docker run -i -v $(pwd):/mnt cgrlab/typeseqhpv:final_2018081301 Rscript /TypeSeq
 --custom_groups /mnt/report_grouping.csv \
 --control_defs /mnt/control_defs.csv \
 --run_manifest /mnt/typing_manifest.csv \
---bam_header /TypeSeqHPV/docs/Ion/IonXpress_087_rawlib.txt \
 --is_torrent_server "yes"
 
+
+
+#rm extra bam and bam.json files
 rm *.bam* | true
 
 
