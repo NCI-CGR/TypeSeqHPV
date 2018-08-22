@@ -20,8 +20,6 @@ docker run -i -v $(pwd):/mnt cgrlab/typeseqhpv:final_2018081301 Rscript /TypeSeq
 --run_manifest /mnt/typing_manifest.csv \
 --is_torrent_server "yes"
 
-
-
 #rm extra bam and bam.json files
 rm *.bam* | true
 

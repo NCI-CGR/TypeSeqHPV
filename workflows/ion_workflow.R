@@ -1,7 +1,6 @@
 #### A. load packages ####
-require(devtools)
-install_github("cgrlab/TypeSeqHPV", force=TRUE)
-require(TypeSeqHPV)
+library(devtools)
+library(TypeSeqHPV)
 library(optigrab)
 library(drake)
 library(tidyverse)
