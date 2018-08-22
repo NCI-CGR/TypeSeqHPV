@@ -1,5 +1,5 @@
 Sort_Order,Project,Sample_Owner,Panel,Specimen_Type,Specimen_Media,Ext_Lab,Ext_Operator,Ext_Method,Ext_Date,gDNA_Plate_ID,gDNA_Well_ID,Assay_Lab,Assay_Operator,Assay_Start_Date,Assay_Batch_Code,Assay_Plate_Code,Assay_Well_ID,Owner_Sample_ID,BC1,BC2
-,REQUIRED,,,,,,,,,,,,,,REQUIRED,,,REQUIRED,REQUIRED,REQUIRED
+REQUIRED,REQUIRED,,REQUIRED,,,,,,,,,,,,REQUIRED,REQUIRED,,REQUIRED,REQUIRED,REQUIRED
 1,,,,,,,,,,,,,,,,,,,,
 2,,,,,,,,,,,,,,,,,,,,
 3,,,,,,,,,,,,,,,,,,,,
