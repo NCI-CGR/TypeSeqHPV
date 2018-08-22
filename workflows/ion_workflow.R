@@ -118,7 +118,6 @@ collection_of_csv_files = write_all_csv_files(final_grouped_samples_only_matrix=
 html_block = if(args_is_torrent_server=="yes"){render("/TypeSeqHPV/inst/reports/torrent_server_html_block.R", output_dir = "/mnt")}else{"not torrent server"},
 
 
-
 #### 16. qc report ####
 ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
                                      split_deliverables=split_deliverables, 

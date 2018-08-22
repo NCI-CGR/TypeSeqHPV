@@ -38,7 +38,7 @@ temp = control_summary_safe(control_results$control_results_final)
 #+ Counts and Percent Types Positive by Project, echo=FALSE, message=FALSE, warning=FALSE, out.width = '200%', fig.align = "center"
 percent_positive_histogram_safe <- possibly(TypeSeqHPV::percent_positive_histogram, otherwise=data.frame())
 
-temp = percent_positive_histogram(split_deliverables$samples_only_matrix, bam_header_df) 
+temp = percent_positive_histogram_safe(split_deliverables$samples_only_matrix, bam_header_df) 
 
 #' \newpage
 #' ## Coinfection Rate Histogram
@@ -54,7 +54,7 @@ temp = coinfection_rate_histogram_safe(split_deliverables$samples_only_matrix)
 
 signal_to_noise_plot_safe <- possibly(TypeSeqHPV::signal_to_noise_plot, otherwise=data.frame())
 
-temp = signal_to_noise_plot(hpv_types_df %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")), 
+temp = signal_to_noise_plot_safe(hpv_types_df %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")), 
                             final_pn_matrix, 
                             scaling_list)
 #' \newpage
