@@ -114,6 +114,10 @@ collection_of_csv_files = write_all_csv_files(final_grouped_samples_only_matrix=
                                               full_lineage_table_with_manifest=lineage_df,
                                               parameters_df = parameters_df),
 
+#### 15. html block for torrent server
+html_block = if(args_is_torrent_server=="yes"){render("/TypeSeqHPV/inst/reports/torrent_server_html_block.R", output_dir = "/mnt")}else{"not torrent server"},
+
+
 
 #### 16. qc report ####
 ion_qc_report = render_ion_qc_report(args_start_plugin=args_start_plugin,
