@@ -1,0 +1,5 @@
+Sample_Sheet_Panel_Name,Group_Name,HPV03,HPV06,HPV11,HPV13,HPV16,HPV18,HPV26,HPV28,HPV30,HPV31,HPV32,HPV33,HPV35,HPV39,HPV40,HPV42,HPV43,HPV44,HPV45,HPV51,HPV52,HPV53,HPV54,HPV55,HPV56,HPV58,HPV59,HPV61,HPV62,HPV64,HPV66,HPV67,HPV68a,HPV68b,HPV69,HPV70,HPV71,HPV72a,HPV73,HPV74,HPV76,HPV81,HPV82,HPV82v,HPV83,HPV84,HPV85,HPV86,HPV87,HPV89,HPV90,HPV91,HPV97,HPV114
+All,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Carcinogenic_only,,mask,mask,mask,mask,,,mask,mask,mask,,mask,,,,mask,mask,mask,mask,,,,mask,mask,mask,,,,mask,mask,mask,mask,mask,,,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask
+Carcinogenic_Grouped,Onco,,,,,Onco,Onco,,,,Onco,,Onco,Onco,Onco,,,,,Onco,Onco,Onco,,,,Onco,Onco,Onco,,,,,,,Onco,,,,,,,,,,,,,,,,,,,,
+Carcinogenic_only_Grouped,Onco,mask,mask,mask,mask,Onco,Onco,mask,mask,mask,Onco,mask,Onco,Onco,Onco,mask,mask,mask,mask,Onco,Onco,Onco,mask,mask,mask,Onco,Onco,Onco,mask,mask,mask,Onco,mask,Onco,Onco,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask,mask
