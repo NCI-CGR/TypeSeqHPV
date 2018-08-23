@@ -7,3 +7,8 @@ RUN mkdir /TypeSeqHPV && \
 cd /TypeSeqHPV && \
 git init && \
 git pull https://github.com/cgrlab/TypeSeqHPV.git
+
+
+# pandoc
+RUN wget https://github.com/jgm/pandoc/releases/download/2.0.1.1/pandoc-2.0.1.1-1-amd64.deb \
+&& dpkg -i pandoc-2.0.1.1-1-amd64.deb
