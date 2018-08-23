@@ -12,7 +12,6 @@ r-base-dev \
 software-properties-common \
 libcurl4-openssl-dev \
 libxml2-dev \
-libxml2-dev \
 libcairo2-dev \
 libssl-dev \
 ed \
