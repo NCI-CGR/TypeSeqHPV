@@ -14,6 +14,7 @@ libcurl4-openssl-dev \
 libxml2-dev \
 libcairo2-dev \
 libssl-dev \
+libpng-dev \
 ed \
 curl \
 wget \
