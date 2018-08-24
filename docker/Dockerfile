@@ -1,4 +1,4 @@
-FROM cgrlab/typeseqhpv:base_18081701
+FROM cgrlab/typeseqhpv:base_18082301
 
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
