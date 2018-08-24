@@ -23,7 +23,6 @@ locales \
 vim-tiny \
 ca-certificates \
 git \
-pandoc \ 
 texlive-latex-recommended \
 texlive-latex-extra \
 texlive-fonts-recommended \
@@ -40,7 +39,8 @@ perl \
 unzip \
 tabix \
 libncurses5-dev \
-samtools
+samtools \
+lmodern
  
  
 # install aws cli
@@ -56,13 +56,15 @@ RUN cd bwa; make
 RUN wget https://github.com/biod/sambamba/releases/download/v0.6.7/sambamba_v0.6.7_linux.tar.bz2
 RUN tar xvjf sambamba_v0.6.7_linux.tar.bz2
 
-
 #install gatk 4.0
 RUN wget https://github.com/broadinstitute/gatk/releases/download/4.0.6.0/gatk-4.0.6.0.zip && \ 
 unzip gatk-4.0.6.0.zip
 
 RUN add-apt-repository ppa:webupd8team/java
 RUN apt-get install -y default-jre default-jdk
+
+RUN wget https://github.com/jgm/pandoc/releases/download/2.0.1.1/pandoc-2.0.1.1-1-amd64.deb \
+&& dpkg -i pandoc-2.0.1.1-1-amd64.deb
 
 RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander", "scales","knitr", "koRpus", \
 "pandoc",\
@@ -82,12 +84,7 @@ RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander"
 "remotes",\
 "stringi",\
 "V8",\
-"DT"))'
-
-RUN apt-get install -y lmodern
-
-RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
-
-RUN Rscript -e 'install.packages("furrr")'
+"DT",\
+"furrr"))'
 
 RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignments")'
