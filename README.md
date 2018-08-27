@@ -84,10 +84,9 @@ sudo vi /etc/default/docker
 ````
 
 
-## Download and add hpv-typing plugin via torrent server gui
+## Download and add hpv-typing plugin zip file via torrent server gui
 
-https://github.com/davidroberson/TypeSeqHPV-private/releases/tag/v1.33001.180
-
+https://github.com/cgrlab/TypeSeqHPV/releases/download/2.1808.2701/TypeSeqHPV_TSv1_Ion_Torrent_Plugin.zip
 
 Illumina Workflow
 ================
