@@ -23,15 +23,65 @@ Ion Torrent Plugin
 
 We also include a wrapper for the Ion Torrent server that can be uploaded via the provided zip file.  The prerequisite for running the Ion Torrent Plugin successfully is to install docker on the server ahead of time.
 
-### Install docker
+## Install Docker Community Edition On Torrent Servers
 
-    sudo apt-get install docker.io
-    sudo usermod -aG docker [user name] 
-    sudo docker login (with any docker user id)
-    sudo usermod -aG docker ionian
-    sudo su ionian
-    docker login (with any docker user id)
-    su ionadmin
+Following instructions posted here https://docs.docker.com/install/linux/docker-ce/ubuntu/
+
+### Uninstall previous version
+
+It may be required to uninstall previous version of docker.  Skip this step if no previous version of docker installed.
+
+```
+sudo apt-get remove docker docker-engine docker.io
+````
+
+### Update Package Index and Install
+
+````
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg
+
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+sudo apt-get update
+
+sudo apt-get install -y docker-ce
+````
+
+Try a hello world install test.
+````
+sudo docker run hello-world
+````
+
+### Post Installation Setup
+  
+Give plugin access to docker.
+````
+sudo usermod -aG docker [user name] 
+sudo docker login (with any docker user id)
+sudo usermod -aG docker ionian
+sudo su ionian
+docker login (with any docker user id)
+su ionadmin
+````
+
+### Make Docker storage more robust on torrent server
+
+Docker doesn't always clean up after itself.  Changing were docker keeps it's image layers will prevent critical partitions from filling up.  If this step is skipped after several runs of a docker plugin the Torrent Service job scheduler will stop working.
+
+````
+sudo service docker stop
+cd /var/lib
+sudo rsync -a docker /results/plugins/scratch/
+sudo rm -rf docker
+sudo ln -s docker /results/plugins/scratch/docker
+sudo vi /etc/default/docker
+````
 
 
 ## Download and add hpv-typing plugin via torrent server gui
