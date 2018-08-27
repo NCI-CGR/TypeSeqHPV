@@ -23,7 +23,7 @@ Ion Torrent Plugin
 
 We also include a wrapper for the Ion Torrent server that can be uploaded via the provided zip file.  The prerequisite for running the Ion Torrent Plugin successfully is to install docker on the server ahead of time.
 
-## Install Docker Community Edition On Torrent Servers
+## Install Docker Community Edition On Torrent Server
 
 Following instructions posted here https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
