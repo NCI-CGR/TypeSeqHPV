@@ -71,10 +71,7 @@ Docker doesn't always clean up after itself.  Changing were docker keeps it's im
 
 ````
 sudo service docker stop
-cd /var/lib
-sudo rsync -a docker /results/plugins/scratch/
-sudo rm -rf docker
-sudo ln -s docker /results/plugins/scratch/docker
+sudo rm -rf  /var/lib/docker
 sudo vim /etc/default/docker
 ````
 
