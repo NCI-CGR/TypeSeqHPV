@@ -75,7 +75,20 @@ cd /var/lib
 sudo rsync -a docker /results/plugins/scratch/
 sudo rm -rf docker
 sudo ln -s docker /results/plugins/scratch/docker
-sudo vi /etc/default/docker
+sudo vim /etc/default/docker
+````
+
+Modify this line
+````
+ #DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+````
+Changing it to this
+````
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 -g /results/plugins/scratch/docker"
+````
+Restart Docker
+````
+sudo service docker start 
 ````
 
 
