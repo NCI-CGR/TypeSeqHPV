@@ -52,22 +52,17 @@ sudo apt-get update
 
 sudo apt-get install -y docker-ce
 ````
-
-Try a hello world install test.
-````
-sudo docker run hello-world
-````
-
 ### Post Installation Setup
   
 Give plugin access to docker.
 ````
-sudo usermod -aG docker [user name] 
-sudo docker login (with any docker user id)
+sudo usermod -aG docker ionadmin
 sudo usermod -aG docker ionian
-sudo su ionian
-docker login (with any docker user id)
-su ionadmin
+````
+
+Try a hello world install test.
+````
+docker run hello-world
 ````
 
 ### Make Docker storage more robust on torrent server
