@@ -120,10 +120,11 @@ grouped_samples_only_matrix = prepare_grouped_samples_only_matrix_outputs(
     parameters_df),
 
 #### 14. create lineage dataframe ####
-lineage_df = prepare_lineage_df(
+lineage_df = prepare_lineage_df_safe(
     args_lineage_reference,
     ion_read_processing,
     split_deliverables$samples_only_matrix),
+
 
 #### 15. export csv files ####
 collection_of_csv_files = write_all_csv_files(
@@ -150,6 +151,10 @@ ion_qc_report = render_ion_qc_report(
 
 #### C. execute workflow plan ####
 if ( args_is_torrent_server == "yes") { setwd("/mnt")}
+
+prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
+                                    otherwise = data.frame())
+
 
 future::plan(multiprocess)
 drake::make(ion_plan)
