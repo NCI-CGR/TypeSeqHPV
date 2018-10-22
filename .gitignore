@@ -5,3 +5,5 @@
 *.Rproj
 input/**
 output/**
+logs/**
+.Rbuildignore
