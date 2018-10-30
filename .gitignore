@@ -7,3 +7,5 @@ input/**
 output/**
 logs/**
 .Rbuildignore
+inst/methylation/metastore_db/**
+inst/methylation/*.log
