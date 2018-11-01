@@ -13,11 +13,19 @@ def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
     }
 }
 
-val files = getListOfFiles(new File("./"), List("bam")).par
+val barcodes = (spark.read.format("csv")
+        .option("header", "true")
+        .load("barcodes.csv"))
+
+val manifest = (spark.read.format("csv")
+        .option("header", "true")
+        .load("manifest.csv"))
+
+val files = getListOfFiles(new File("./"), List("bam"))
+
 files.foreach(file_name => println(s"file is $file_name"))
 
-// COMMAND ----------
-
+//main loop
 files.foreach(bam_path_temp => {
 
 println(s"file is $bam_path_temp")
@@ -26,32 +34,23 @@ var bam_path = bam_path_temp.toString
 
 var reads = sc.loadAlignments(bam_path)
 
-reads.transformDataset(_.filter($"sequence".contains("CTAAGGTAAC")))
-.saveAsSam(bam_path + "_demux/" + "bc01_" + bam_path.split("/").last, asSingleFile=true)
+var temp = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
+                   .filter(col("BC1") === ("A" + bam_path.substring(13,15)))
 
-reads.transformDataset(_.filter($"sequence".contains("TAAGGAGAAC")))
-.saveAsSam(bam_path + "_demux/" + "bc02_" + bam_path.split("/").last, asSingleFile=true)
+temp.collect().foreach(bc_row => {
 
-reads.transformDataset(_.filter($"sequence".contains("AAGAGGATTC")))
-.saveAsSam(bam_path + "_demux/" + "bc03_" + bam_path.split("/").last, asSingleFile=true)
+var bc_name = bc_row(7).toString + bc_row(8).toString
+var bc_seq = bc_row(12)
 
-reads.transformDataset(_.filter($"sequence".contains("TACCAAGATC")))
-.saveAsSam(bam_path + "_demux/" + "bc04_" + bam_path.split("/").last, asSingleFile=true)
+println(bc_name.toString + "_" + bc_seq.toString)
 
-reads.transformDataset(_.filter($"sequence".contains("CAGAAGGAAC")))
-.saveAsSam(bam_path + "_demux/" + "bc05_" + bam_path.split("/").last, asSingleFile=true)
-
-reads.transformDataset(_.filter($"sequence".contains("CTGCAAGTTC")))
-.saveAsSam(bam_path + "_demux/" + "bc06_" + bam_path.split("/").last, asSingleFile=true)
-
-reads.transformDataset(_.filter($"sequence".contains("TTCGTGATTC")))
-.saveAsSam(bam_path + "_demux/" + "bc07_" + bam_path.split("/").last, asSingleFile=true)
-
-reads.transformDataset(_.filter($"sequence".contains("TTCCGATAAC")))
-.saveAsSam(bam_path + "_demux/" + "bc08_" + bam_path.split("/").last, asSingleFile=true)
+reads.transformDataset(_.filter($"sequence".contains(bc_seq)))
+.saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
 
 })
 
+
+})
 
 //command to exit spark shell
 System.exit(0)

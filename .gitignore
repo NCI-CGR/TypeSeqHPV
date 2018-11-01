@@ -9,3 +9,4 @@ logs/**
 .Rbuildignore
 inst/methylation/metastore_db/**
 inst/methylation/*.log
+TypeSeqHPVMethyl-DEV/**
