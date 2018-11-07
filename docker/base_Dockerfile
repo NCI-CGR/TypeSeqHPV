@@ -1,5 +1,48 @@
 FROM ubuntu:16.04
 
+MAINTAINER David Roberson, david.roberson@nih.gov
+
+WORKDIR /home
+
+RUN apt-get update && apt-get install -y \
+	git \
+	openjdk-8-jdk \
+	python \
+	libnss3 \
+	curl
+
+RUN set -x -v -e
+
+# spark
+
+RUN mkdir /opt/apache-spark
+RUN curl http://www.gtlib.gatech.edu/pub/apache/spark/spark-2.1.3/spark-2.1.3-bin-hadoop2.7.tgz \
+  | tar --strip-components=1 -xzC /opt/apache-spark
+
+# maven
+# we rely on apache maven > 3.1.1 to build ADAM, so we can't use the
+# version of maven installed by apt-get
+
+RUN mkdir /opt/apache-maven
+RUN curl http://www.gtlib.gatech.edu/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz \
+  | tar --strip-components=1 -xzC /opt/apache-maven
+
+ENV PATH /opt/apache-spark/bin:$PATH
+ENV MAVEN_HOME /opt/apache-maven-
+
+# clone adam
+RUN git clone https://github.com/fnothaft/adam.git
+
+ENV MAVEN_OPTS "-Xmx2g"
+
+# build adam
+WORKDIR /home/adam
+RUN git checkout 2059-2064
+
+RUN /opt/apache-maven/bin/mvn package -DskipTests
+
+# R is below
+
 RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | tee -a /etc/apt/sources.list
 
 RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
@@ -32,7 +75,7 @@ automake \
 make \
 g++ \
 gcc \
-build-essential \ 
+build-essential \
 zlib1g-dev \
 libgsl0-dev \
 perl \
@@ -41,8 +84,8 @@ tabix \
 libncurses5-dev \
 samtools \
 lmodern
- 
- 
+
+
 # install aws cli
 RUN apt-get install -y python-pip
 RUN pip install awscli
@@ -57,11 +100,11 @@ RUN wget https://github.com/biod/sambamba/releases/download/v0.6.7/sambamba_v0.6
 RUN tar xvjf sambamba_v0.6.7_linux.tar.bz2
 
 #install gatk 4.0
-RUN wget https://github.com/broadinstitute/gatk/releases/download/4.0.6.0/gatk-4.0.6.0.zip && \ 
+RUN wget https://github.com/broadinstitute/gatk/releases/download/4.0.6.0/gatk-4.0.6.0.zip && \
 unzip gatk-4.0.6.0.zip
 
-RUN add-apt-repository ppa:webupd8team/java
-RUN apt-get install -y default-jre default-jdk
+#RUN add-apt-repository ppa:webupd8team/java
+#RUN apt-get install -y default-jre default-jdk
 
 RUN wget https://github.com/jgm/pandoc/releases/download/2.0.1.1/pandoc-2.0.1.1-1-amd64.deb \
 && dpkg -i pandoc-2.0.1.1-1-amd64.deb
