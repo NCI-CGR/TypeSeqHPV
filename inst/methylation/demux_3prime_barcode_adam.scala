@@ -13,13 +13,19 @@ def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
     }
 }
 
+println("pre barcodes")
+
 val barcodes = (spark.read.format("csv")
         .option("header", "true")
-        .load("barcodes.csv"))
+        .load("/data/inst/methylation/barcodes.csv"))
+
+println("post barcodes")
 
 val manifest = (spark.read.format("csv")
         .option("header", "true")
         .load("manifest.csv"))
+
+println("post manifest")
 
 val files = getListOfFiles(new File("./"), List("bam"))
 
