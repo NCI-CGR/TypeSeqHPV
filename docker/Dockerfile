@@ -1,11 +1,5 @@
 FROM cgrlab/typeseqhpv:base_18110801
 
-RUN apt-get install -y libmariadb-client-lgpl-dev
-
-RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("VariantAnnotation"); biocLite("genoset")'
-
-RUN Rscript -e 'require(devtools); devtools::install_github("seandavi/VCFWrenchR")' 
-
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
 #clone repo to get other docs
@@ -14,6 +8,6 @@ cd /TypeSeqHPV && \
 git init && \
 git pull https://github.com/cgrlab/TypeSeqHPV.git
 
-#RUN pip install -U git+https://github.com/randy3k/rapi
-#RUN pip install -U git+https://github.com/randy3k/lineedit
-#RUN pip install -U git+https://github.com/randy3k/rtichoke
+RUN pip install -U git+https://github.com/randy3k/rapi
+RUN pip install -U git+https://github.com/randy3k/lineedit
+RUN pip install -U git+https://github.com/randy3k/rtichoke
