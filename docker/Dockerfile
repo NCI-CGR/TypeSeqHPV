@@ -1,5 +1,9 @@
 FROM cgrlab/typeseqhpv:base_18110801
 
+RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("VariantAnnotation"); biocLite("genoset")'
+
+RUN Rscript -e 'require(devtools); devtools::install_github("seandavi/VCFWrenchR")' 
+
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
 #clone repo to get other docs
