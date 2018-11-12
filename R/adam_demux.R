@@ -1,10 +1,20 @@
 #+
 adam_demux <- function(bam_dir, bam_files){
     require(dplyr)
-    system("/home/adam/bin/adam-shell -i /data/inst/methylation/demux_3prime_barcode_adam.scala")
+    require(fs)
+
+    system("/home/adam/bin/adam-shell -i /package/inst/methylation/demux_3prime_barcode_adam.scala")
     system("mkdir demux_bams")
     system("mv */*A*bam demux_bams")
     system("rm -R *_demux")
 
-    df = data_frame(path = bam_dir)
+    return_df = dir_ls("demux_bams", glob = "*.bam") %>%
+        map_df(as_tibble) %>%
+        rename(path = value) %>%
+        glimpse()
 }
+
+
+
+
+

@@ -17,13 +17,15 @@ println("pre barcodes")
 
 val barcodes = (spark.read.format("csv")
         .option("header", "true")
-        .load("/data/inst/methylation/barcodes.csv"))
+        .load("/package/inst/methylation/barcodes.csv"))
 
-println("post barcodes")
+println(barcodes)
 
 val manifest = (spark.read.format("csv")
         .option("header", "true")
-        .load("manifest.csv"))
+        .load("/mnt/manifest.csv"))
+
+println(manifest)
 
 println("post manifest")
 
