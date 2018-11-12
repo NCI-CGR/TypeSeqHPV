@@ -1,5 +1,7 @@
 FROM cgrlab/typeseqhpv:base_18110801
 
+RUN apt-get install -y libmariadb-client-lgpl-dev
+
 RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("VariantAnnotation"); biocLite("genoset")'
 
 RUN Rscript -e 'require(devtools); devtools::install_github("seandavi/VCFWrenchR")' 
