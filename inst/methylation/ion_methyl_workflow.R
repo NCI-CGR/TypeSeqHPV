@@ -16,6 +16,8 @@ source("/package/R/methyl_startplugin_parse.R")
 source("/package/R/adam_demux.R")
 source("/package/R/tvc_run.R")
 source("/package/R/samtools_sort.R")
+source("/package/R/vcf_2_dataframe.R")
+
 
 setwd("/mnt")
 
@@ -23,6 +25,7 @@ setwd("/mnt")
 
 #### B. get command line arguments ####
 args_is_torrent_server = optigrab::opt_get('is_torrent_server')
+args_start_plugin = optigrab::opt_get('start_plugin')
 
 #### C. create workflow plan ####
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
@@ -49,9 +52,31 @@ run_tvc = sorted_bams %>%
     select(path = sorted_path) %>%
     split(.$path) %>%
     future_map_dfr(tvc_cli) %>%
+    glimpse(),
+
+#### 5. vcf to json adam ####
+vcf_to_json_files = run_tvc %>%
+    vcf_to_json() %>%
+    glimpse(),
+
+#### 5. vcf to json adam ####
+vcf_json_to_df = vcf_to_json_files %>%
+    group_by(path) %>%
+    do({
+        temp = as_tibble(.)
+
+        temp = flatten(stream_in(file(temp$path))) #%>%
+            #mutate(filtersFailed = unlist(filtersFailed))
+
+    }) %>%
     glimpse()
 
+
 )
+
+
+
+
 
 #### D. execute workflow plan ####
 if ( args_is_torrent_server == "yes") { setwd("/mnt")}

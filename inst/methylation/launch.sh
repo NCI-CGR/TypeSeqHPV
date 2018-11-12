@@ -24,6 +24,7 @@ docker run -i -v $(pwd):/mnt \
     -v /data/TypeSeqHPV/inst/methylation:/plugin \
     cgrlab/typeseqhpv:final_18110802 \
     Rscript /plugin/ion_methyl_workflow.R \
+     --start_plugin /mnt/startplugin.json \
      --is_torrent_server "yes"
 
 rm *rawlib.bam
