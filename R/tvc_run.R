@@ -15,11 +15,11 @@ tvc_cli <- function(files){
     --output-vcf ", vcf_df$vcf, " \\
     --input-bam ", vcf_df$bam_path, " \\
     --force-sample-name ", vcf_df$sample_name, " \\
-    --input-vcf /plugin/Methyl_HOTSPOT_T28_complete_v2_VCF.vcf \\
-    --reference /plugin/HPV-Methyl_REF_T28.fasta \\
-    --target-file /plugin/Methyl_INSERT-REGIONS_T28_3.bed \\
+    --input-vcf /TypeSeqHPV/inst/methylation/Methyl_HOTSPOT_T28_complete_v2_VCF.vcf \\
+    --reference /TypeSeqHPV/inst/methylation/HPV-Methyl_REF_T28.fasta \\
+    --target-file /TypeSeqHPV/inst/methylation/Methyl_INSERT-REGIONS_T28_3.bed \\
     --trim-ampliseq-primers \\
-    --parameters-file /plugin/methyl_T28_4_TVCparameters.json \\
+    --parameters-file /TypeSeqHPV/inst/methylation/methyl_T28_4_TVCparameters.json \\
     --num-threads 4"))
 
     system("rm vcf/*filtered.vcf")
