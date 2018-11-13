@@ -21,7 +21,9 @@ source("/package/R/vcf_2_dataframe.R")
 
 setwd("/mnt")
 
-#clean(run_tvc)
+clean(vcf_to_json_files)
+clean(vcf_json_to_df)
+
 
 #### B. get command line arguments ####
 args_is_torrent_server = optigrab::opt_get('is_torrent_server')
@@ -37,7 +39,7 @@ parse_plugin = if (args_is_torrent_server == "yes") {
     },
 
 #### 2. demux bams ####
-demux_bams = adam_demux(args_bam_files_dir) %>%
+demux_bams = adam_demux(parse_plugin, args_bam_files_dir) %>%
     glimpse(),
 
 #### 3. picard sort and create index ####
@@ -69,14 +71,12 @@ vcf_json_to_df = vcf_to_json_files %>%
             #mutate(filtersFailed = unlist(filtersFailed))
 
     }) %>%
-    glimpse()
+    glimpse() %>%
+    select_if(negate(is.list)) %>%
+    write_csv("hotspot_variants_table.csv")
 
 
 )
-
-
-
-
 
 #### D. execute workflow plan ####
 if ( args_is_torrent_server == "yes") { setwd("/mnt")}

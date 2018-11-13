@@ -12,6 +12,4 @@ vcf_to_json <- function(vcf_files){
         map_df(as_tibble) %>%
         rename(path = value)
 
-
-
 }

@@ -22,22 +22,10 @@ tvc_cli <- function(files){
     --parameters-file /plugin/methyl_T28_4_TVCparameters.json \\
     --num-threads 4"))
 
-
-    #system("
-    #mv TSVC_variants.genome.vcf A65P03_IonXpress_065_65_R_2018_10_17_11_41_28_user_S5XL-0038-67-2018-10-17_RD209-T30.sorted.genome.vcf
-    #")
+    system("rm vcf/*filtered.vcf")
 
     vcf_df = vcf_df
 
     }
-
-# --force-sample-name ", vcf_df$sample_name,
-
-#
-
-#
-
-#\\
-#
 
 #     -s 1 -m 2  \\
