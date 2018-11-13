@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # TypeSeq HPV Methyl
-VERSION="1.1811.1304"
+VERSION="1.1811.1305"
 #autorundisable
 echo Pipeline version $VERSION
 

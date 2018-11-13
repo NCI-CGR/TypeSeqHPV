@@ -3,7 +3,7 @@ vcf_to_json <- function(vcf_files){
     require(dplyr)
     require(fs)
 
-    system("/home/adam/bin/adam-shell -i /TypeSeqHPV/inst/methylation/vcf_to_json_adam.scala")
+    system("/home/adam/bin/adam-shell --driver-memory 80G --driver-cores 22 -i /TypeSeqHPV/inst/methylation/vcf_to_json_adam.scala")
     system("mkdir vcf_json")
     #system("mv vcf/*/A*.json vcf_json")
     #system("rm -R vcf/*_json_temp")
