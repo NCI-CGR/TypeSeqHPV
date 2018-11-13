@@ -12,18 +12,7 @@ library(future)
 library(drake)
 library(fs)
 
-source("/package/R/methyl_startplugin_parse.R")
-source("/package/R/adam_demux.R")
-source("/package/R/tvc_run.R")
-source("/package/R/samtools_sort.R")
-source("/package/R/vcf_2_dataframe.R")
-
-
 setwd("/mnt")
-
-clean(vcf_to_json_files)
-clean(vcf_json_to_df)
-
 
 #### B. get command line arguments ####
 args_is_torrent_server = optigrab::opt_get('is_torrent_server')
@@ -90,7 +79,7 @@ drake::make(ion_plan)
 
 #### E. make html block for torrent server ####
 html_block = if ( args_is_torrent_server == "yes") {
-    render("/TypeSeqHPV/inst/reports/torrent_server_html_block.R",
+    render("/TypeSeqHPV/inst/methylation/torrent_server_html_block.R",
            output_dir = "/mnt")}else{"not torrent server"}
 
 

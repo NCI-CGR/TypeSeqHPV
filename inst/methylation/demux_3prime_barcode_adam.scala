@@ -17,7 +17,7 @@ println("pre barcodes")
 
 val barcodes = (spark.read.format("csv")
         .option("header", "true")
-        .load("/package/inst/methylation/barcodes.csv"))
+        .load("/TypeSeqHPV/inst/methylation/barcodes.csv"))
 
 println(barcodes)
 
