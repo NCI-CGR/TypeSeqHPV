@@ -73,7 +73,6 @@ if ( args_is_torrent_server == "yes") { setwd("/mnt")}
 system("mkdir sorted_bams")
 system("mkdir vcf")
 
-
 future::plan(multiprocess)
 drake::make(ion_plan)
 
