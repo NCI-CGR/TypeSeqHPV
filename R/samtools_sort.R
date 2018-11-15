@@ -8,19 +8,16 @@ samtools_sort <- function(bam_files){
         select(-temp) %>%
         separate(bam, ".rawlib.bam", into = c("bam"), extra = 'drop') %>%
         rename(bam_path = path) %>%
-        mutate(sorted_path = paste0("/mnt/sorted_bams/", bam,".sorted.bam"))
+        mutate(sorted_path = paste0("/mnt/sorted_bams/", bam,".sorted"))
 
-    system(paste0("samtools sort -f /mnt/", bam_df$bam_path, " ", bam_df$sorted_path))
+    system(paste0("samtools sort ", "/mnt/", bam_df$bam_path, " ", bam_df$sorted_path), wait = TRUE)
 
-    system(paste0("samtools index ", bam_df$sorted_path))
+    bam_df = bam_df %>%
+        mutate(sorted_path = paste0(sorted_path,".bam"))
 
-    bam_df = bam_df
+    system(paste0("samtools index ", bam_df$sorted_path), wait = TRUE)
+
+    return(bam_df)
+
 }
-
-
-
-
-
-
-
 

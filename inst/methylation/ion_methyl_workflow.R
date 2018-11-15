@@ -38,20 +38,19 @@ sorted_bams = demux_bams %>%
     glimpse(),
 
 #### 4. run tvc on demux bams ####
-run_tvc = sorted_bams %>%
-    #slice(1:1) %>%
+vcf_files = sorted_bams %>%
     select(path = sorted_path) %>%
     split(.$path) %>%
     future_map_dfr(tvc_cli) %>%
     glimpse(),
 
 #### 5. vcf to json adam ####
-vcf_to_json_files = run_tvc %>%
+vcf_to_json_files = vcf_files %>%
     vcf_to_json() %>%
     glimpse(),
 
 #### 5. vcf to json adam ####
-vcf_json_to_df = vcf_to_json_files %>%
+hotspot_df = vcf_to_json_files %>%
     group_by(path) %>%
     do({
         temp = as_tibble(.)
@@ -60,10 +59,13 @@ vcf_json_to_df = vcf_to_json_files %>%
             #mutate(filtersFailed = unlist(filtersFailed))
 
     }) %>%
+    filter(annotation.attributes.HS == "true") %>%
+    ungroup() %>%
+    rename(sample_name = path) %>%
+    mutate(sample_name = str_sub(sample_name, start = 5, end = 10)) %>%
     glimpse() %>%
     select_if(negate(is.list)) %>%
     write_csv("hotspot_variants_table.csv")
-
 
 )
 

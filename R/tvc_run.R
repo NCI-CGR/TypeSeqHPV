@@ -3,8 +3,10 @@ tvc_cli <- function(files){
     require(dplyr)
     require(fs)
 
+
     vcf_df = files %>%
         as_tibble() %>%
+        glimpse() %>%
         separate(path, "sorted_bams/", into = c("temp", "sample_name"), remove = FALSE) %>%
         select(-temp) %>%
         separate(sample_name, ".sorted.bam", into = c("sample_name"), extra = 'drop') %>%
@@ -24,8 +26,6 @@ tvc_cli <- function(files){
 
     system("rm vcf/*filtered.vcf")
 
-    vcf_df = vcf_df
+    return(vcf_df)
 
     }
-
-#     -s 1 -m 2  \\
