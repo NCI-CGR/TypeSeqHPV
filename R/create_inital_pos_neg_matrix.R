@@ -39,9 +39,9 @@ select(-mq, -min_len, -max_len) %>%
 ungroup() %>%
 
 # spread back into matrix format
-select(-b2m_status, -Min_reads_per_type, -factored_min_reads_per_type,
+select(-Min_reads_per_type, -factored_min_reads_per_type,
        -qualified_aligned_reads, -hpv_total_reads, -type_perc,
-       -Min_type_percent_hpv_reads, -read_counts, -B2M) %>%
+       -Min_type_percent_hpv_reads, -read_counts) %>%
 
 # This keeps the proper column order
 mutate(type_id = factor(type_id,levels = filtering_criteria$type_id)) %>%
