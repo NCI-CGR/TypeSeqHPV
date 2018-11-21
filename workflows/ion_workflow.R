@@ -155,12 +155,19 @@ if ( args_is_torrent_server == "yes") { setwd("/mnt")}
 prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
-
 future::plan(multiprocess)
 drake::make(ion_plan)
 
 #### D. make html block for torrent server ####
-html_block = if ( args_is_torrent_server == "yes") {
-    render("/TypeSeqHPV/inst/reports/torrent_server_html_block.R",
-           output_dir = "/mnt")}else{"not torrent server"}
+
+html_block =
+    read_csv("./config_file.csv") %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble() %>%
+    mutate(report = case_when(
+        key == "client" & value == "Roche" ~
+            render("~/TypeSeqHPV/inst/reports/torrent_server_html_block.R"),
+        TRUE ~
+            render("~/TypeSeqHPV/inst/reports/torrent_server_html_block.R")))
+
 
