@@ -151,7 +151,11 @@ ion_qc_report = render_ion_qc_report(
 
 #### 17. make html block for torrent server ####
 
-html_block_and_client_outputs = parse$config_file %>%
+html_block_and_client_outputs = grouped_samples_only_matrix %>%
+    ungroup() %T>%
+    do({
+
+    temp = parse$config_file %>%
     filter(key == "client") %>%
     mutate(report_script = case_when(
         value == "Default" ~
@@ -160,11 +164,14 @@ html_block_and_client_outputs = parse$config_file %>%
             paste0(args_custom_report_script_dir,"/",
                    .$value, "_client_report.R"))) %>%
     glimpse() %T>%
-    map_df(render(.$report_script, output_dir = "./", output_file = "torrent_server_html_block.html"))
+    map_df(render(.$report_script,
+                  output_dir = "/mnt",
+                  knit_root_dir = "/mnt",
+                  intermediates_dir = "/mnt",
 
+                  output_file = "torrent_server_html_block.html"))
 
-
-
+    })
 
 )
 
@@ -175,6 +182,7 @@ prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
 future::plan(multiprocess)
+
 drake::make(ion_plan)
 
 
