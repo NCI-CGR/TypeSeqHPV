@@ -150,8 +150,8 @@ ion_qc_report = render_ion_qc_report(
     bam_header_df = bam_header_df),
 
 #### 17. make html block for torrent server ####
-
 html_block_and_client_outputs = grouped_samples_only_matrix %>%
+    glimpse() %>%
     ungroup() %T>%
     do({
 
@@ -176,7 +176,7 @@ html_block_and_client_outputs = grouped_samples_only_matrix %>%
 )
 
 #### C. execute workflow plan ####
-if ( args_is_torrent_server == "yes") { setwd("/mnt")}
+setwd("/mnt")
 
 prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
