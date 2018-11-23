@@ -10,6 +10,7 @@ library(parallel)
 library(rmarkdown)
 library(furrr)
 library(future)
+library(magrittr)
 
 #### B. get command line arguments ####
 args_bam_files_dir = optigrab::opt_get('bam_files_dir')
@@ -18,15 +19,14 @@ args_bam_header = optigrab::opt_get('bam_header')
 args_barcode_list = optigrab::opt_get('barcode_list')
 args_control_defs = optigrab::opt_get('control_defs')
 args_run_manifest = optigrab::opt_get('run_manifest')
-
 args_pos_neg_filtering_criteria =
     optigrab::opt_get('pos_neg_filtering_criteria')
-
 args_scaling_table = optigrab::opt_get('scaling_table')
 args_parameter_file = optigrab::opt_get('parameter_file')
 args_is_torrent_server = optigrab::opt_get('is_torrent_server')
 args_start_plugin = optigrab::opt_get('start_plugin')
 args_custom_groups = optigrab::opt_get('custom_groups')
+args_custom_report_script_dir = optigrab::opt_get('custom_report_script_dir')
 
 #### 1. parse plugin data ####
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
@@ -147,7 +147,26 @@ ion_qc_report = render_ion_qc_report(
     final_pn_matrix = final_pn_matrix,
     scaling_list = scaling_list,
     lineage_df = lineage_df,
-    bam_header_df = bam_header_df))
+    bam_header_df = bam_header_df),
+
+#### 17. make html block for torrent server ####
+
+html_block_and_client_outputs = parse$config_file %>%
+    filter(key == "client") %>%
+    mutate(report_script = case_when(
+        value == "Default" ~
+            "/TypeSeqHPV/inst/reports/torrent_server_html_block.R",
+        TRUE ~
+            paste0(args_custom_report_script_dir,"/",
+                   .$value, "_client_report.R"))) %>%
+    glimpse() %T>%
+    map_df(render(.$report_script, output_dir = "./", output_file = "torrent_server_html_block.html"))
+
+
+
+
+
+)
 
 #### C. execute workflow plan ####
 if ( args_is_torrent_server == "yes") { setwd("/mnt")}
@@ -158,16 +177,7 @@ prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
 future::plan(multiprocess)
 drake::make(ion_plan)
 
-#### D. make html block for torrent server ####
 
-html_block =
-    read_csv("./config_file.csv") %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble() %>%
-    mutate(report = case_when(
-        key == "client" & value == "Roche" ~
-            render("~/TypeSeqHPV/inst/reports/torrent_server_html_block.R"),
-        TRUE ~
-            render("~/TypeSeqHPV/inst/reports/torrent_server_html_block.R")))
+
 
 

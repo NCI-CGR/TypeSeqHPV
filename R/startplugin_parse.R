@@ -10,7 +10,6 @@ startplugin_parse <- function(args_start_plugin){
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
-        glimpse() %>%
         write_csv("typing_manifest.csv")
 
     #report_grouping
@@ -18,7 +17,6 @@ startplugin_parse <- function(args_start_plugin){
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
-        glimpse() %>%
         write_csv("report_grouping.csv")
 
     #control_defs
@@ -26,7 +24,6 @@ startplugin_parse <- function(args_start_plugin){
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
-        glimpse() %>%
         write_csv("control_defs.csv")
 
     # config file
@@ -34,7 +31,30 @@ startplugin_parse <- function(args_start_plugin){
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = c("key", "value")) %>%
         slice(2:n()) %>%
-        glimpse() %>%
         write_csv("config_file.csv")
+
+
+manifest = read_csv("./typing_manifest.csv") %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble()
+
+report_grouping = read_csv("./report_grouping.csv") %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble()
+
+control_defs = read_csv("./control_defs.csv") %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble()
+
+config_file = read_csv("./config_file.csv") %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble()
+
+temp = list(manifest = manifest,
+            report_grouping = report_grouping,
+            control_defs = control_defs,
+            config_file = config_file)
+
+
 
 }
