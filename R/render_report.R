@@ -29,12 +29,6 @@ system("cp /package/inst/reports/Ion_Torrent_report.R ./")
 render(input = "Ion_Torrent_report.R",
        output_dir = "./", output_file = "TypeSeqHPV_QC_report.pdf")
 
-system(paste0("cp TypeSeqHPV_QC_report.pdf ",
-              final_pn_matrix$Assay_Batch_Code[1],
-              "_qc_report.pdf"))
-
-system("zip -j TypeSeqHPV_Report_Files.zip *csv *qc_report.pdf")
-
 return(data_frame(path = "Ion_Torrent_report.pdf"))
 
 }

@@ -12,14 +12,6 @@ library(furrr)
 library(future)
 library(magrittr)
 
-source("/package/R/render_report.R")
-source("/package/R/get_run_metadata.R")
-source("/package/R/plate_summary.R")
-
-#source("~/TypeSeqHPV/R/render_report.R")
-#source("~/TypeSeqHPV/R/get_run_metadata.R")
-#source("~/TypeSeqHPV/R/plate_summary.R")
-
 #### B. get command line arguments ####
 args_bam_files_dir = optigrab::opt_get('bam_files_dir')
 args_lineage_reference = optigrab::opt_get('lineage_reference')
@@ -131,7 +123,6 @@ lineage_df = prepare_lineage_df_safe(
     ion_read_processing,
     split_deliverables$samples_only_matrix),
 
-
 #### 15. export csv files ####
 collection_of_csv_files = write_all_csv_files(
     final_grouped_samples_only_matrix = grouped_samples_only_matrix,
@@ -156,7 +147,8 @@ ion_qc_report = render_ion_qc_report(
     bam_header_df = bam_header_df),
 
 #### 17. make html block for torrent server ####
-html_block_and_client_outputs = grouped_samples_only_matrix %>%
+html_block_and_client_outputs = grouped_samples_only_matrix %T>%
+    mutate(report_path = ion_qc_report$path) %>%
     glimpse() %>%
     ungroup() %T>%
     do({
@@ -165,7 +157,7 @@ html_block_and_client_outputs = grouped_samples_only_matrix %>%
     filter(key == "client") %>%
     mutate(report_script = case_when(
         value == "Default" ~
-            "/TypeSeqHPV/inst/reports/torrent_server_html_block.R",
+            "/package/inst/reports/torrent_server_html_block.R",
         TRUE ~
             paste0(args_custom_report_script_dir,"/",
                    .$value, "_client_report.R"))) %>%
@@ -188,10 +180,5 @@ prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
 future::plan(multiprocess)
-clean(ion_qc_report)
+clean(html_block_and_client_outputs)
 drake::make(ion_plan)
-
-
-
-
-
