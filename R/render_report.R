@@ -22,9 +22,7 @@ library(pander)
 #                   "reports", "Ion_Torrent_report.R", package = "TypeSeqHPV"),
 #               " ./"))
 
-system("cp /package/inst/reports/Ion_Torrent_report.R ./")
-
-#system("cp ~/TypeSeqHPV/inst/reports/Ion_Torrent_report.R ./")
+system("cp /TypeSeqHPV/inst/reports/Ion_Torrent_report.R ./")
 
 render(input = "Ion_Torrent_report.R",
        output_dir = "./", output_file = "TypeSeqHPV_QC_report.pdf")
