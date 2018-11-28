@@ -12,6 +12,14 @@ library(furrr)
 library(future)
 library(magrittr)
 
+source("/package/R/render_report.R")
+source("/package/R/get_run_metadata.R")
+source("/package/R/plate_summary.R")
+
+#source("~/TypeSeqHPV/R/render_report.R")
+#source("~/TypeSeqHPV/R/get_run_metadata.R")
+#source("~/TypeSeqHPV/R/plate_summary.R")
+
 #### B. get command line arguments ####
 args_bam_files_dir = optigrab::opt_get('bam_files_dir')
 args_lineage_reference = optigrab::opt_get('lineage_reference')
@@ -36,14 +44,12 @@ parse = (if ( args_is_torrent_server == "yes")
             {startplugin_parse(args_start_plugin)}
             else{"not torrent server"}),
 
-
 #### 2. create bam_json from bam files ####
 bam_json = (data_frame(path = dir(args_bam_files_dir, pattern = ".bam",
                                  full.names = FALSE)) %>%
     filter(!(str_detect(path, "json"))) %>%
     split(.$path) %>%
     future_map_dfr(convert_bam_to_json, args_bam_files_dir)),
-
 
 #### 3. ion read processing ####
 ion_read_processing_df = bam_json %>%
@@ -182,7 +188,7 @@ prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
 future::plan(multiprocess)
-
+clean(ion_qc_report)
 drake::make(ion_plan)
 
 
