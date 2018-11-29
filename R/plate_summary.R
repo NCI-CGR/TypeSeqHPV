@@ -37,7 +37,7 @@ mutate(plate_total_reads = scales::comma(plate_total_reads)) %>%
 select(-hpv_pos_rate) %>%
 left_join(controls_df) %>%
 arrange(PreExtraction_Plate_ID, Assay_Plate_Code) %>%
-select(`PreExtraction plate ID` = PreExtraction_Plate_ID
+select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        `Assay Plate Code` = Assay_Plate_Code,
        `HPV % Positive` = hpv_pos_perc,
        `# neg controls failed` = neg_fail,
