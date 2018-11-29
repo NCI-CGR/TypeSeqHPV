@@ -16,29 +16,6 @@ sessionInfo()
 
 #+ create new sample only matrix, echo=FALSE, include = FALSE
 
-new_samples_only_matrix = grouped_samples_only_matrix_temp %>%
-    select(Project, Sample_Owner, Assay_Batch_Code, Owner_Sample_ID,
-           Barcode = barcode, Human_control = Human_Control,
-           Num_Types_Pos = not_masked_and_not_grouped_Num_Types_Pos,
-           starts_with("HPV")) %>%
-    glimpse() %>%
-    group_by(Project) %>%
-    do({
-        temp = as_tibble(.) %>%
-            mutate(filename = paste(
-                                    .$Assay_Batch_Code[1],
-                                    "samples_only_matrix.csv", sep = "_"))
-
-        output = temp %>%
-            select(-filename)
-
-        output = output[, colSums(is.na(output)) == 0]
-
-        write_csv(output, temp$filename[1])
-
-        temp = temp
-    })
-
 system(paste0("cp TypeSeqHPV_QC_report.pdf ",
               grouped_samples_only_matrix$Assay_Batch_Code[1],
               "_qc_report.pdf"))
