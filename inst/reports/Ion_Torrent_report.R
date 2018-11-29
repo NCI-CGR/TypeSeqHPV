@@ -28,11 +28,11 @@ temp = sample_summary_safe(split_deliverables$samples_only_matrix)
 #' ## PLATE Results Summary
 
 #+ PLATE Results Summary, echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", results='asis', eval=TRUE
-plate_summary_safe <- possibly(hpv_positivity_table, otherwise = data.frame())
+plate_summary_safe <- possibly(plate_summary, otherwise = data.frame())
 
 #temp = plate_summary_safe(split_deilverables)
 
-temp = hpv_positivity_table(split_deliverables)
+temp = plate_summary(split_deliverables)
 
 
 #' \newpage

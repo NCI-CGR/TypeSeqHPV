@@ -1,7 +1,7 @@
 #' plate_summary
 #'
 
-hpv_positivity_table <- function(split_deliverables){
+plate_summary <- function(split_deliverables){
 
 controls_df = split_deliverables$control_matrix %>%
 mutate(extraction_plate_id = paste(Ext_Lab, Ext_Operator, Ext_Method,
@@ -28,7 +28,7 @@ group_by(extraction_plate_id, Assay_Plate_Code) %>%
 mutate(number_of_samples = n()) %>%
 mutate(plate_total_reads = sum(total_reads)) %>%
 mutate(plate_b2m_reads = sum(B2M)) %>%
-mutate(sample_status_for_count = ifelse(b2m_status == "fail", 1, 0)) %>%
+mutate(sample_status_for_count = ifelse(Human_Control == "fail", 1, 0)) %>%
 mutate(hpv_pos_rate = sum(has_positive) / number_of_samples) %>%
 mutate(num_samples_failed = sum(sample_status_for_count)) %>%
 select(extraction_plate_id, Assay_Plate_Code, number_of_samples, plate_total_reads,

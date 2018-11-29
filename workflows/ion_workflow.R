@@ -113,9 +113,10 @@ split_deliverables = split_pn_matrix_into_multiple_deliverables(
 
 #### 13. create grouped samples only matrix ####
 grouped_samples_only_matrix = prepare_grouped_samples_only_matrix_outputs(
-    args_custom_groups,
-    split_deliverables$samples_only_matrix,
-    parameters_df),
+                            args_custom_groups,
+                            split_deliverables$samples_only_matrix,
+                            parameters_df) %>%
+    ungroup(),
 
 #### 14. create lineage dataframe ####
 lineage_df = prepare_lineage_df_safe(
@@ -149,9 +150,11 @@ ion_qc_report = render_ion_qc_report(
 #### 17. make html block for torrent server ####
 html_block_and_client_outputs = grouped_samples_only_matrix %T>%
     mutate(report_path = ion_qc_report$path) %>%
-    glimpse() %>%
     ungroup() %T>%
     do({
+
+    grouped_samples_only_matrix_temp = as_tibble(.)
+
 
     temp = parse$config_file %>%
     filter(key == "client") %>%
@@ -179,5 +182,7 @@ setwd("/mnt")
 prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
+
 future::plan(multiprocess)
+
 drake::make(ion_plan)

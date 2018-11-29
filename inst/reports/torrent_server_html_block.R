@@ -16,7 +16,7 @@ sessionInfo()
 
 #+ create new sample only matrix, echo=FALSE, include = FALSE
 
-new_samples_only_matrix = grouped_samples_only_matrix %>%
+new_samples_only_matrix = grouped_samples_only_matrix_temp %>%
     select(Project, Sample_Owner, Assay_Batch_Code, Owner_Sample_ID,
            Barcode = barcode, Human_control = Human_Control,
            Num_Types_Pos = not_masked_and_not_grouped_Num_Types_Pos,
