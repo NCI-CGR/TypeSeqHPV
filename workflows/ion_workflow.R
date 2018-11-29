@@ -183,5 +183,6 @@ prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
 
+clean(ion_qc_report)
 future::plan(multiprocess)
 drake::make(ion_plan)
