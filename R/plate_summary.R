@@ -48,10 +48,7 @@ select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        `# neg controls failed` = neg_fail,
        `# pos controls failed` = pos_fail,
        `# samples failed` = num_samples_failed,
-       `# samples total` = number_of_samples,
-       `total reads` = plate_total_reads,
-       `total B2M reads` = plate_b2m_reads,
-       `% B2M reads` = perc_b2m_reads
+       `# samples total` = number_of_samples
        ) %>%
 
 pandoc.table(style = "multiline",
