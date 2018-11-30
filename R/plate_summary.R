@@ -50,7 +50,7 @@ select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        ) %>%
 write_csv("hpv_positivity_table.csv")
 
-panderOptions("table.split.table", inf)
+#panderOptions("table.split.table", inf)
 panderOptions("table.split.cells", 5)
 
 pandoc.table(samples_and_controls_df, style = "multiline",
