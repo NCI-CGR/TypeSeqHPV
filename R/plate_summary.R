@@ -62,7 +62,6 @@ samples_and_controls_df %>%
            `% B2M reads` = perc_b2m_reads
     ) %>%
 
-    pandoc.table(style = "multiline",
-                 caption = "Assay Plate Performance")
+    pandoc.table(style = "multiline")
 
 }
