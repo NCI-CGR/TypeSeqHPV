@@ -36,7 +36,12 @@ mutate(plate_b2m_reads = scales::comma(plate_b2m_reads)) %>%
 mutate(plate_total_reads = scales::comma(plate_total_reads)) %>%
 select(-hpv_pos_rate) %>%
 left_join(controls_df) %>%
-arrange(PreExtraction_Plate_ID, Assay_Plate_Code) %>%
+arrange(PreExtraction_Plate_ID, Assay_Plate_Code)
+
+panderOptions("table.split.cells", 5)
+
+
+samples_and_controls_df %>%
 select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        `Assay Plate Code` = Assay_Plate_Code,
        `HPV % Positive` = hpv_pos_perc,
@@ -48,12 +53,19 @@ select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        `total B2M reads` = plate_b2m_reads,
        `% B2M reads` = perc_b2m_reads
        ) %>%
-write_csv("hpv_positivity_table.csv")
 
-#panderOptions("table.split.table", inf)
-panderOptions("table.split.cells", 5)
-
-pandoc.table(samples_and_controls_df, style = "multiline",
+pandoc.table(style = "multiline",
              caption = "Assay Plate Performance")
+
+samples_and_controls_df %>%
+    select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
+           `Assay Plate Code` = Assay_Plate_Code,
+           `total reads` = plate_total_reads,
+           `total B2M reads` = plate_b2m_reads,
+           `% B2M reads` = perc_b2m_reads
+    ) %>%
+
+    pandoc.table(style = "multiline",
+                 caption = "Assay Plate Performance")
 
 }
