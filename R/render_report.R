@@ -12,7 +12,7 @@ render_ion_qc_report <- function(args_start_plugin,
 require(dplyr)
 require(knitr)
 require(rmarkdown)
-require(TypeSeqHPV)
+#require(TypeSeqHPV)
 require(scales)
 require(ggsci)
 library(pander)

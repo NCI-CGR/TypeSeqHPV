@@ -15,8 +15,9 @@ bind_rows(
                                        "neg_pass", "neg_fail"),
                     count = c(0,0,0,0))) %>%
 spread(control_result, count, fill = 0) %>%
-select(PreExtraction_Plate_ID, Assay_Plate_Code, pos_pass, pos_fail, neg_pass, neg_fail) %>%
-filter(PreExtraction_Plate_ID != "temp")
+filter(PreExtraction_Plate_ID != "temp") %>%
+mutate(total_controls = neg_fail + neg_pass + pos_fail + pos_pass) %>%
+select(PreExtraction_Plate_ID, Assay_Plate_Code, pos_fail, neg_fail, total_controls)
 
 samples_and_controls_df = split_deliverables$samples_only_matrix %>%
 mutate(has_positive = ifelse(Num_Types_Pos == 0,0, 1)) %>%
@@ -24,7 +25,7 @@ group_by(PreExtraction_Plate_ID, Assay_Plate_Code) %>%
 mutate(number_of_samples = n()) %>%
 mutate(plate_total_reads = sum(total_reads)) %>%
 mutate(plate_b2m_reads = sum(B2M)) %>%
-mutate(sample_status_for_count = ifelse(Human_Control == "fail", 1, 0)) %>%
+mutate(sample_status_for_count = ifelse(Human_Control == "failed_to_amplify", 1, 0)) %>%
 mutate(hpv_pos_rate = sum(has_positive) / number_of_samples) %>%
 mutate(num_samples_failed = sum(sample_status_for_count)) %>%
 select(PreExtraction_Plate_ID, Assay_Plate_Code, number_of_samples, plate_total_reads,
@@ -40,7 +41,6 @@ arrange(PreExtraction_Plate_ID, Assay_Plate_Code)
 
 panderOptions("table.split.cells", 5)
 
-
 samples_and_controls_df %>%
 select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        `Assay Plate Code` = Assay_Plate_Code,
@@ -48,7 +48,6 @@ select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
        `# neg controls failed` = neg_fail,
        `# pos controls failed` = pos_fail,
        `# samples failed` = num_samples_failed,
-       `# samples total` = number_of_samples
        ) %>%
 
 pandoc.table(style = "multiline",
@@ -59,7 +58,9 @@ samples_and_controls_df %>%
            `Assay Plate Code` = Assay_Plate_Code,
            `total reads` = plate_total_reads,
            `total B2M reads` = plate_b2m_reads,
-           `% B2M reads` = perc_b2m_reads
+           `% B2M reads` = perc_b2m_reads,
+           `# samples total` = number_of_samples,
+           `# total controls` = total_controls
     ) %>%
 
     pandoc.table(style = "multiline")
