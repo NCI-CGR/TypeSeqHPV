@@ -23,9 +23,12 @@ system(paste0("cp TypeSeqHPV_QC_report.pdf ",
 system("zip -j TypeSeqHPV_Report_Files.zip *csv *qc_report.pdf")
 
 #+ determine run type, echo=FALSE
+if ( args_is_torrent_server == "yes") {
+
 plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
 run_type = plugin_json$runplugin$run_type
+}
 
 #' # {.tabset}
 #' ## Analysis Output
