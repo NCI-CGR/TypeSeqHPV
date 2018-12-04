@@ -20,6 +20,7 @@ cgrlab/typeseqhpv:final_18112902 Rscript /TypeSeqHPV/workflows/ion_workflow.R \
 --custom_groups /mnt/report_grouping.csv \
 --control_defs /mnt/control_defs.csv \
 --run_manifest /mnt/typing_manifest.csv \
+--config_file /mnt/config_file.csv \
 --is_torrent_server yes \
 --custom_report_script_dir /report_dir
 

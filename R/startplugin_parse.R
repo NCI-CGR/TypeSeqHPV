@@ -1,10 +1,15 @@
 #'
-startplugin_parse <- function(args_start_plugin, args_is_torrent_server){
+startplugin_parse <- function(args_start_plugin,
+                              args_custom_groups,
+                              args_control_defs,
+                              args_run_manifest,
+                              args_config_file,
+                              args_is_torrent_server
+                              ){
     require(jsonlite)
     require(tidyverse)
 
-    if ( args_is_torrent_server == "yes")
-    {
+    if ( args_is_torrent_server == "yes") {
 
     plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
@@ -37,24 +42,23 @@ startplugin_parse <- function(args_start_plugin, args_is_torrent_server){
         write_csv("config_file.csv")
     }
 
+    report_grouping = read_csv(args_custom_groups) %>%
+        map_if(is.factor, as.character) %>%
+        as_tibble()
 
-manifest = read_csv("./typing_manifest.csv") %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble()
+    control_defs = read_csv(args_control_defs) %>%
+        map_if(is.factor, as.character) %>%
+        as_tibble()
 
-report_grouping = read_csv("./report_grouping.csv") %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble()
+    manifest = read_csv(args_run_manifest) %>%
+        map_if(is.factor, as.character) %>%
+        as_tibble()
 
-control_defs = read_csv("./control_defs.csv") %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble()
+    config_file = read_csv(args_config_file) %>%
+        map_if(is.factor, as.character) %>%
+        as_tibble()
 
-config_file = read_csv("./config_file.csv") %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble()
-
-temp = list(manifest = manifest,
+    temp = list(manifest = manifest,
             report_grouping = report_grouping,
             control_defs = control_defs,
             config_file = config_file)

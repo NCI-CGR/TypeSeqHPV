@@ -13,26 +13,35 @@ library(future)
 library(magrittr)
 
 #### B. get command line arguments ####
-args_bam_files_dir = optigrab::opt_get('bam_files_dir')
-args_lineage_reference = optigrab::opt_get('lineage_reference')
-args_bam_header = optigrab::opt_get('bam_header')
-args_barcode_list = optigrab::opt_get('barcode_list')
-args_control_defs = optigrab::opt_get('control_defs')
-args_run_manifest = optigrab::opt_get('run_manifest')
+
 args_pos_neg_filtering_criteria =
     optigrab::opt_get('pos_neg_filtering_criteria')
 args_scaling_table = optigrab::opt_get('scaling_table')
 args_parameter_file = optigrab::opt_get('parameter_file')
-args_is_torrent_server = optigrab::opt_get('is_torrent_server')
+args_lineage_reference = optigrab::opt_get('lineage_reference')
+args_barcode_list = optigrab::opt_get('barcode_list')
+
+args_bam_files_dir = optigrab::opt_get('bam_files_dir')
+
+# for start plugin inputs
 args_start_plugin = optigrab::opt_get('start_plugin')
 args_custom_groups = optigrab::opt_get('custom_groups')
+args_control_defs = optigrab::opt_get('control_defs')
+args_run_manifest = optigrab::opt_get('run_manifest')
+args_config_file = optigrab::opt_get('config_file')
+args_is_torrent_server = optigrab::opt_get('is_torrent_server')
 args_custom_report_script_dir = optigrab::opt_get('custom_report_script_dir')
 
 #### 1. parse plugin data ####
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake::drake_plan(
 
-parse = startplugin_parse(args_start_plugin, args_is_torrent_server),
+parse = startplugin_parse(args_start_plugin,
+                          args_custom_groups,
+                          args_control_defs,
+                          args_run_manifest,
+                          args_config_file,
+                          args_is_torrent_server),
 
 #### 2. create bam_json from bam files ####
 bam_json = (data_frame(path = dir(args_bam_files_dir, pattern = ".bam",
