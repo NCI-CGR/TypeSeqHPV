@@ -16,6 +16,8 @@ sessionInfo()
 
 #+ create new sample only matrix, echo=FALSE, include = FALSE
 
+run_type = "temp"
+
 system(paste0("cp TypeSeqHPV_QC_report.pdf ",
               grouped_samples_only_matrix$Assay_Batch_Code[1],
               "_qc_report.pdf"))
