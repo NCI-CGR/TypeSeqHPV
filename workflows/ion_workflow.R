@@ -173,9 +173,9 @@ html_block_and_client_outputs = grouped_samples_only_matrix %T>%
                    .$value, "_client_report.R"))) %>%
     glimpse() %T>%
     map_df(render(.$report_script,
-                  output_dir = "/mnt",
-                  knit_root_dir = "/mnt",
-                  intermediates_dir = "/mnt",
+                  output_dir = "./",
+                  knit_root_dir = "./",
+                  intermediates_dir = "./",
 
                   output_file = "torrent_server_html_block.html"))
 
