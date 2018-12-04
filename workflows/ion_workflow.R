@@ -184,7 +184,9 @@ html_block_and_client_outputs = grouped_samples_only_matrix %T>%
 )
 
 #### C. execute workflow plan ####
-setwd("/mnt")
+
+
+if ( args_is_torrent_server == "yes") {setwd("/mnt")}
 
 prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
