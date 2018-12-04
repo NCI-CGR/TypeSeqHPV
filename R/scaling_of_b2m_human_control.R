@@ -34,9 +34,8 @@ as_tibble() %>%
 rename(type_id = TYPE) %>%
 mutate(factored_min_reads_per_type = factoring_table$HPV_scaling_factor * Min_reads_per_type) %>%
 glimpse()
-  
-  
-temp = list(factoring_table = factoring_table, filtering_criteria = filtering_criteria)  
-  
-return(temp)  
+
+temp = list(factoring_table = factoring_table, filtering_criteria = filtering_criteria)
+
+return(temp)
 }

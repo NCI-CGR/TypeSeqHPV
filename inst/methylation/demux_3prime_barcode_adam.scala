@@ -29,6 +29,23 @@ println(manifest)
 
 println("post manifest")
 
+object Hamming {
+  def compute(s1: String, s2: String): Int = {
+    if (s1.length != s2.length)
+      throw new IllegalArgumentException()
+    (s1.toList).zip(s2.toList)
+               .filter(current => current._1 != current._2)
+               .length
+  }
+}
+
+def hamming(sequence: String, bc: String): String = {
+Hamming.compute(sequence.takeRight(bc.length()), bc).toString
+}
+
+val hammingUDF = udf[String, String, String](hamming)
+
+
 val files = getListOfFiles(new File("./"), List("bam"))
 
 files.foreach(file_name => println(s"file is $file_name"))
@@ -52,8 +69,10 @@ var bc_seq = bc_row(12)
 
 println(bc_name.toString + "_" + bc_seq.toString)
 
-reads.transformDataset(_.filter($"sequence".contains(bc_seq)))
-.saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
+reads.transformDataset(_.filter(
+        hammingUDF('sequence, lit(bc_seq)) isin ("0", "1")))
+    .saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last,
+        asSingleFile=true)
 
 })
 
@@ -62,4 +81,3 @@ reads.transformDataset(_.filter($"sequence".contains(bc_seq)))
 
 //command to exit spark shell
 System.exit(0)
-

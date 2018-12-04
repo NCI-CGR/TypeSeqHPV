@@ -32,9 +32,7 @@ args_custom_report_script_dir = optigrab::opt_get('custom_report_script_dir')
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake::drake_plan(
 
-parse = (if ( args_is_torrent_server == "yes")
-            {startplugin_parse(args_start_plugin)}
-            else{"not torrent server"}),
+parse = startplugin_parse(args_start_plugin, args_is_torrent_server),
 
 #### 2. create bam_json from bam files ####
 bam_json = (data_frame(path = dir(args_bam_files_dir, pattern = ".bam",

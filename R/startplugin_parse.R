@@ -1,7 +1,10 @@
 #'
-startplugin_parse <- function(args_start_plugin){
+startplugin_parse <- function(args_start_plugin, args_is_torrent_server){
     require(jsonlite)
     require(tidyverse)
+
+    if ( args_is_torrent_server == "yes")
+    {
 
     plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
@@ -32,6 +35,7 @@ startplugin_parse <- function(args_start_plugin){
         separate(col = values, sep = ",", into = c("key", "value")) %>%
         slice(2:n()) %>%
         write_csv("config_file.csv")
+    }
 
 
 manifest = read_csv("./typing_manifest.csv") %>%
