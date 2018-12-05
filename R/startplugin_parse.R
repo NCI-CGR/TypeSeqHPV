@@ -53,7 +53,7 @@ startplugin_parse <- function(args_start_plugin,
         map_if(is.factor, as.character) %>%
         as_tibble()
 
-    config_file = read_csv("./config_file.csv") %>%
+    config_file = read_csv(args_config_file) %>%
         map_if(is.factor, as.character) %>%
         as_tibble()
 
