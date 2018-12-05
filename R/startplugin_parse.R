@@ -38,7 +38,6 @@ startplugin_parse <- function(args_start_plugin,
     data_frame(values = plugin_json$pluginconfig$config_file) %>%
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = c("key", "value")) %>%
-        slice(2:n()) %>%
         write_csv("config_file.csv")
     }
 
