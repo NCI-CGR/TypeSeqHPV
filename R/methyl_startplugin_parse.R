@@ -3,7 +3,7 @@ methyl_startplugin_parse <- function(args_df){
     require(jsonlite)
     require(tidyverse)
 
-if ( args_is_torrent_server == "yes") {
+if ( args_df$is_torrent_server == "yes") {
 
     plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
@@ -35,9 +35,9 @@ manifest = read_csv(args_df$manifest) %>%
     as_tibble() %>%
     write_csv("manifest.csv")
 
-control_defs = read_csv(args_df$control_defs) %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble()
+# control_defs = read_csv(args_df$control_definitions) %>%
+#     map_if(is.factor, as.character) %>%
+#     as_tibble()
 
 barcode_file = read_csv(args_df$barcode_file) %>%
     map_if(is.factor, as.character) %>%
@@ -47,7 +47,6 @@ barcode_file = read_csv(args_df$barcode_file) %>%
 #return list output
 
 return(list(manifest = manifest,
-            control_defs = control_defs,
             barocde_file = barcode_file
             ))
 

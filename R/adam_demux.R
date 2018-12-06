@@ -1,5 +1,5 @@
 #+
-adam_demux <- function(){
+adam_demux <- function(...){
     require(dplyr)
     require(fs)
 

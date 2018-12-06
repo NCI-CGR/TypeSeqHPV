@@ -17,7 +17,7 @@ tvc_cli <- function(files, args_df){
     --input-bam ", vcf_df$bam_path, " \\
     --force-sample-name ", vcf_df$sample_name, " \\
     --input-vcf ", args_df$hotspot_vcf, " \\
-    --reference ", args_df$reference, " \\
+    --reference ", basename(args_df$reference), " \\
     --target-file ", args_df$region_bed, " \\
     --parameters-file ", args_df$tvc_parameters, " \\
     --trim-ampliseq-primers \\
