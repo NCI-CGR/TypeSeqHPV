@@ -3,7 +3,6 @@ tvc_cli <- function(files, args_df){
     require(dplyr)
     require(fs)
 
-
     vcf_df = files %>%
         as_tibble() %>%
         glimpse() %>%

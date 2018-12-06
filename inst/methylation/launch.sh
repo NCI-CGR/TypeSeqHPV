@@ -8,10 +8,11 @@ echo Pipeline version $VERSION
 ln ../../*.bam ./
 
 docker run -i -v $(pwd):/mnt \
-    -v /results/plugins/TypeSeqHPVMethyl-DEV:/plugin \
+    -v /data/TypeSeqHPVMethyl-DEV:/plugin \
+    -v /data/TypeSeqHPV/input/methyl_test/new_inputs/plugin_try:/user_files \
     cgrlab/typeseqhpv:final_18111302 \
-    Rscript /plugin/ion_methyl_workflow.R \
+    Rscript /plugin/workflows/ion_methyl_workflow.R \
      --start_plugin /mnt/startplugin.json \
-     --is_torrent_server "yes"
+     --is_torrent_server "no"
 
 rm *rawlib.bam

@@ -29,17 +29,16 @@ if ( args_is_torrent_server == "yes") {
 
 config_file = read_csv("config_file.csv", col_names = c("key", "value")) %>%
     map_if(is.factor, as.character) %>%
-    as_tibble()
+    as_tibble() %>%
+    mutate(value = paste("/user_files/", config_file)) %>%
+    glimpse()
 
 new_args_df = args_df %>%
     anti_join(config_file, by = "key") %>%
     bind_rows(config_file) %>%
     spread("key", "value")
 
-
 return(new_args_df)
-
-
 
     }
 
