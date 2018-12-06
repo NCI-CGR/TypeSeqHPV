@@ -20,7 +20,7 @@ tvc_cli <- function(files, args_df){
     --input-vcf ", args_df$hotspot_vcf, " \\
     --reference ", args_df$reference, " \\
     --target-file ", args_df$region_bed, " \\
-    --parameters-file /TypeSeqHPV/inst/methylation/tvc_parameters.json \\
+    --parameters-file ", args_df$tvc_parameters, " \\
     --trim-ampliseq-primers \\
     --num-threads 4"))
 

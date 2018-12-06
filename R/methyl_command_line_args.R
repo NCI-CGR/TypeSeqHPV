@@ -8,7 +8,7 @@ methyl_command_line_args <- function(){
             manifest = optigrab::opt_get('manifest'),
             control_definitions = optigrab::opt_get('control_definitions'),
             barcode_file = optigrab::opt_get('barcode_file'),
-            parameter_file = optigrab::opt_get('parameter_file'),
+            tvc_parameters = optigrab::opt_get('tvc_parameters'),
             reference = optigrab::opt_get('reference'),
             region_bed = optigrab::opt_get('region_bed'),
             hotspot_vcf = optigrab::opt_get('hotspot_vcf'),
