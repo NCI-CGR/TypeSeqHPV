@@ -1,7 +1,6 @@
 #### A. load packages ####
 library(devtools)
 library(TypeSeqHPV)
-library(optigrab)
 library(tidyverse)
 library(igraph)
 library(jsonlite)
@@ -12,23 +11,19 @@ library(future)
 library(drake)
 library(fs)
 
-setwd("/mnt")
-
-#### B. get command line arguments ####
-args_is_torrent_server = optigrab::opt_get('is_torrent_server')
-args_start_plugin = optigrab::opt_get('start_plugin')
-
-#### C. create workflow plan ####
+#### B. create workflow plan ####
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake::drake_plan(
 
+#### 1. get command line arguments ####
+args_df = methyl_command_line_args() %>%
+    glimpse(),
+
 #### 1. parse plugin data ####
-parse_plugin = if (args_is_torrent_server == "yes") {
-    methyl_startplugin_parse(args_start_plugin)
-    },
+user_files = methyl_startplugin_parse(args_df),
 
 #### 2. demux bams ####
-demux_bams = adam_demux(parse_plugin, args_bam_files_dir) %>%
+demux_bams = adam_demux(user_files) %>%
     glimpse(),
 
 #### 3. picard sort and create index ####
@@ -41,7 +36,7 @@ sorted_bams = demux_bams %>%
 vcf_files = sorted_bams %>%
     select(path = sorted_path) %>%
     split(.$path) %>%
-    future_map_dfr(tvc_cli) %>%
+    future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
 
 #### 5. vcf to json adam ####
@@ -69,7 +64,7 @@ hotspot_df = vcf_to_json_files %>%
 
 )
 
-#### D. execute workflow plan ####
+#### C. execute workflow plan ####
 if ( args_is_torrent_server == "yes") { setwd("/mnt")}
 
 system("mkdir sorted_bams")

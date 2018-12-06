@@ -27,5 +27,3 @@ cgrlab/typeseqhpv:final_18112902 Rscript /TypeSeqHPV/workflows/ion_workflow.R \
 #rm extra bam and bam.json files
 rm *.bam*
 
-
-

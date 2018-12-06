@@ -1,5 +1,5 @@
 #+
-adam_demux <- function(bam_dir, bam_files){
+adam_demux <- function(){
     require(dplyr)
     require(fs)
 
@@ -8,10 +8,12 @@ adam_demux <- function(bam_dir, bam_files){
     system("mv */*A*bam demux_bams")
     system("rm -R *_demux")
 
-    return_df = dir_ls("demux_bams", glob = "*.bam") %>%
+    return(
+        dir_ls("demux_bams", glob = "*.bam") %>%
         map_df(as_tibble) %>%
         rename(path = value) %>%
-        glimpse()
+        glimpse())
+
 }
 
 

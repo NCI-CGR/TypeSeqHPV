@@ -1,5 +1,5 @@
 #+
-tvc_cli <- function(files){
+tvc_cli <- function(files, args_df){
     require(dplyr)
     require(fs)
 
@@ -17,9 +17,9 @@ tvc_cli <- function(files){
     --output-vcf ", vcf_df$vcf, " \\
     --input-bam ", vcf_df$bam_path, " \\
     --force-sample-name ", vcf_df$sample_name, " \\
-    --input-vcf /TypeSeqHPV/inst/methylation/hotspot.vcf \\
-    --reference /TypeSeqHPV/inst/methylation/reference.fasta \\
-    --target-file /TypeSeqHPV/inst/methylation/methyl_regions.bed \\
+    --input-vcf ", args_df$hotspot_vcf, " \\
+    --reference ", args_df$reference, " \\
+    --target-file ", args_df$region_bed, " \\
     --parameters-file /TypeSeqHPV/inst/methylation/tvc_parameters.json \\
     --trim-ampliseq-primers \\
     --num-threads 4"))
