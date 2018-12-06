@@ -78,7 +78,6 @@ hotspot_df = vcf_to_json_files %>%
 )
 
 #### C. execute workflow plan ####
-setwd("/mnt")
 system("mkdir sorted_bams")
 system("mkdir vcf")
 
