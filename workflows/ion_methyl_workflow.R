@@ -1,14 +1,11 @@
 #### A. load packages ####
-library(devtools)
 library(TypeSeqHPV)
+library(drake)
 library(tidyverse)
-library(igraph)
-library(jsonlite)
 library(parallel)
 library(rmarkdown)
 library(furrr)
 library(future)
-library(drake)
 library(fs)
 
 #### B. create workflow plan ####
@@ -65,8 +62,6 @@ hotspot_df = vcf_to_json_files %>%
 )
 
 #### C. execute workflow plan ####
-if ( args_is_torrent_server == "yes") { setwd("/mnt")}
-
 system("mkdir sorted_bams")
 system("mkdir vcf")
 

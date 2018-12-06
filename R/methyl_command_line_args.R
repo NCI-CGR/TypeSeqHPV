@@ -16,7 +16,10 @@ methyl_command_line_args <- function(){
             start_plugin = optigrab::opt_get('start_plugin')) %>%
         gather()
 
-if ( args_is_torrent_server == "yes") {
+if ( args_df$is_torrent_server == "yes") {
+
+    setwd("/mnt")
+
 
     plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
