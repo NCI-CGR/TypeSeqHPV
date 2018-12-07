@@ -14,12 +14,12 @@ if ( args_df$is_torrent_server == "yes") {
         slice(2:n()) %>%
         write_csv("manifest.csv")
 
-    #control_defs
-    data_frame(values = plugin_json$pluginconfig$control_definitions) %>%
-        mutate(values = str_replace(values, "\n", "" )) %>%
-        separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
-        slice(2:n()) %>%
-        write_csv("control_defs.csv")
+    # #control_defs
+    # data_frame(values = plugin_json$pluginconfig$control_definitions) %>%
+    #     mutate(values = str_replace(values, "\n", "" )) %>%
+    #     separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
+    #     slice(2:n()) %>%
+    #     write_csv("control_defs.csv")
 
     #barcode_file
     data_frame(values = plugin_json$pluginconfig$barcode_file) %>%

@@ -1,5 +1,7 @@
 FROM cgrlab/typeseqhpv:base_18110801
 
+WORKDIR /mnt
+
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", force=TRUE)'
 
 #clone repo to get other docs
