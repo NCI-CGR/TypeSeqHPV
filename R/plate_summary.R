@@ -23,8 +23,8 @@ samples_and_controls_df = split_deliverables$samples_only_matrix %>%
 mutate(has_positive = ifelse(Num_Types_Pos == 0,0, 1)) %>%
 group_by(PreExtraction_Plate_ID, Assay_Plate_Code) %>%
 mutate(number_of_samples = n()) %>%
-mutate(plate_total_reads = sum(total_reads)) %>%
-mutate(plate_b2m_reads = sum(B2M)) %>%
+mutate(plate_total_reads = sum(total_reads, na.rm = TRUE)) %>%
+mutate(plate_b2m_reads = sum(B2M, na.rm = TRUE)) %>%
 mutate(sample_status_for_count = ifelse(Human_Control == "failed_to_amplify", 1, 0)) %>%
 mutate(hpv_pos_rate = sum(has_positive) / number_of_samples) %>%
 mutate(num_samples_failed = sum(sample_status_for_count)) %>%
