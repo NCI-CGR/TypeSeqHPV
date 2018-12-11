@@ -20,7 +20,7 @@ final_grouped_samples_only_matrix %>%
     group_by(Project) %>%
     do({
       temp = as_tibble(.) %>%
-        mutate(filename = paste(.$Assay_Batch_Code[1],
+        mutate(filename = paste(.$Project, .$Assay_Batch_Code[1],
                             "samples_only_matrix.csv", sep = "_"))
 
       output = temp %>%
@@ -32,9 +32,6 @@ final_grouped_samples_only_matrix %>%
 
       temp = temp
     })
-
-
-
 
 
 ############### other outputs that are by batch (sequencing run) ################
