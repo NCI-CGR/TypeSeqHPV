@@ -3,6 +3,8 @@
 
 plate_summary <- function(split_deliverables){
 
+require(pander)
+
 controls_df = split_deliverables$control_matrix %>%
 group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_type, control_result) %>%
 summarize(count = n()) %>%
