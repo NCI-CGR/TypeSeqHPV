@@ -13,7 +13,7 @@ docker run -i -v $(pwd):/mnt -v /mnt:/user_files \
         --is_torrent_server yes \
         --start_plugin startplugin.json \
         --manifest manifest.csv \
-        --barcode_file barcode.csv \
+        --barcode_file barcodes.csv \
         --config_file config_file.csv \
         --hotspot_vcf /path/to/hotspot_vcf.ext \
         --tvc_parameters /path/to/parameters_file.ext \

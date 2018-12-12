@@ -12,6 +12,7 @@ if ( args_df$is_torrent_server == "yes") {
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
+        glimpse() %>%
         write_csv("manifest.csv")
 
     # #control_defs
@@ -26,6 +27,7 @@ if ( args_df$is_torrent_server == "yes") {
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
+        glimpse() %>%
         write_csv("barcodes.csv")
 
 }
