@@ -8,7 +8,7 @@ echo Pipeline version $VERSION
 ln ../../*.bam ./
 
 docker run -i -v $(pwd):/mnt -v /mnt:/user_files \
-    cgrlab/typeseqhpv:final_18120601 \
+    cgrlab/typeseqhpv:final_18121101 \
         Rscript /TypeSeqHPV/workflows/ion_methyl_workflow.R \
         --is_torrent_server yes \
         --start_plugin startplugin.json \
