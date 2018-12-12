@@ -9,4 +9,7 @@ logs/**
 .Rbuildignore
 inst/methylation/metastore_db/**
 inst/methylation/*.log
-TypeSeqHPVMethyl-DEV/**
+TypeSeqHPVMethyl/**
+TypeSeqHPV-TSv1/**
+*.zip
+.drake

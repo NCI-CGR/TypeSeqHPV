@@ -45,7 +45,6 @@ Hamming.compute(sequence.takeRight(bc.length()), bc).toString
 
 val hammingUDF = udf[String, String, String](hamming)
 
-
 val files = getListOfFiles(new File("./"), List("bam"))
 
 files.foreach(file_name => println(s"file is $file_name"))

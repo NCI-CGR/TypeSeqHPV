@@ -41,7 +41,7 @@
             pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
               "pluginconfig": {typing_manifest,
                 control_definitions,
-                barocde_file, config_file}};
+                barcode_file, config_file}};
                 pluginAPIJSON = JSON.stringify(pluginAPIJSON);
             console.log(pluginAPIJSON);
 
@@ -93,7 +93,7 @@
 
 var typing_manifest;
 var control_definitions;
-var report_grouping_definitions;
+var barcode_file;
 var config_file;
 
 function readFile_manifest(event) {
@@ -132,7 +132,7 @@ function readFile_control(event) {
   }
 }
 
-function readFile_report_grouping(event) {
+function readFile_barcode_file(event) {
   var file = event.target.files[0];
   if (file) {
     new Promise(function(resolve, reject) {
@@ -143,7 +143,7 @@ function readFile_report_grouping(event) {
       reader.readAsText(file);
       reader.onerror = reject;
     })
-    .then(processFileContent_report_grouping)
+    .then(processFileContent_barcode_file)
     .catch(function(err) {
       console.log(err)
     });
@@ -181,9 +181,9 @@ function processFileContent_controls(data) {
 };
 
 function processFileContent_barcode_file(data) {
-  report_grouping_definitions = data.split("\n");
+  barcode_file = data.split("\n");
   console.log("you uploaded a barcode file")
-  console.log(report_grouping_definitions);
+  console.log(barcode_file);
 };
 
 function processFileContent_report_config(data) {

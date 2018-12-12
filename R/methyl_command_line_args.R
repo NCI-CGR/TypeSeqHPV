@@ -6,7 +6,7 @@ methyl_command_line_args <- function(args_df){
 
 if ( args_df$is_torrent_server == "yes") {
 
-    plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
+    plugin_json = fromJSON("start_plugin.json", simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
     # config file
     data_frame(values = plugin_json$pluginconfig$config_file) %>%
