@@ -16,7 +16,7 @@ sessionInfo()
 
 
 #+ determine run type, echo=FALSE
-plugin_json = fromJSON("./startplugin.json", simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
+plugin_json = fromJSON(file("./startplugin.json"), simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
 run_type = plugin_json$runplugin$run_type
 
