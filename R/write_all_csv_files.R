@@ -12,15 +12,20 @@ write_all_csv_files <- function(final_grouped_samples_only_matrix, read_metrics,
 
 ################ per project code pn matrices with group/mask information ################
 final_grouped_samples_only_matrix %>%
-    select(Project, Assay_Plate_Code, Owner_Sample_ID,
+    select(Project, Assay_Batch_Code, Assay_Plate_Code, Owner_Sample_ID,
            Barcode = barcode, Human_control = Human_Control,
            Num_Types_Pos = not_masked_and_not_grouped_Num_Types_Pos,
            starts_with("HPV")) %>%
     glimpse() %>%
     group_by(Project) %>%
     do({
-      temp = as_tibble(.) %>%
-        mutate(filename = paste(.$Project, .$Assay_Batch_Code[1],
+      temp = as_tibble(.)
+
+      batch_code = temp$Assay_Batch_Code[1]
+
+      temp = temp %>%
+        select(-Assay_Batch_Code) %>%
+        mutate(filename = paste(.$Project, batch_code,
                             "samples_only_matrix.csv", sep = "_"))
 
       output = temp %>%
