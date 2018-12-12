@@ -5,7 +5,7 @@ methyl_startplugin_parse <- function(args_df){
 
 if ( args_df$is_torrent_server == "yes") {
 
-    plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
+    plugin_json = fromJSON(file("./startplugin.json"), simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
     #manifest
     data_frame(values = plugin_json$pluginconfig$typing_manifest) %>%
