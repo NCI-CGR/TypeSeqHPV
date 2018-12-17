@@ -4,7 +4,7 @@ scaling_of_b2m_human_control <- function(read_metrics_df, run_manifest_path, sca
 
 #1.  sum the pass filter reads for entire chip (all BC's); "qualified_aligned_reads" from read_metrics table output
 
-sum_pass_filter_reads = sum(read_metrics_df$qualified_aligned_reads)
+sum_pass_filter_reads = sum(read_metrics_df$qualified_aligned_reads, na.rm = TRUE)
 
 #2.  count number of samples in each run using the manifest (count rows I guess)
 
