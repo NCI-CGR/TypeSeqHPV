@@ -1,7 +1,7 @@
 <html>
 <head>
-<!-- java script required for interacting with the RESTful API -->
 <script type="text/javascript" src="/site_media/jquery/js/jquery-1.6.1.min.js"></script>
+
 
     <!-- page style -->
     <style type='text/css'>
@@ -19,56 +19,12 @@
     }
     </style>
 
-<script type='text/javascript'>
-    default_key = "";
-    pluginGET = "";
-
-    $( document ).ready(function(){
-
-
-    });
-
-        $( window ).load(function() {
-
-        });
-
-    //use the RESTful API to post the json variable
-    $(function() {
-        $('#postbutton').click(function() {
-
-            //the name of the form used here, in this case "inputform" should match the one in the html code
-            console.log("you clicked submit");
-
-            pluginAPIJSON = { "plugin" : [TB_plugin.fields.name], "pluginconfig": {typing_manifest, control_definitions, report_grouping_definitions, config_file}};
-            pluginAPIJSON = JSON.stringify(pluginAPIJSON);
-            console.log(pluginAPIJSON);
-            pluginURL = "/rundb/api/v1/results/" + TB_result + "/plugin/";
-            console.log(pluginURL);
-
-
-         $.ajax({
-           type: 'POST',
-                url: pluginURL,
-                contentType: "application/json; charset=utf-8",
-                success: function(data) {
-                    $("#json_result").html('<div style="text-align: center;"><img src="/site_media/jquery/colorbox/images/loading.gif" alt="Running Plugin" style="float:center"></img><p>Starting the Plugin...</p></div>');
-                    setTimeout("parent.$.fn.colorbox.close()" ,2000);
-                },
-                data: pluginAPIJSON,
-                dataType: "json"
-            });
-        });
-    });
-
-</script>
 </head>
-
-  <!-- set up the html page that the user interacts with -->
 <body>
   <div>
     <!-- the form name here, in this case "inputform" should match the one used in the put java script -->
     <div class="page-header">
-     <h1 align="center">TypeSeq HPV Analysis Plugin</h1></center>
+     <h1 align="center">TypeSeq HPV Analysis Plugin</h1>
     </div>
 
     <form id="inputform">
@@ -86,6 +42,9 @@
 <input name = 'config_file_name' id = 'config_file_id' type='file' accept='.csv'><br>
 
 <script>
+
+//javascript for interacting with RESTful API
+src="/site_media/jquery/js/jquery-1.6.1.min.js"
 
 var typing_manifest;
 var control_definitions;
@@ -164,9 +123,10 @@ function readFile_report_config(event) {
   }
 }
 
-
 function processFileContent_manifest(data) {
   typing_manifest = data.split("\n");
+  document.getElementById("message").innerHTML = "";
+
   console.log("you uploaded a manifest")
   console.log(typing_manifest);
 
@@ -190,6 +150,7 @@ function processFileContent_report_config(data) {
   console.log(config_file);
 };
 
+
 document.getElementById('manifest_id')
 .addEventListener('change', readFile_manifest, false);
 
@@ -209,7 +170,74 @@ document.getElementById('config_file_id')
 </form>
 </div>
 
+<script>
+//src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+
+
+ default_key = "";
+    pluginGET = "";
+
+    $(document).ready(function(){
+
+    });
+
+        $( window ).load(function() {
+
+        });
+
+
+$(function() {
+  $('#postbutton').click(function() {
+    //the name of the form used here, in this case "inputform" should match the one in the html code
+    console.log("you clicked submit");
+
+  if(typing_manifest[0].includes("PreExtraction_Plate_ID")){
+
+  default_key = "";
+    pluginGET = "";
+
+//use the RESTful API to post the json variable
+
+  //the name of the form used here, in this case "inputform" should match the one in the html code
+
+    pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
+    "pluginconfig": {typing_manifest, control_definitions,
+    report_grouping_definitions, config_file}};
+
+    pluginAPIJSON = JSON.stringify(pluginAPIJSON);
+    console.log(pluginAPIJSON);
+    pluginURL = "/rundb/api/v1/results/" + TB_result + "/plugin/";
+    console.log(pluginURL);
+
+    $.ajax({
+    type: 'POST',
+          url: pluginURL,
+          contentType: "application/json; charset=utf-8",
+          success: function(data) {
+          $("#json_result").html(
+            '<div style="text-align: center;"><img src="/site_media/jquery/colorbox/images/loading.gif" alt="Running Plugin" style="float:center"></img><p>Starting the Plugin...</p></div>');
+          setTimeout("parent.$.fn.colorbox.close()" ,2000);},
+                data: pluginAPIJSON,
+                dataType: "json"
+            });
+  }
+          else {
+      console.log("manifest does not pass validation");
+      document.getElementById("message").innerHTML = "manifest does not pass validation";
+};
+
+});
+
+});
+
+</script>
+
+
+<p id="message"></p><br>
+
 <p><center><input id="postbutton" type="submit" value="Submit"></center>
+
+
 
 <div id="json_result"> </div>
 </body>
