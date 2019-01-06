@@ -19,7 +19,7 @@ plate_summary <- function(split_deliverables){
         spread(control_result, count, fill = 0) %>%
         filter(PreExtraction_Plate_ID != "temp") %>%
         mutate(total_controls = neg_fail + neg_pass + pos_fail + pos_pass) %>%
-        select(PreExtraction_Plate_ID, Assay_Plate_Code, pos_fail, neg_fail, total_controls)
+        select(Assay_Plate_Code, pos_fail, neg_fail, total_controls)
 
     samples_and_controls_df = split_deliverables$samples_only_matrix %>%
         mutate(has_positive = ifelse(Num_Types_Pos == 0,0, 1)) %>%
@@ -38,7 +38,7 @@ plate_summary <- function(split_deliverables){
         mutate(plate_b2m_reads = scales::comma(plate_b2m_reads)) %>%
         mutate(plate_total_reads = scales::comma(plate_total_reads)) %>%
         select(-hpv_pos_rate) %>%
-        left_join(controls_df) %>%
+        left_join(controls_df, by = "Assay_Plate_Code") %>%
         arrange(PreExtraction_Plate_ID, Assay_Plate_Code)
 
     panderOptions("table.split.cells", 5)
