@@ -23,7 +23,7 @@ Ion Torrent Plugin
 
 We also include a wrapper for the Ion Torrent server that can be uploaded via the provided zip file.  The prerequisite for running the Ion Torrent Plugin successfully is to install docker on the server ahead of time.
 
-## Install Docker Community Edition On Torrent Servers
+## Install Docker Community Edition On Torrent Server
 
 Following instructions posted here https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
@@ -41,7 +41,7 @@ sudo apt-get remove docker docker-engine docker.io
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -52,22 +52,17 @@ sudo apt-get update
 
 sudo apt-get install -y docker-ce
 ````
-
-Try a hello world install test.
-````
-sudo docker run hello-world
-````
-
 ### Post Installation Setup
   
 Give plugin access to docker.
 ````
-sudo usermod -aG docker [user name] 
-sudo docker login (with any docker user id)
+sudo usermod -aG docker ionadmin
 sudo usermod -aG docker ionian
-sudo su ionian
-docker login (with any docker user id)
-su ionadmin
+````
+
+Try a hello world install test.
+````
+docker run hello-world
 ````
 
 ### Make Docker storage more robust on torrent server
@@ -76,18 +71,27 @@ Docker doesn't always clean up after itself.  Changing were docker keeps it's im
 
 ````
 sudo service docker stop
-cd /var/lib
-sudo rsync -a docker /results/plugins/scratch/
-sudo rm -rf docker
-sudo ln -s docker /results/plugins/scratch/docker
-sudo vi /etc/default/docker
+sudo rm -rf  /var/lib/docker
+sudo vim /etc/default/docker
+````
+
+Modify this line
+````
+ #DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+````
+Changing it to this
+````
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 -g /results/plugins/scratch/docker"
+````
+Restart Docker
+````
+sudo service docker start 
 ````
 
 
-## Download and add hpv-typing plugin via torrent server gui
+## Download and add hpv-typing plugin zip file via torrent server gui
 
-https://github.com/davidroberson/TypeSeqHPV-private/releases/tag/v1.33001.180
-
+https://github.com/cgrlab/TypeSeqHPV/releases/download/2.1808.2701/TypeSeqHPV_TSv1_Ion_Torrent_Plugin.zip
 
 Illumina Workflow
 ================
@@ -151,3 +155,58 @@ will contain a report PDF and CSV tables.
 
 The version of Singularity we used to run the container is 2.4.4
 
+## Tools utilized in the Ion Torrent and Illumina Workflows
+### Ion Torrent Plugin
+- Drake 
+   - Function: workflow engine
+   - https://github.com/ropensci/drake
+- Sambamba view
+   - Function: creates a json that is more easily parsed
+   - https://github.com/biod/sambamba
+- Samtools view header
+   - Function: extracts a header from one of the BAM files to determine list of contigs
+   - Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) format and SAMtools, Bioinformatics (2009) 25(16) 2078-9 [19505943]
+- TypeSeqHPV R package
+   - Function: wrangles data, filter-based QC, creates report and matrix deliverables
+   - R packages this depends on:
+      - Tidyverse, ggplot, ggsci, Rmarkdown, fuzzyjoin, drake, furrr
+         - https://github.com/tidyverse/tidyverse
+         - https://github.com/tidyverse/ggplot2
+         - https://github.com/rstudio/rmarkdown
+         - https://github.com/dgrtwo/fuzzyjoin
+         - https://github.com/ropensci/drake
+         6. https://github.com/DavisVaughan/furrr
+- Docker
+   - Function: enables portability
+   - The plugin runs inside a docker container with all dependencies
+   - Docker run triggers the workflow
+   - https://www.docker.com/
+
+
+### Illumina Containerized Workflow
+- Rabix common workflow language executor 
+   - Function: workflow orchestration
+   - http://rabix.io/
+- bwa mem
+   - Function: aligner
+   - Li H. (2013) Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv:1303.3997v1 [q-bio.GN]
+- Sambamba view
+   - Function: creates a json that is more easily parsed
+   - https://github.com/biod/sambamba
+- Samtools view header
+   - Function: wrangles data, filter-based QC, creates report and matrix deliverables
+   - Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) format and SAMtools, Bioinformatics (2009) 25(16) 2078-9 [19505943]
+- TypeSeqHPV R package
+   - Function: wrangles data, filter-based QC, creates report and matrix deliverables
+   - R packages this depends on:
+      - Tidyverse, ggplot, ggsci, Rmarkdown, fuzzyjoin
+       - https://github.com/tidyverse/tidyverse
+       - https://github.com/tidyverse/ggplot2
+       - https://github.com/rstudio/rmarkdown
+         4. https://github.com/dgrtwo/fuzzyjoin
+
+- Singularity
+   - Function: enables portability
+   - The plugin runs inside a docker container with all dependencies
+   - Singularity exec triggers the workflow
+   - https://github.com/singularityware/singularity
