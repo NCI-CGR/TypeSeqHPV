@@ -71,10 +71,17 @@ println(bc_name.toString + "_" + bc_seq.toString)
 
 reads.transformDataset(_.filter(
         hammingUDF('sequence, lit(bc_seq)) isin ("0", "1")))
-    .saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last,
-        asSingleFile=true)
+        .toDF
+        .head
+        //should this be a user input???
+        //need to save hamming distance as a variable in a new table
+        //make a summary of how many duplicates there are
+   // .saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last,
+    //    asSingleFile=true)
 
 })
+
+
 
 
 })

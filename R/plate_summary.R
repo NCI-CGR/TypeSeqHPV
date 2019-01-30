@@ -7,6 +7,10 @@ plate_summary <- function(split_deliverables){
 
     controls_df = split_deliverables$control_matrix %>%
         group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_type, control_result) %>%
+        mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
+                                               "NA", PreExtraction_Plate_ID)) %>%
+        mutate(Assay_Plate_Code = ifelse(is.na(Assay_Plate_Code),
+               "NA", Assay_Plate_Code)) %>%
         summarize(count = n()) %>%
         ungroup() %>%
         mutate(control_result = paste0(Control_type, "_", control_result)) %>%
