@@ -14,11 +14,23 @@ library(jsonlite)
 library(scales)
 sessionInfo()
 
+#+ create new sample only matrix, echo=FALSE, include = FALSE
+
+run_type = "temp"
+
+system(paste0("cp TypeSeqHPV_QC_report.pdf ",
+              grouped_samples_only_matrix$Assay_Batch_Code[1],
+              "_qc_report.pdf"))
+
+system("zip -j TypeSeqHPV_Report_Files.zip *csv *qc_report.pdf")
 
 #+ determine run type, echo=FALSE
+if ( args_is_torrent_server == "yes") {
+
 plugin_json = fromJSON(args_start_plugin, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
 run_type = plugin_json$runplugin$run_type
+}
 
 #' # {.tabset}
 #' ## Analysis Output
@@ -28,18 +40,17 @@ run_type = plugin_json$runplugin$run_type
 cat('
 
 <a href="./TypeSeqHPV_QC_report.pdf" target="_blank">QC Report</a>
-  
-[TypeSeq HPV Report Files](./TypeSeqHPV_Report_Files.zip)  
-  
 
-  
+[TypeSeq HPV Report Files](./TypeSeqHPV_Report_Files.zip)
+
+
 ')
 
 #+ thumbnail run, echo=FALSE, results='asis', eval=run_type=="thumbnail"
 cat('
 
-Thumbnail data insufficient for typing analysis.  
-    
+Thumbnail data insufficient for typing analysis.
+
 Please see full report.
 
 ')

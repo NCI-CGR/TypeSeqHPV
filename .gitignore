@@ -1,0 +1,15 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+input/**
+output/**
+logs/**
+.Rbuildignore
+inst/methylation/metastore_db/**
+inst/methylation/*.log
+TypeSeqHPVMethyl/**
+TypeSeqHPV-TSv1/**
+*.zip
+.drake

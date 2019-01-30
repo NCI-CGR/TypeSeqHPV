@@ -1,13 +1,15 @@
 #!/bin/bash
 set -x
 # TypeSeq HPV Plugin
-VERSION="2.1808.2701"
+VERSION="2.1901.0402"
 #autorundisable
 echo Pipeline version $VERSION
 
 ln ../../*.bam ./
 
-docker run -i -v $(pwd):/mnt cgrlab/typeseqhpv:final_18082401 Rscript /TypeSeqHPV/workflows/ion_workflow.R \
+docker run -i -v $(pwd):/mnt \
+-v /results/plugins/scratch/TypeSeqHPV-TSv1/:/report_dir \
+cgrlab/typeseqhpv:final_190104 Rscript /TypeSeqHPV/workflows/ion_workflow.R \
 --pos_neg_filtering_criteria /TypeSeqHPV/docs/Ion/2017-06-11_Pos-Neg_matrix_filtering_criteria_RefTable_v3.txt \
 --scaling_table /TypeSeqHPV/docs/Ion/2017-11-24_TypeSeqer_Filtering_Scaling_Table_v2.csv \
 --parameter_file /TypeSeqHPV/docs/Ion/hpv_types_MQ_min_max_len_filters_JUNE2017_30-10bpLen_v6.txt \
@@ -18,10 +20,10 @@ docker run -i -v $(pwd):/mnt cgrlab/typeseqhpv:final_18082401 Rscript /TypeSeqHP
 --custom_groups /mnt/report_grouping.csv \
 --control_defs /mnt/control_defs.csv \
 --run_manifest /mnt/typing_manifest.csv \
---is_torrent_server "yes"
+--config_file /mnt/config_file.csv \
+--is_torrent_server yes \
+--custom_report_script_dir /report_dir
 
 #rm extra bam and bam.json files
 rm *.bam*
-
-
 
