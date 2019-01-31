@@ -6,11 +6,11 @@ plate_summary <- function(split_deliverables){
     require(pander)
 
     controls_df = split_deliverables$control_matrix %>%
-        group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_type, control_result) %>%
         mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
                                                "NA", PreExtraction_Plate_ID)) %>%
         mutate(Assay_Plate_Code = ifelse(is.na(Assay_Plate_Code),
                "NA", Assay_Plate_Code)) %>%
+        group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_type, control_result) %>%
         summarize(count = n()) %>%
         ungroup() %>%
         mutate(control_result = paste0(Control_type, "_", control_result)) %>%
@@ -24,6 +24,11 @@ plate_summary <- function(split_deliverables){
         filter(PreExtraction_Plate_ID != "temp") %>%
         mutate(total_controls = neg_fail + neg_pass + pos_fail + pos_pass) %>%
         select(Assay_Plate_Code, pos_fail, neg_fail, total_controls)
+
+
+
+
+
 
     samples_and_controls_df = split_deliverables$samples_only_matrix %>%
         mutate(has_positive = ifelse(Num_Types_Pos == 0,0, 1)) %>%
