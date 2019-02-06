@@ -14,7 +14,7 @@ tvc_cli <- function(files, args_df){
 
     system(paste0("tvc --error-motifs /opt/tvc-5.10.1/share/TVC/sse/motifset.txt \\
     --output-vcf ", vcf_df$vcf, " \\
-    --input-bam ", vcf_df$bam_path, " \\
+    --input-bam ", vcf_df$sorted_path, " \\
     --force-sample-name ", vcf_df$sample_name, " \\
     --input-vcf ", args_df$hotspot_vcf, " \\
     --reference ", basename(args_df$reference), " \\
@@ -23,7 +23,7 @@ tvc_cli <- function(files, args_df){
     --trim-ampliseq-primers \\
     --num-threads 4"))
 
-    #system("rm vcf/*filtered.vcf")
+    system("rm vcf/*filtered.vcf")
 
     return(vcf_df)
 

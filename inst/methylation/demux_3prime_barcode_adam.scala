@@ -93,7 +93,7 @@ reads
 .write
 .mode(SaveMode.Overwrite)
 .option("header", "true")
-.parquet("/mnt/read_count/" + bc_name + "_" +  bam_path.split("/").last)
+.parquet("read_count/" + bc_name + "_" +  bam_path.split("/").last)
 
 
 }) //end barcode loop
