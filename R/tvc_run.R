@@ -23,7 +23,7 @@ tvc_cli <- function(files, args_df){
     --trim-ampliseq-primers \\
     --num-threads 4"))
 
-    system("rm vcf/*filtered.vcf")
+    #system("rm vcf/*filtered.vcf")
 
     return(vcf_df)
 

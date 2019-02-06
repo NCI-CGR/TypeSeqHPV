@@ -119,31 +119,12 @@ reads
 
 //join loop
 
-println("before hamming temp")
-
-
+//this is user editable
 val min_hamming_temp = spark.read.parquet("read_count/*/*").filter($"mapq" > 4).filter($"hamming" < 3)
-
-
-
-println("post haming temp")
-
 
 var windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_hamming_temp("hamming"))
 
 var min_hamming_df = min_hamming_temp.withColumn("minReadNameHamming", first(min_hamming_temp("readName")).over(windowSpec).as("minReadNameHamming")).filter("readName = minReadNameHamming").select($"barcode", $"minReadNameHamming")
-
-
-
-
-println("post window")
-
-
-
-
-
-
-
 
 
 
