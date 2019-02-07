@@ -87,9 +87,7 @@ val min_hamming_temp = spark.read.parquet("hamming_df/*/*")
 
 val windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_hamming_temp("hamming"))
 
-val min_hamming_df = min_hamming_temp
-  .withColumn("minHammingBarcode", first(min_hamming_temp("barcode")).over(windowSpec).as("minHammingBarcode"))
-  .filter("barcode = minHammingBarcode")
+val min_hamming_df = min_hamming_temp.withColumn("minHammingBarcode", first(min_hamming_temp("barcode")).over(windowSpec).as("minHammingBarcode")).filter("barcode = minHammingBarcode")
 
 val read_summary_df = min_hamming_df
 .withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0))
@@ -108,14 +106,7 @@ val read_summary_df = min_hamming_df
 
 read_summary_df.show
 
-read_summary_df
-.coalesce(1)
-.repartition(1)
-.write
-.format("com.databricks.spark.csv")
-.option("header", "true")
-.mode("overwrite")
-.save("read_summary_df.csv")
+read_summary_df.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
 
 
 files.foreach(bam_path_temp => {
