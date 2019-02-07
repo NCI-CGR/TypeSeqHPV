@@ -7,6 +7,7 @@ adam_demux <- function(...){
     system("mkdir demux_bams")
     system("mv *.bam_demux/*.bam demux_bams")
     system("rm -R *_demux")
+    system("cp read_summary_df.csv/*csv read_summary.csv")
 
     return(
         dir_ls("demux_bams", glob = "*.bam") %>%
