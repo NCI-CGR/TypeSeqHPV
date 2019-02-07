@@ -122,12 +122,7 @@ var min_hamming_df_for_join = min_hamming_df.select($"barcode", $"readName".alia
 
 reads.transformDataset(df => {
 
-df.join(min_hamming_df_for_join,
-        $"readName" === min_hamming_df_for_join("minReadNameHamming"))
-  .drop("minReadNameHamming", "barcode")
-  .as[org.bdgenomics.adam.sql.AlignmentRecord]
-})
-.saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
+df.join(min_hamming_df_for_join, $"readName" === min_hamming_df_for_join("minReadNameHamming")) .drop("minReadNameHamming", "barcode").as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
 
 })})
 
