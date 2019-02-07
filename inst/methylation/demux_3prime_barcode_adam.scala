@@ -81,8 +81,6 @@ reads
 .parquet("hamming_df/" + bc_name + "_" +  bam_path.split("/").last)
 })})
 
-//this is user editable
-
 val min_hamming_temp = spark.read.parquet("hamming_df/*/*")
 
 val windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_hamming_temp("hamming"))
@@ -94,6 +92,12 @@ val read_summary_df = min_hamming_df.withColumn("passZA", when($"ZA" === $"seqLe
 read_summary_df.show
 
 read_summary_df.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
+
+val hamming_summary_df = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength").withColumn("hamming_0", when($"hamming" === 0, 1).otherwise(0)).withColumn("hamming_1", when($"hamming" === 1, 1).otherwise(0)).withColumn("hamming_2", when($"hamming" === 2, 1).otherwise(0)).groupBy("filename").agg(countDistinct('readName).alias("total reads"),sum($"hamming_0").alias("hamming dist 0"),sum($"hamming_1").alias("hamming dist 1"),sum($"hamming_2").alias("hamming dist 2")).withColumn("hamming 0 perc", bround($"hamming dist 0" / $"total reads", 2)).withColumn("hamming 1 perc", bround($"hamming dist 1" / $"total reads", 2)).withColumn("hamming 2 perc", bround($"hamming dist 2" / $"total reads", 2)).orderBy($"filename")
+
+hamming_summary_df.show
+
+hamming_summary_df.coalesce(1).write.format("com.databricks.spark.csv") .option("header", "true") .mode("overwrite") .save("hamming_summary_df.csv")
 
 val min_hamming_df_final = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
 
