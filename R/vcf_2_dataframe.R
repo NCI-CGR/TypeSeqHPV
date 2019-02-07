@@ -1,15 +1,22 @@
 #+
 vcf_to_dataframe <- function(vcf_files){
-    require(dplyr)
+    require(tidyverse)
     require(fs)
     require(VCFWrenchR)
     require(VariantAnnotation)
+    require(import)
 
-    detach("package:drake", unload = TRUE)
+    import::from(dplyr, select)
 
-    temp = as.data.frame(readVcf(vcf_files$vcf))
+    #detach("package:drake", unload = TRUE)
 
-    require(drake)
+    temp = as.data.frame(readVcf(vcf_files$vcf)) %>%
+    as_tibble() %>%
+    mutate(filename = vcf_files$vcf) %>%
+    select(filename, everything()) %>%
+    select(-ends_with(".bam"))
+
+    #require(drake)
 
     return(temp)
 

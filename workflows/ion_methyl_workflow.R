@@ -53,9 +53,10 @@ vcf_files = sorted_bams %T>%
     glimpse(),
 
 #### 6. merge json files in to 1 table ####
-hotspot_df = vcf_files %>%
+variant_table = vcf_files %>%
     split(.$vcf) %>%
     future_map_dfr(vcf_to_dataframe) %>%
+    write_csv("variant_table.csv") %>%
     glimpse()
 )
 #### C. execute workflow plan ####
