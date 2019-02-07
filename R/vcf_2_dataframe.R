@@ -1,12 +1,12 @@
 #+
-vcf_to_json <- function(vcf_files){
+vcf_to_dataframe <- function(vcf_files){
     require(dplyr)
     require(fs)
+    require(VCFWrenchR)
 
-    system("/home/adam/bin/adam-shell --driver-memory 80G --driver-cores 22 -i /TypeSeqHPV/inst/methylation/vcf_to_json_adam.scala")
+    temp = as.data.frame(readVcf(vcf_files$path))
 
-    vcf_files = dir_ls("vcf", recursive = TRUE, type = "file", glob = "*.json") %>%
-        map_df(as_tibble) %>%
-        rename(path = value)
+    return(temp)
+
 
 }

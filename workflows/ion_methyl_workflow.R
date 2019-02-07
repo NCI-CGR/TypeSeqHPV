@@ -52,31 +52,12 @@ vcf_files = sorted_bams %T>%
     future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
 
-#### 6. vcf to json adam ####
-vcf_to_json_files = vcf_files %>%
-    vcf_to_json() %>%
-    glimpse(),
-
-#### 7. merge json files in to 1 table ####
-hotspot_df = vcf_to_json_files %>%
-    group_by(path) %>%
-    do({
-        temp = as_tibble(.)
-
-        temp = flatten(stream_in(file(temp$path))) #%>%
-            #mutate(filtersFailed = unlist(filtersFailed))
-
-    }) %>%
-    filter(annotation.attributes.HS == "true") %>%
-    ungroup() %>%
-    rename(sample_name = path) %>%
-    mutate(sample_name = str_sub(sample_name, start = 5, end = 10)) %>%
-    glimpse() %>%
-    select_if(negate(is.list)) %>%
-    write_csv("hotspot_variants_table.csv")
-
+#### 6. merge json files in to 1 table ####
+hotspot_df = vcf_files %>%
+    split(.$path) %>%
+    future_map_dfr(vcf_to_dataframe) %>%
+    glimpse()
 )
-
 #### C. execute workflow plan ####
 system("mkdir sorted_bams")
 system("mkdir vcf")

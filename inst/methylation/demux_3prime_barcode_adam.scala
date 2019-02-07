@@ -52,7 +52,6 @@ val splitZA = udf((attributes:String) => {
   else "0"
 })
 
-
 files.foreach(bam_path_temp => {
 println(s"file is $bam_path_temp")
 var bam_path = "./" + bam_path_temp.toString.split("/").last
