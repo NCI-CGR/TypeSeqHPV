@@ -10,7 +10,9 @@ tvc_cli <- function(files, args_df){
         select(-temp) %>%
         separate(sample_name, ".sorted.bam", into = c("sample_name"), extra = 'drop') %>%
         mutate(vcf = paste0("vcf/", sample_name, ".vcf")) %>%
-        rename(bam_path = path)
+        rename(sorted_path = path)
+
+    vcf_df %>% glimpse()
 
     system(paste0("tvc --error-motifs /opt/tvc-5.10.1/share/TVC/sse/motifset.txt \\
     --output-vcf ", vcf_df$vcf, " \\
