@@ -142,7 +142,7 @@ var bc_seq = bc_row(12)
 println(bc_name.toString + "_" + bc_seq.toString)
 
 var min_hamming_df_for_join = min_hamming_df
-  .select($"barcode", $"minReadNameHamming")
+  .select($"barcode", $"readName".aliast("minReadNameHamming"))
   .filter($"barcode" === bc_name)
 
 reads.transformDataset(df => {
