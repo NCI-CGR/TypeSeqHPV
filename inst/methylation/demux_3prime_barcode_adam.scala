@@ -96,6 +96,8 @@ read_summary_df.show
 read_summary_df.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
 
 
+min_hamming_df.show
+
 files.foreach(bam_path_temp => {
 
 println(s"join is $bam_path_temp")
@@ -111,8 +113,6 @@ var temp = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
 
 temp.collect().foreach(bc_row => {
 
-
-
 var bc_name = bc_row(7).toString + bc_row(8).toString
 var bc_seq = bc_row(12)
 
@@ -120,9 +120,11 @@ println(bc_name.toString + "_" + bc_seq.toString)
 
 var min_hamming_df_for_join = min_hamming_df.select($"barcode", $"readName".alias("minReadNameHamming")).filter($"barcode" === bc_name)
 
+min_hamming_df_for_join.show
+
 reads.transformDataset(df => {
 
-df.join(min_hamming_df_for_join, $"readName" === min_hamming_df_for_join("minReadNameHamming")) .drop("minReadNameHamming", "barcode").as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
+df.join(min_hamming_df_for_join, $"readName" === min_hamming_df_for_join("minReadNameHamming")).drop("minReadNameHamming", "barcode").as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
 
 })})
 
