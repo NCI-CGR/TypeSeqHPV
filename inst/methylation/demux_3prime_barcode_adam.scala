@@ -16,8 +16,6 @@ def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
     }
 }
 
-println("pre barcodes")
-
 val barcodes = (spark.read.format("csv")
         .option("header", "true")
         .load("./barcodes.csv"))
@@ -29,8 +27,6 @@ val manifest = (spark.read.format("csv")
         .load("./manifest.csv"))
 
 println(manifest)
-
-println("post manifest")
 
 object Hamming {
   def compute(s1: String, s2: String): Int = {
@@ -57,16 +53,6 @@ val splitZA = udf((attributes:String) => {
 })
 
 
-
-
-
-
-
-
-
-
-
-
 files.foreach(bam_path_temp => {
 println(s"file is $bam_path_temp")
 var bam_path = "./" + bam_path_temp.toString.split("/").last
@@ -88,43 +74,47 @@ reads
 .withColumn("barcode", lit(bc_name.toString))
 .withColumn("fileName", lit(bam_path.split("/").last))
 .withColumn("seqLength", length($"sequence"))
-.filter($"ZA" === $"seqLength")
 .select($"fileName", $"mapq", $"ZA", $"barcode", $"readName", $"hamming", $"seqLength")
 .write
 .mode(SaveMode.Overwrite)
 .option("header", "true")
-.parquet("read_count/" + bc_name + "_" +  bam_path.split("/").last)
-
-
-}) //end barcode loop
-
-}) //end file loop
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//join loop
+.parquet("hamming_df/" + bc_name + "_" +  bam_path.split("/").last)
+})})
 
 //this is user editable
-val min_hamming_temp = spark.read.parquet("read_count/*/*").filter($"mapq" > 4).filter($"hamming" < 3)
 
-var windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_hamming_temp("hamming"))
+val min_hamming_temp = spark.read.parquet("hamming_df/*/*")
 
-var min_hamming_df = min_hamming_temp.withColumn("minReadNameHamming", first(min_hamming_temp("readName")).over(windowSpec).as("minReadNameHamming")).filter("readName = minReadNameHamming").select($"barcode", $"minReadNameHamming")
+val windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_hamming_temp("hamming"))
+
+val min_hamming_df = min_hamming_temp
+.withColumn("minHammingBarcode", first(min_hamming_temp("barcode"))
+                                 .over(windowSpec)
+            .as("minHammingBarcode"))
+.filter("barcode = minHammingBarcode")
+
+val read_summary_df = min_hamming_df
+.withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0))
+.withColumn("passHamming", when($"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0))
+.withColumn("passMap", when($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0))
+.groupBy("filename")
+.agg(
+    countDistinct('readName).alias("total reads"),
+    sum($"passZA").alias("pass ZA reads"),
+    sum($"passHamming").alias("pass hamming reads"),
+    sum($"passMap").alias("pass mapq reads"))
+.withColumn("pass za percent", bround($"pass za reads" / $"total reads", 2))
+.withColumn("pass hamming percent", bround($"pass hamming reads" / $"total reads", 2))
+.withColumn("pass mapq / final qualified percent", bround($"pass mapq reads" / $"total reads", 2))
+.orderBy($"pass mapq / final qualified percent")
+
+read_summary_df
+.coalesce(1)
+.write
+.format("com.databricks.spark.csv")
+.option("header", "true")
+.mode("overwrite")
+.save("read_summary_df.csv")
 
 
 
@@ -152,6 +142,7 @@ var bc_seq = bc_row(12)
 println(bc_name.toString + "_" + bc_seq.toString)
 
 var min_hamming_df_for_join = min_hamming_df
+  .select($"barcode", $"minReadNameHamming")
   .filter($"barcode" === bc_name)
 
 reads.transformDataset(df => {
@@ -163,8 +154,7 @@ df.join(min_hamming_df_for_join,
 })
 .saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
 
-})
-})
+})})
 
 
 
