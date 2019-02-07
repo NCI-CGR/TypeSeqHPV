@@ -95,7 +95,7 @@ read_summary_df.show
 
 read_summary_df.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
 
-val min_hamming_df_final = min_hamming_df.filter("mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
+val min_hamming_df_final = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
 
 files.foreach(bam_path_temp => {
 
