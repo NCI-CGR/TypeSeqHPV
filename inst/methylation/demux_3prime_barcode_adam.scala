@@ -95,8 +95,7 @@ read_summary_df.show
 
 read_summary_df.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
 
-
-min_hamming_df.show
+val min_hamming_df = min_hamming_df.filter("mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
 
 files.foreach(bam_path_temp => {
 
@@ -118,7 +117,7 @@ var bc_seq = bc_row(12)
 
 println(bc_name.toString + "_" + bc_seq.toString)
 
-var min_hamming_df_for_join = min_hamming_df.select($"barcode", $"readName".alias("minReadNameHamming")).filter($"barcode" === bc_name)
+var min_hamming_df_for_join = min_hamming_df.filter($"barcode" === bc_name).select($"barcode", $"readName".alias("minReadNameHamming"))
 
 min_hamming_df_for_join.show
 
