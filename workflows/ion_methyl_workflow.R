@@ -54,7 +54,7 @@ vcf_files = sorted_bams %T>%
 
 #### 6. merge json files in to 1 table ####
 hotspot_df = vcf_files %>%
-    split(.$path) %>%
+    split(.$vcf) %>%
     future_map_dfr(vcf_to_dataframe) %>%
     glimpse()
 )

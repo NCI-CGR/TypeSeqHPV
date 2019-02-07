@@ -7,7 +7,7 @@ vcf_to_dataframe <- function(vcf_files){
 
     detach("package:drake", unload = TRUE)
 
-    temp = as.data.frame(readVcf(vcf_files$path))
+    temp = as.data.frame(readVcf(vcf_files$vcf))
 
     require(drake)
 
