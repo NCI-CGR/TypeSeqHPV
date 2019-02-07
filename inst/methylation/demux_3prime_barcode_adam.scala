@@ -89,13 +89,7 @@ val windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_ha
 
 val min_hamming_df = min_hamming_temp.withColumn("minHammingBarcode", first(min_hamming_temp("barcode")).over(windowSpec).as("minHammingBarcode")).filter("barcode = minHammingBarcode")
 
-val read_summary_df = min_hamming_df.withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0)).withColumn("passHamming", when($"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0)).withColumn("passMap", when($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0))
-.groupBy("filename")
-.agg(countDistinct('readName).alias("total reads"),sum($"passZA").alias("pass ZA reads"),sum($"passHamming").alias("pass hamming reads"),sum($"passMap").alias("pass mapq reads"))
-.withColumn("pass za percent", bround($"pass za reads" / $"total reads", 2))
-.withColumn("pass hamming percent", bround($"pass hamming reads" / $"total reads", 2))
-.withColumn("pass mapq / final qualified percent", bround($"pass mapq reads" / $"total reads", 2))
-.orderBy($"pass mapq / final qualified percent")
+val read_summary_df = min_hamming_df.withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0)).withColumn("passHamming", when($"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0)).withColumn("passMap", when($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0)).groupBy("filename").agg(countDistinct('readName).alias("total reads"),sum($"passZA").alias("pass ZA reads"),sum($"passHamming").alias("pass hamming reads"),sum($"passMap").alias("pass mapq reads")).withColumn("pass za percent", bround($"pass za reads" / $"total reads", 2)).withColumn("pass hamming percent", bround($"pass hamming reads" / $"total reads", 2)).withColumn("pass mapq / final qualified percent", bround($"pass mapq reads" / $"total reads", 2)).orderBy($"pass mapq / final qualified percent")
 
 read_summary_df.show
 
