@@ -4,13 +4,7 @@ WORKDIR /mnt
 
 RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", ref = "dev", force = TRUE)'
 
-RUN apt-get install -y libmariadb-client-lgpl-dev
-
-RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("VariantAnnotation"); biocLite("genoset")'
-
-RUN Rscript -e 'require(devtools); install_github("seandavi/VCFWrenchR")'
-
-RUN Rscript -e 'install.packages("import")'
+RUN Rscript -e 'install.packages("vcfR")'
 
 #clone repo to get other docs
 RUN cd / && git clone --single-branch --branch dev https://github.com/cgrlab/TypeSeqHPV.git
