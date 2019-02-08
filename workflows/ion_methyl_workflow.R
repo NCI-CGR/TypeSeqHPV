@@ -19,7 +19,9 @@ command_line_args = data_frame(
     hotspot_vcf = optigrab::opt_get('hotspot_vcf'),
     is_torrent_server = optigrab::opt_get('is_torrent_server'),
     start_plugin = optigrab::opt_get('start_plugin'),
-    config_file = optigrab::opt_get('config_file')) %>%
+    config_file = optigrab::opt_get('config_file'),
+    ram = optigrab::opt_get('ram'),
+    cores = optigrab::opt_get('cores')) %>%
     glimpse()
 
 #### B. create workflow plan ####
@@ -34,7 +36,7 @@ args_df = methyl_command_line_args(command_line_args) %>%
 user_files = methyl_startplugin_parse(args_df),
 
 #### 3. demux bams ####
-demux_bams = adam_demux(user_files) %>%
+demux_bams = adam_demux(user_files, args_df$ram, args_df$cores) %>%
     glimpse(),
 
 #### 4. picard sort and create index ####
