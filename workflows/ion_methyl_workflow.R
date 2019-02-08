@@ -58,7 +58,7 @@ variant_table = vcf_files %>%
     future_map_dfr(vcf_to_dataframe) %>%
     select(-FR, -INFO) %>%
     glimpse() %>%
-    write_csv("variant_table.csv") %>%
+    write_csv("variant_table.csv")
 )
 #### C. execute workflow plan ####
 system("mkdir sorted_bams")
