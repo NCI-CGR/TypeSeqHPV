@@ -36,7 +36,7 @@ args_df = methyl_command_line_args(command_line_args) %>%
 user_files = methyl_startplugin_parse(args_df),
 
 #### 3. demux bams ####
-demux_bams = adam_demux(user_files, args_df$ram, args_df$cores) %>%
+demux_bams = adam_demux(user_files, ram = args_df$ram, cores = args_df$cores) %>%
     glimpse(),
 
 #### 4. picard sort and create index ####

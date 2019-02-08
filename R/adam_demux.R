@@ -4,8 +4,6 @@ adam_demux <- function(...){
     require(fs)
 
     system(paste0("/home/adam/bin/adam-shell --driver-memory ", ram," --driver-cores ",cores," -i /TypeSeqHPV/inst/methylation/demux_3prime_barcode_adam.scala"))
-
-    system("/home/adam/bin/adam-shell -i /TypeSeqHPV/inst/methylation/demux_3prime_barcode_adam.scala")
     system("mkdir demux_bams")
     system("mv *.bam_demux/*.bam demux_bams")
     system("rm -R *_demux")
