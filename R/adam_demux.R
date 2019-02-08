@@ -1,5 +1,5 @@
 #+
-adam_demux <- function(...){
+adam_demux <- function(user_files, ram, cores){
     require(dplyr)
     require(fs)
 
