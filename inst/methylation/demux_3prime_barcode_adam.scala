@@ -100,7 +100,7 @@ hamming_summary_df.coalesce(1).write.format("com.databricks.spark.csv") .option(
 
 val min_hamming_df_final = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
 
-files.foreach(bam_path_temp => {
+files.par.foreach(bam_path_temp => {
 
 println(s"join is $bam_path_temp")
 
@@ -111,9 +111,7 @@ var reads = sc.loadAlignments(bam_path)
 var temp = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
                    .filter(col("BC1") === ("A" + bam_path.split("IonXpress")(1).substring(2,4)))
 
-temp.collect().par.foreach(bc_row => {
-
-//temp.collect().foreach(bc_row => {
+temp.collect().foreach(bc_row => {
 
 var bc_name = bc_row(7).toString + bc_row(8).toString
 var bc_seq = bc_row(12)
@@ -129,8 +127,6 @@ reads.transformDataset(df => {
 df.join(min_hamming_df_for_join, $"readName" === min_hamming_df_for_join("minReadNameHamming")).drop("minReadNameHamming", "barcode").as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
 
 })})
-
-
 
 //command to exit spark shell
 System.exit(0)
