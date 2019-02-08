@@ -6,7 +6,9 @@ vcf_to_dataframe <- function(vcf_files){
 
     temp = read.vcfR(vcf_files$vcf)
 
-    temp = vcfR2tidy(temp$fix) %>%
+    temp = vcfR2tidy(temp)
+
+    temp = temp$fix %>%
     as_tibble() %>%
     mutate(filename = vcf_files$vcf) %>%
     select(filename, everything())
