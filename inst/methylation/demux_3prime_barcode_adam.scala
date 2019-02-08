@@ -111,9 +111,9 @@ var reads = sc.loadAlignments(bam_path)
 var temp = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
                    .filter(col("BC1") === ("A" + bam_path.split("IonXpress")(1).substring(2,4)))
 
-//temp.collect().par.foreach(bc_row => {
+temp.collect().par.foreach(bc_row => {
 
-temp.collect().foreach(bc_row => {
+//temp.collect().foreach(bc_row => {
 
 var bc_name = bc_row(7).toString + bc_row(8).toString
 var bc_seq = bc_row(12)
