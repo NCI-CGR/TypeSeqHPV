@@ -100,7 +100,7 @@ hamming_summary_df.coalesce(1).write.format("com.databricks.spark.csv") .option(
 
 val min_hamming_df_final = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
 
-files.par.foreach(bam_path_temp => {
+files.foreach(bam_path_temp => {
 
 println(s"join is $bam_path_temp")
 
