@@ -65,6 +65,7 @@ variant_table = vcf_files %>%
 variant_table_join = user_files$manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(variant_table) %>%
+    select(-filename, -BC1, -BC2) %>%
     glimpse() %>%
     write_csv("variant_table.csv")
 )
