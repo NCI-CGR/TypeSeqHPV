@@ -13,8 +13,10 @@ samtools_sort <- function(bam_files){
 
     system(paste0("samtools sort ", bam_df$bam_path, " ", bam_df$sorted_path), wait = TRUE)
 
-
     system(paste0("samtools index ", paste0(bam_df$sorted_path, ".bam")), wait = TRUE)
+
+    bam_df = bam_df %>%
+        mutate(sorted_path = paste0(sorted_path, ".bam"))
 
     return(bam_df)
 
