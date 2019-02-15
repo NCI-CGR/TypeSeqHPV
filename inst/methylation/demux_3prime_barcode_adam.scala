@@ -18,7 +18,6 @@ def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
 
 val barcodes = (spark.read.format("csv").option("header", "true").load("./barcodes.csv")).withColumnRenamed("sequence", "bc_sequence")
 
-
 object Hamming {
   def compute(s1: String, s2: String): Int = {
     if (s1.length != s2.length)
@@ -55,7 +54,7 @@ reads.transformDataset(df => {
 
 var temp = df.toDF()
 
-temp.withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("barcode", concat(lit("A"), $"recordGroupSample", $"id")) .as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam("demux_" + bam_path, asSingleFile=true)})
+temp.withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam("demux_" + bam_path, asSingleFile=true)})
 
 //command to exit spark shell
 System.exit(0)
