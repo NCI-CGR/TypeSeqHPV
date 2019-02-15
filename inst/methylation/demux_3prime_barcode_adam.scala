@@ -55,7 +55,7 @@ reads.transformDataset(df => {
 
 var temp = df.toDF()
 
-temp.withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 3).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("barcode", concat(lit("A"), $"recordGroupSample", $"id")) .as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam("demux_" + bam_path, asSingleFile=true)})
+temp.withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("barcode", concat(lit("A"), $"recordGroupSample", $"id")) .as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam("demux_" + bam_path, asSingleFile=true)})
 
 //command to exit spark shell
 System.exit(0)

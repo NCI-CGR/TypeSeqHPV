@@ -61,7 +61,7 @@ variant_table = vcf_files %>%
     mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
 
-#### 7. joing variant table with sample sheet and write to file
+#### 7. joing variant table with sample sheet and write to file ####
 variant_table_join = user_files$manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(variant_table) %>%
