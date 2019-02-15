@@ -20,14 +20,6 @@ val barcodes = (spark.read.format("csv")
         .option("header", "true")
         .load("./barcodes.csv"))
 
-println(barcodes)
-
-val manifest = (spark.read.format("csv")
-        .option("header", "true")
-        .load("./manifest.csv"))
-
-println(manifest)
-
 object Hamming {
   def compute(s1: String, s2: String): Int = {
     if (s1.length != s2.length)
@@ -52,81 +44,19 @@ val splitZA = udf((attributes:String) => {
   else "0"
 })
 
-files.foreach(bam_path_temp => {
+files.par.foreach(bam_path_temp => {
+
 println(s"file is $bam_path_temp")
-var bam_path = "./" + bam_path_temp.toString.split("/").last
-var reads = sc.loadAlignments(bam_path)
-var temp = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
-                   .filter(col("BC1") === ("A" + bam_path.split("IonXpress")(1).substring(2,4)))
 
-// loop each barcode
-temp.collect().par.foreach(bc_row => {
-var bc_name = bc_row(7).toString + bc_row(8).toString
-var bc_seq = bc_row(12)
-println(bc_name.toString + "_" + bc_seq.toString)
+var bam_path = bam_path_temp.toString.split("/").last
 
-reads
-.toDF()
-.withColumn("oldZA", splitZA($"attributes"))
-.withColumn("ZA", $"oldZA" cast "Int" as "oldZA")
-.withColumn("hamming", hammingUDF('sequence, lit(bc_seq)))
-.withColumn("barcode", lit(bc_name.toString))
-.withColumn("fileName", lit(bam_path.split("/").last))
-.withColumn("seqLength", length($"sequence"))
-.select($"fileName", $"mapq", $"ZA", $"barcode", $"readName", $"hamming", $"seqLength")
-.write
-.mode(SaveMode.Overwrite)
-.option("header", "true")
-.parquet("hamming_df/" + bc_name + "_" +  bam_path.split("/").last)
-})})
-
-val min_hamming_temp = spark.read.parquet("hamming_df/*/*")
-
-val windowSpec = Window.partitionBy(min_hamming_temp("readName")).orderBy(min_hamming_temp("hamming"))
-
-val min_hamming_df = min_hamming_temp.withColumn("minHammingBarcode", first(min_hamming_temp("barcode")).over(windowSpec).as("minHammingBarcode")).filter("barcode = minHammingBarcode")
-
-val read_summary_df = min_hamming_df.withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0)).withColumn("passHamming", when($"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0)).withColumn("passMap", when($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength", 1).otherwise(0)).groupBy("filename").agg(countDistinct('readName).alias("total reads"),sum($"passZA").alias("pass ZA reads"),sum($"passHamming").alias("pass hamming reads"),sum($"passMap").alias("pass mapq reads")).withColumn("pass za percent", bround($"pass za reads" / $"total reads", 2)).withColumn("pass hamming percent", bround($"pass hamming reads" / $"total reads", 2)).withColumn("pass mapq / final qualified percent", bround($"pass mapq reads" / $"total reads", 2)).orderBy($"pass mapq / final qualified percent")
-
-read_summary_df.show
-
-read_summary_df.coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
-
-val hamming_summary_df = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength").withColumn("hamming_0", when($"hamming" === 0, 1).otherwise(0)).withColumn("hamming_1", when($"hamming" === 1, 1).otherwise(0)).withColumn("hamming_2", when($"hamming" === 2, 1).otherwise(0)).groupBy("filename").agg(countDistinct('readName).alias("total reads"),sum($"hamming_0").alias("hamming dist 0"),sum($"hamming_1").alias("hamming dist 1"),sum($"hamming_2").alias("hamming dist 2")).withColumn("hamming 0 perc", bround($"hamming dist 0" / $"total reads", 2)).withColumn("hamming 1 perc", bround($"hamming dist 1" / $"total reads", 2)).withColumn("hamming 2 perc", bround($"hamming dist 2" / $"total reads", 2)).orderBy($"filename")
-
-hamming_summary_df.show
-
-hamming_summary_df.coalesce(1).write.format("com.databricks.spark.csv") .option("header", "true") .mode("overwrite") .save("hamming_summary_df.csv")
-
-val min_hamming_df_final = min_hamming_df.filter($"mapq" > 4 and $"hamming" < 3 and $"ZA" === $"seqLength")
-
-files.foreach(bam_path_temp => {
-
-println(s"join is $bam_path_temp")
-
-var bam_path = "./" + bam_path_temp.toString.split("/").last
-
-var reads = sc.loadAlignments(bam_path)
-
-var temp = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
-                   .filter(col("BC1") === ("A" + bam_path.split("IonXpress")(1).substring(2,4)))
-
-temp.collect().foreach(bc_row => {
-
-var bc_name = bc_row(7).toString + bc_row(8).toString
-var bc_seq = bc_row(12)
-
-println(bc_name.toString + "_" + bc_seq.toString)
-
-var min_hamming_df_for_join = min_hamming_df_final.filter($"barcode" === bc_name).select($"barcode", $"readName".alias("minReadNameHamming"))
-
-min_hamming_df_for_join.show
+var reads = sc.loadAlignments(bam_path.toString)
 
 reads.transformDataset(df => {
 
-df.join(min_hamming_df_for_join, $"readName" === min_hamming_df_for_join("minReadNameHamming")).drop("minReadNameHamming", "barcode").as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam(bam_path + "_demux/" + bc_name + "_" +  bam_path.split("/").last, asSingleFile=true)
+var temp = df.toDF()
 
-})})
+temp.withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 3).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("barcode", concat(lit("A"), $"recordGroupSample", $"id")) .as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam("demux_" + bam_path, asSingleFile=true)})
 
 //command to exit spark shell
 System.exit(0)
