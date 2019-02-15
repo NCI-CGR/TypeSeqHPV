@@ -16,10 +16,7 @@ def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
     }
 }
 
-val barcodes = (spark.read.format("csv")
-        .option("header", "true")
-        .load("./barcodes.csv"))
-        .withColumnRenamed("sequence", "bc_sequence")
+val barcodes = (spark.read.format("csv").option("header", "true").load("./barcodes.csv")).withColumnRenamed("sequence", "bc_sequence")
 
 
 object Hamming {
