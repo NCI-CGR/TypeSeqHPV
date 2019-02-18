@@ -54,9 +54,13 @@ var readsTransform = reads.transformDataset(df => {
 
 df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).withColumn("recordGroupName", concat($"recordGroupName", $"RecordGroupSample")).drop("oldZA", "ZA", "seqLength", "bc1").as[org.bdgenomics.adam.sql.AlignmentRecord]})
 
-var namesList = readsTransform.toDF.select($"recordGroupName").distinct.rdd.map(r => r(0)).collect()
+var namesList = readsTransform.toDF.select($"recordGroupName").distinct
 
-var tempRGDictionary = RecordGroupDictionary(namesList.map(x => new RecordGroup(x.toString.takeRight(6), x.toString, None, None, None, Some("TACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGA"))).toSeq)
+namesList.repartition(1).write.format("com.databricks.spark.csv").save("sampleNames_" + bam_path)
+
+var namesListArray = namesList.rdd.map(r => r(0)).collect()
+
+var tempRGDictionary = RecordGroupDictionary(namesListArray.map(x => new RecordGroup(x.toString.takeRight(6), x.toString, None, None, None, Some("TACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGA"))).toSeq)
 
 readsTransform.replaceRecordGroups(tempRGDictionary).sort.saveAsSam("demux_" + bam_path, asSingleFile=true)
 
