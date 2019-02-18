@@ -8,7 +8,7 @@ import java.io.File
 import sys.process._
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.expressions.Window
-
+import org.bdgenomics.adam.models._
 
 def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
     dir.listFiles.filter(_.isFile).toList.filter { file =>
@@ -50,11 +50,17 @@ var bam_path = bam_path_temp.toString.split("/").last
 
 var reads = sc.loadAlignments(bam_path.toString)
 
-reads.transformDataset(df => {
+var readsTransform = reads.transformDataset(df => {
 
-var temp = df.toDF()
+df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).as[org.bdgenomics.adam.sql.AlignmentRecord]})
 
-temp.withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).as[org.bdgenomics.adam.sql.AlignmentRecord]}).saveAsSam("demux_" + bam_path, asSingleFile=true)})
+var namesList = readsTransform.toDF.select($"recordGroupName").distinct.rdd.map(r => r(0)).collect()
+
+var tempRGDictionary = RecordGroupDictionary(namesList.map(x => new RecordGroup(x.toString.takeRight(6), x.toString, None, None, None,                                                               Some("TACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGA"))).toSeq)
+
+readsTransform.replaceRecordGroups(tempRGDictionary).sort.saveAsSam("demux_" + bam_path, asSingleFile=true)
+
+})
 
 //command to exit spark shell
 System.exit(0)
