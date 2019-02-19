@@ -34,8 +34,6 @@ Hamming.compute(sequence.takeRight(bc.length()), bc).toString
 
 val hammingUDF = udf[String, String, String](hamming)
 
-val files = getListOfFiles(new File("./"), List("bam"))
-
 val splitZA = udf((attributes:String) => {
   if (attributes.contains("ZA")) {attributes.toString.split("ZA:i:").last.split("\t")(0)
 }
@@ -49,7 +47,7 @@ df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" 
 
 val namesList = readsTransform.toDF.select($"recordGroupName").distinct
 
-namesList.repartition(1).write.format("com.databricks.spark.csv").save("sampleNames_" + bam_path)
+namesList.repartition(1).write.format("com.databricks.spark.csv").save("sampleNames")
 
 val namesListArray = namesList.rdd.map(r => r(0)).collect()
 
