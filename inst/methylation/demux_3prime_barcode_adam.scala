@@ -42,7 +42,7 @@ val splitZA = udf((attributes:String) => {
   else "0"
 })
 
-files.par.foreach(bam_path_temp => {
+files.foreach(bam_path_temp => {
 
 println(s"file is $bam_path_temp")
 
