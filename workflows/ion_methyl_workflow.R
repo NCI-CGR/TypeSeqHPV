@@ -43,8 +43,7 @@ demux_bams = adam_demux(user_files, args_df$ram, args_df$cores) %>%
 sorted_bams = demux_bams %>%
      split(.$path) %>%
      future_map_dfr(samtools_sort) %>%
-     glimpse()
-,
+     glimpse(),
 
 #### 5. run tvc on demux bams ####
 vcf_files = sorted_bams %T>%
@@ -57,10 +56,11 @@ vcf_files = sorted_bams %T>%
 
 #### 6. merge vcf files in to 1 table ####
 variant_table = vcf_files %>%
-     split(.$vcf) %>%
-     future_map_dfr(vcf_to_dataframe) %>%
-     mutate(barcode = str_sub(filename, 5, 10)) %>%
-     glimpse(),
+    filter(file_exists(vcf)) %>%
+    split(.$vcf) %>%
+    future_map_dfr(vcf_to_dataframe) %>%
+    mutate(barcode = str_sub(filename, 5, 10)) %>%
+    glimpse(),
 
 #### 7. joing variant table with sample sheet and write to file ####
 variant_table_join = user_files$manifest %>%
