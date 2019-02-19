@@ -46,7 +46,7 @@ sorted_bams = demux_bams %>%
      glimpse(),
 
 #### 5. run tvc on demux bams ####
-vcf_files = demux_bams %T>%
+vcf_files = sorted_bams %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
     #select(path = sorted_path) %>%
