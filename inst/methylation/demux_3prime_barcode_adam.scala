@@ -48,7 +48,7 @@ println(s"file is $bam_path_temp")
 
 var bam_path = bam_path_temp.toString.split("/").last
 
-var reads = sc.loadAlignments(bam_path.toString).saveAsParquet("adam_" + bam_path.to_string)
+var reads = sc.loadAlignments(bam_path.toString).saveAsParquet("adam_" + bam_path)
 
 })
 
