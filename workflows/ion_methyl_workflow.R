@@ -44,16 +44,17 @@ sorted_bams = demux_bams %>%
      split(.$path) %>%
      future_map_dfr(samtools_sort) %>%
      glimpse()
-#,
+,
 
 #### 5. run tvc on demux bams ####
-# vcf_files = sorted_bams %T>%
-#     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
-#     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
-#     #select(path = sorted_path) %>%
-#     split(.$barcode) %>%
-#     future_map_dfr(tvc_cli, args_df) %>%
-#     glimpse(),
+vcf_files = sorted_bams %T>%
+    map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
+    map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
+    #select(path = sorted_path) %>%
+    split(.$barcode) %>%
+    future_map_dfr(tvc_cli, args_df) %>%
+    glimpse()
+#,
 
 #### 6. merge vcf files in to 1 table ####
 # variant_table = vcf_files %>%
