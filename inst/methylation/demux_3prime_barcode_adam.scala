@@ -42,19 +42,8 @@ val splitZA = udf((attributes:String) => {
   else "0"
 })
 
-files.par.foreach(bam_path_temp => {
 
-println(s"file is $bam_path_temp")
-
-var bam_path = bam_path_temp.toString.split("/").last
-
-var reads = sc.loadAlignments(bam_path.toString).saveAsParquet("adam_" + bam_path)
-
-})
-
-
-
-val readsTransform = sc.loadAlignments("./adam_*/*/*").transformDataset(df => {
+val readsTransform = sc.loadAlignments("*.bam").transformDataset(df => {
 
 df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).withColumn("recordGroupName", concat($"recordGroupName", $"RecordGroupSample")).drop("oldZA", "ZA", "seqLength", "bc1").as[org.bdgenomics.adam.sql.AlignmentRecord]})
 
