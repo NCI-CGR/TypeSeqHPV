@@ -40,16 +40,16 @@ demux_bams = adam_demux(user_files, args_df$ram, args_df$cores) %>%
     glimpse(),
 
 #### 4. picard sort and create index ####
-sorted_bams = demux_bams %>%
-    split(.$path) %>%
-    future_map_dfr(samtools_sort) %>%
-    glimpse(),
+# sorted_bams = demux_bams %>%
+#     split(.$path) %>%
+#     future_map_dfr(samtools_sort) %>%
+#     glimpse(),
 
 #### 5. run tvc on demux bams ####
-vcf_files = sorted_bams %T>%
+vcf_files = demux_bams %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
-    select(path = sorted_path) %>%
+    #select(path = sorted_path) %>%
     split(.$path) %>%
     future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
