@@ -60,16 +60,15 @@ variant_table = vcf_files %>%
      split(.$vcf) %>%
      future_map_dfr(vcf_to_dataframe) %>%
      mutate(barcode = str_sub(filename, 5, 10)) %>%
-     glimpse()
-#,
+     glimpse(),
 
 #### 7. joing variant table with sample sheet and write to file ####
-# variant_table_join = user_files$manifest %>%
-#     mutate(barcode = paste0(BC1, BC2)) %>%
-#     left_join(variant_table) %>%
-#     select(-filename, -BC1, -BC2) %>%
-#     glimpse() %>%
-#     write_csv("variant_table.csv")
+variant_table_join = user_files$manifest %>%
+    mutate(barcode = paste0(BC1, BC2)) %>%
+    left_join(variant_table) %>%
+    select(-filename, -BC1, -BC2) %>%
+    glimpse() %>%
+    write_csv("variant_table.csv")
 )
 #### C. execute workflow plan ####
 system("mkdir sorted_bams")
