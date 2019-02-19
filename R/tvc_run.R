@@ -10,7 +10,7 @@ tvc_cli <- function(files, args_df){
     system(paste0("tvc --error-motifs /opt/tvc-5.10.1/share/TVC/sse/motifset.txt \\
     --output-vcf ", vcf_df$vcf, " \\
     --input-bam ", vcf_df$sorted_path, " \\
-    --sample-name ", vcf$barcode, " \\
+    --sample-name ", vcf_df$barcode, " \\
     --input-vcf ", args_df$hotspot_vcf, " \\
     --reference ", basename(args_df$reference), " \\
     --target-file ", args_df$region_bed, " \\
