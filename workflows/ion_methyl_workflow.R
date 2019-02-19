@@ -43,31 +43,32 @@ demux_bams = adam_demux(user_files, args_df$ram, args_df$cores) %>%
 sorted_bams = demux_bams %>%
      split(.$path) %>%
      future_map_dfr(samtools_sort) %>%
-     glimpse(),
+     glimpse()
+#,
 
 #### 5. run tvc on demux bams ####
-vcf_files = sorted_bams %T>%
-    map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
-    map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
-    #select(path = sorted_path) %>%
-    split(.$barcode) %>%
-    future_map_dfr(tvc_cli, args_df) %>%
-    glimpse(),
+# vcf_files = sorted_bams %T>%
+#     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
+#     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
+#     #select(path = sorted_path) %>%
+#     split(.$barcode) %>%
+#     future_map_dfr(tvc_cli, args_df) %>%
+#     glimpse(),
 
 #### 6. merge vcf files in to 1 table ####
-variant_table = vcf_files %>%
-    split(.$vcf) %>%
-    future_map_dfr(vcf_to_dataframe) %>%
-    mutate(barcode = str_sub(filename, 5, 10)) %>%
-    glimpse(),
+# variant_table = vcf_files %>%
+#     split(.$vcf) %>%
+#     future_map_dfr(vcf_to_dataframe) %>%
+#     mutate(barcode = str_sub(filename, 5, 10)) %>%
+#     glimpse(),
 
 #### 7. joing variant table with sample sheet and write to file ####
-variant_table_join = user_files$manifest %>%
-    mutate(barcode = paste0(BC1, BC2)) %>%
-    left_join(variant_table) %>%
-    select(-filename, -BC1, -BC2) %>%
-    glimpse() %>%
-    write_csv("variant_table.csv")
+# variant_table_join = user_files$manifest %>%
+#     mutate(barcode = paste0(BC1, BC2)) %>%
+#     left_join(variant_table) %>%
+#     select(-filename, -BC1, -BC2) %>%
+#     glimpse() %>%
+#     write_csv("variant_table.csv")
 )
 #### C. execute workflow plan ####
 system("mkdir sorted_bams")
