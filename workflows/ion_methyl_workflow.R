@@ -68,6 +68,10 @@ system("mkdir sorted_bams")
 system("mkdir vcf")
 
 future::plan(multiprocess)
+
+num_cores = availableCores() - 2
+future::plan(multicore, workers = num_cores)
+
 drake::make(ion_plan)
 
 #### E. make html block for torrent server ####
