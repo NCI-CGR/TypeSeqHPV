@@ -40,10 +40,21 @@ val splitZA = udf((attributes:String) => {
   else "0"
 })
 
+val splitRG = udf((attributes:String) => {
+  if (attributes.contains("RG")) {attributes.toString.split("RG:Z:").last.split("\t")(0)
+}
+  else "0"
+})
+
+val replace = udf((data: String , rep : String, newString: String) => {
+  data.replaceAll(rep, newString)
+})
+
+
 
 val readsTransform = sc.loadAlignments("*.bam").transformDataset(df => {
 
-df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).withColumn("recordGroupName", concat($"RecordGroupSample", lit("."), $"recordGroupName")).withColumn("readName", concat($"recordGroupSample", lit(":"), $"readName")).drop("oldZA", "ZA", "seqLength", "bc1").as[org.bdgenomics.adam.sql.AlignmentRecord]})
+df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).withColumn("recordGroupName", concat($"RecordGroupSample", lit("."), $"recordGroupName")).withColumn("readName", concat($"recordGroupSample", lit(":"), $"readName")).withColumn("oldRG", splitRG($"attributes")).withColumn("attributes", replace($"attributes", $"oldRG", $"recordGroupName")).drop("oldZA", "ZA", "seqLength", "bc1", "oldRG").as[org.bdgenomics.adam.sql.AlignmentRecord]})
 
 val namesList = readsTransform.toDF.select($"recordGroupName").distinct
 
