@@ -36,25 +36,18 @@ args_df = methyl_command_line_args(command_line_args) %>%
 user_files = methyl_startplugin_parse(args_df),
 
 #### 3. demux bams ####
-demux_bams = adam_demux(user_files, args_df$ram, args_df$cores) %>%
+demux_bam = adam_demux(user_files, args_df$ram, args_df$cores) %>%
     glimpse(),
 
-#### 4. picard sort and create index ####
-sorted_bams = demux_bams %>%
-     split(.$path) %>%
-     future_map_dfr(samtools_sort) %>%
-     glimpse(),
-
-#### 5. run tvc on demux bams ####
-vcf_files = sorted_bams %T>%
+#### 4. run tvc on demux bams ####
+vcf_files = demux_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
-    #select(path = sorted_path) %>%
     split(.$barcode) %>%
     future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
 
-#### 6. merge vcf files in to 1 table ####
+#### 5. merge vcf files in to 1 table ####
 variant_table = vcf_files %>%
     filter(file_exists(vcf)) %>%
     split(.$vcf) %>%
@@ -62,7 +55,7 @@ variant_table = vcf_files %>%
     mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
 
-#### 7. joing variant table with sample sheet and write to file ####
+#### 6. joing variant table with sample sheet and write to file ####
 variant_table_join = user_files$manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(variant_table) %>%
