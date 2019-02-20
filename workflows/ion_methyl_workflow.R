@@ -69,7 +69,7 @@ system("mkdir vcf")
 
 future::plan(multiprocess)
 
-num_cores = availableCores() - 2
+num_cores = availableCores() / 4
 future::plan(multicore, workers = num_cores)
 
 drake::make(ion_plan)
