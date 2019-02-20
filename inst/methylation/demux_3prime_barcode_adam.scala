@@ -58,7 +58,7 @@ val programSteps = new org.bdgenomics.formats.avro.ProcessingStep
 programSteps.id = "Methyl"
 programSteps.programName = "Methylation plugin"
 
-readsTransform.replaceRecordGroups(tempRGDictionary).sort.replaceProcessingSteps(programSteps).saveAsSam("demux_reads.bam", asSingleFile=true)
+readsTransform.replaceRecordGroups(tempRGDictionary).sort.replaceProcessingSteps(Seq(programSteps)).saveAsSam("demux_reads.bam", asSingleFile=true)
 
 
 //command to exit spark shell
