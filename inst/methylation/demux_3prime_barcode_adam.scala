@@ -16,8 +16,6 @@ def getListOfFiles(dir: File, extensions: List[String]): List[File] = {
     }
 }
 
-val barcodes = (spark.read.format("csv").option("header", "true").load("./barcodes.csv")).withColumnRenamed("sequence", "bc_sequence")
-
 object Hamming {
   def compute(s1: String, s2: String): Int = {
     if (s1.length != s2.length)
@@ -51,10 +49,16 @@ val replace = udf((data: String , rep : String, newString: String) => {
 })
 
 
+val barcodes = (spark.read.format("csv").option("header", "true").load("barcodes.csv")).withColumnRenamed("sequence", "bc_sequence")
+
+val manifest = (spark.read.format("csv").option("header", "true").load("manifest.csv"))
+
+
+val barcodesJoined = manifest.join(barcodes, manifest("BC2") === barcodes("id")).withColumn("barcodeID", concat($"BC1", $"BC2")).select($"barcodeID", $"bc_sequence", $"BC1", $"BC2")
 
 val readsTransform = sc.loadAlignments("*.bam").transformDataset(df => {
 
-df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodes, hammingUDF(df("sequence"), barcodes("bc_sequence")) < 1).withColumn("bc1", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample", $"id")).withColumn("recordGroupName", concat($"RecordGroupSample", lit("."), $"recordGroupName")).withColumn("readName", concat($"recordGroupSample", lit(":"), $"readName")).withColumn("oldRG", splitRG($"attributes")).withColumn("attributes", replace($"attributes", $"oldRG", $"recordGroupName")).drop("oldZA", "ZA", "seqLength", "bc1", "oldRG").as[org.bdgenomics.adam.sql.AlignmentRecord]})
+df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodesJoined, hammingUDF(df("sequence"), barcodesJoined("bc_sequence")) < 1).withColumn("recordGroupSample", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample")).filter($"recordGroupSample" === $"BC1").withColumn("recordGroupSample", concat($"recordGroupSample", $"BC2")).withColumn("readName", concat($"recordGroupSample", lit(":"), $"readName")).withColumn("recordGroupName", concat($"RecordGroupSample", lit("."), $"recordGroupName")).withColumn("oldRG", splitRG($"attributes")).withColumn("attributes", replace($"attributes" , $"oldRG", $"recordGroupName")).drop("oldZA", "ZA", "seqLength", "bc1", "oldRG", "barcodeID", "bc_sequence", "BC2").as[org.bdgenomics.adam.sql.AlignmentRecord]})
 
 val namesList = readsTransform.toDF.select($"recordGroupName").distinct
 
@@ -70,7 +74,6 @@ programSteps.id = "Methyl"
 programSteps.programName = "Methylation plugin"
 
 readsTransform.replaceRecordGroups(tempRGDictionary).sort.replaceProcessingSteps(Seq(programSteps)).saveAsSam("demux_reads.bam", asSingleFile=true)
-
 
 //command to exit spark shell
 System.exit(0)
