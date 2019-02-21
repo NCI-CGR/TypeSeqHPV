@@ -51,7 +51,7 @@ vcf_files = sorted_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
     split(.$sample) %>%
-    future_map_dfr(tvc_cli) %>%
+    future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
 
 #### 6. merge vcf files in to 1 table ####
