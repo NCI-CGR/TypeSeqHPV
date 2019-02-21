@@ -16,7 +16,7 @@ RUN set -x -v -e
 # spark
 
 RUN mkdir /opt/apache-spark
-RUN curl http://www.gtlib.gatech.edu/pub/apache/spark/spark-2.1.3/spark-2.1.3-bin-hadoop2.7.tgz \
+RUN curl http://www.gtlib.gatech.edu/pub/apache/spark/spark-2.3.3/spark-2.3.3-bin-hadoop2.7.tgz \
   | tar --strip-components=1 -xzC /opt/apache-spark
 
 # maven
@@ -196,4 +196,13 @@ make -j4 install
 # update PATH variable
 
 ENV PATH=$PATH:/opt/tvc_5_10_1_main/bin
+
+WORKDIR /mnt
+
+RUN Rscript -e 'install.packages("vcfR")'
+
+RUN pip install -U git+https://github.com/randy3k/rapi
+RUN pip install -U git+https://github.com/randy3k/lineedit
+RUN pip install -U git+https://github.com/randy3k/rtichoke
+
 

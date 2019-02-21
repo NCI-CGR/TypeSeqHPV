@@ -49,15 +49,15 @@ val replace = udf((data: String , rep : String, newString: String) => {
 })
 
 
-val barcodes = (spark.read.format("csv").option("header", "true").load("barcodes.csv")).withColumnRenamed("sequence", "bc_sequence")
+val barcodes = (spark.read.format("csv").option("header", "true").
+  load("barcodes.csv")).withColumnRenamed("sequence", "bc_sequence")
 
 val manifest = (spark.read.format("csv").option("header", "true").load("manifest.csv"))
 
 
-val barcodesJoined = manifest.join(barcodes, manifest("BC2") === barcodes("id")).withColumn("barcodeID", concat($"BC1", $"BC2")).select($"barcodeID", $"bc_sequence", $"BC1", $"BC2")
-
-
-
+val barcodesJoined = manifest.join(barcodes, manifest("BC2") === barcodes("id")).
+  withColumn("barcodeID", concat($"BC1", $"BC2")).
+  select($"barcodeID", $"bc_sequence", $"BC1", $"BC2")
 
 val readsTransform = sc.loadAlignments("*.bam").
 transformDataset(temp => {
@@ -67,7 +67,8 @@ val df = temp.toDF().
   withColumn("ZA", $"oldZA" cast "Int" as "oldZA").
   withColumn("seqLength", length($"sequence")).
   withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0)).
-  withColumn("passMap", when($"mapq" > 4 and $"ZA" === $"seqLength", 1).otherwise(0)).
+  withColumn("passMap", when($"mapq" > 4 and $"ZA" === $"seqLength", 1).
+    otherwise(0)).
   withColumn("recordGroupSample", $"recordGroupSample" cast "String" as "recordGroupSample").
   withColumn("filename", $"recordGroupSample")
 
@@ -94,12 +95,19 @@ val read_summary_2_df = dfReturn.
   join(read_summary_df, "filename").
   withColumn("pass za percent", bround($"pass za reads" / $"total reads", 2)).
   withColumn("pass mapq", bround($"pass mapq reads" / $"total reads", 2)).
-  withColumn("pass hamming percent / final qualified percent", bround($"pass hamming reads" / $"total reads", 2)).
+  withColumn("pass hamming percent / final qualified percent",
+  bround($"pass hamming reads" / $"total reads", 2)).
   orderBy($"pass hamming percent / final qualified percent").
-  coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
+  coalesce(1).
+  write.
+  format("com.databricks.spark.csv").
+  option("header", "true").
+  mode("overwrite").
+  save("read_summary_df.csv")
 
 dfReturn.
-drop("oldZA", "ZA", "seqLength", "bc1", "oldRG", "barcodeID", "bc_sequence", "BC2", "passZA", "passMap", "filename").
+drop("oldZA", "ZA", "seqLength", "bc1", "oldRG", "barcodeID", "bc_sequence",
+"BC2", "passZA", "passMap", "filename").
 as[org.bdgenomics.adam.sql.AlignmentRecord]
 
 })
@@ -107,18 +115,24 @@ as[org.bdgenomics.adam.sql.AlignmentRecord]
 
 val namesList = readsTransform.toDF.select($"recordGroupName").distinct
 
-namesList.repartition(1).write.format("com.databricks.spark.csv").save("sampleNames")
+namesList.repartition(1).write.format("com.databricks.spark.csv").
+  save("sampleNames")
 
 val namesListArray = namesList.rdd.map(r => r(0)).collect()
 
-val tempRGDictionary = RecordGroupDictionary(namesListArray.map(x => new RecordGroup(x.toString.take(6), x.toString, None, None, None, Some("TACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGA"))).toSeq)
+val tempRGDictionary = RecordGroupDictionary(namesListArray.
+map(x => new RecordGroup(x.toString.take(6), x.toString, None, None, None,
+Some("TACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGATCGATGTACAGCTACGTACGTCTGAGCATCGA"))).
+toSeq)
 
 val programSteps = new org.bdgenomics.formats.avro.ProcessingStep
 
 programSteps.id = "Methyl"
 programSteps.programName = "Methylation plugin"
 
-readsTransform.replaceRecordGroups(tempRGDictionary).sort.replaceProcessingSteps(Seq(programSteps)).saveAsSam("demux_reads.bam", asSingleFile=true)
+readsTransform.replaceRecordGroups(tempRGDictionary).sort.
+replaceProcessingSteps(Seq(programSteps)).
+saveAsSam("demux_reads.bam", asSingleFile=true)
 
 //command to exit spark shell
 System.exit(0)
