@@ -39,15 +39,21 @@ user_files = methyl_startplugin_parse(args_df),
 demux_bam = adam_demux(user_files, args_df$ram, args_df$cores) %>%
     glimpse(),
 
-#### 4. run tvc on demux bams ####
-vcf_files = demux_bam %T>%
+#### 4. split, sort, and index bams ####
+sorted_bam = demux_bam %>%
+    split(.$sample) %>%
+    future_map_dfr(samtools_sort) %>%
+    glimpse(),
+
+#### 5. run tvc on demux bams ####
+vcf_files = sorted_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
-    split(.$barcode) %>%
+    split(.$sample) %>%
     future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
 
-#### 5. merge vcf files in to 1 table ####
+#### 6. merge vcf files in to 1 table ####
 variant_table = vcf_files %>%
     filter(file_exists(vcf)) %>%
     split(.$vcf) %>%
@@ -55,7 +61,7 @@ variant_table = vcf_files %>%
     mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
 
-#### 6. joing variant table with sample sheet and write to file ####
+#### 7. joing variant table with sample sheet and write to file ####
 variant_table_join = user_files$manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(variant_table) %>%
@@ -69,7 +75,7 @@ system("mkdir vcf")
 
 future::plan(multiprocess)
 
-num_cores = availableCores() / 4
+num_cores = availableCores() - 1
 future::plan(multicore, workers = num_cores)
 
 drake::make(ion_plan)

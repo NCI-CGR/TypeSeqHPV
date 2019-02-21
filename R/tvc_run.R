@@ -4,13 +4,13 @@ tvc_cli <- function(files, args_df){
     require(fs)
 
     vcf_df = files %>%
-        mutate(vcf = paste0("vcf/", barcode, ".vcf")) %>%
+        mutate(vcf_out = paste0("vcf/", sample, ".vcf")) %>%
         glimpse()
 
     system(paste0("tvc --error-motifs /opt/tvc-5.10.1/share/TVC/sse/motifset.txt \\
-    --output-vcf ", vcf_df$vcf, " \\
-    --input-bam ", vcf_df$path, " \\
-    --sample-name ", vcf_df$barcode, " \\
+    --output-vcf ", vcf_df$vcf_out, " \\
+    --input-bam ", vcf_df$sorted_path, " \\
+    --sample-name ", vcf_df$sample, " \\
     --input-vcf ", args_df$hotspot_vcf, " \\
     --reference ", basename(args_df$reference), " \\
     --target-file ", args_df$region_bed, " \\
@@ -18,7 +18,7 @@ tvc_cli <- function(files, args_df){
     --trim-ampliseq-primers \\
     --num-threads 1"))
 
-    #system("rm vcf/*filtered.vcf")
+    system("rm vcf/*filtered.vcf")
 
     return(vcf_df)
 

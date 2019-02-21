@@ -15,18 +15,26 @@ adam_demux <- function(user_files, ram, cores){
         do({
             temp = as_tibble(.)
 
-            read_csv(temp$path, col_names = "barcode") %>%
+            read_csv(temp$path, col_names = "read_group") %>%
             map_if(is.factor, as.character) %>%
             as_tibble()
         }) %>%
         ungroup() %>%
-        mutate(barcode = str_sub(barcode, end = 6)) %>%
-        mutate(path = "demux_reads.bam") %>%
+        mutate(sample = str_sub(read_group, end = 6)) %>%
+        mutate(bam_path = paste0(sample, ".bam")) %>%
+        mutate(sorted_path = paste0(sample, "_sorted.bam")) %>%
+        mutate(read_group_path = paste0(sample, "_rg.txt")) %>%
+        group_by(read_group) %>%
+        do({
+            temp = as_tibble(.)
+
+            write_csv(temp$read_group, read_group_path)
+        }) %>%
         glimpse()
 
 
+                }
 
-}
 
 
 
