@@ -8,6 +8,7 @@ library(furrr)
 library(future)
 library(fs)
 library(jsonlite)
+library(optigrab)
 
 command_line_args = data_frame(
     manifest = optigrab::opt_get('manifest'),
