@@ -16,7 +16,7 @@ tvc_cli <- function(files, args_df){
     --target-file ", args_df$region_bed, " \\
     --parameters-file ", args_df$tvc_parameters, " \\
     --trim-ampliseq-primers \\
-    --num-threads ", args_df$tvc_core))
+    --num-threads ", args_df$tvc_cores))
 
     system("rm vcf/*filtered.vcf")
 
