@@ -56,9 +56,54 @@ val manifest = (spark.read.format("csv").option("header", "true").load("manifest
 
 val barcodesJoined = manifest.join(barcodes, manifest("BC2") === barcodes("id")).withColumn("barcodeID", concat($"BC1", $"BC2")).select($"barcodeID", $"bc_sequence", $"BC1", $"BC2")
 
-val readsTransform = sc.loadAlignments("*.bam").transformDataset(df => {
 
-df.toDF().withColumn("oldZA", splitZA($"attributes")).withColumn("ZA", $"oldZA" cast "Int" as "oldZA").withColumn("seqLength", length($"sequence")).filter($"mapq" > 4 and $"ZA" === $"seqLength").join(barcodesJoined, hammingUDF(df("sequence"), barcodesJoined("bc_sequence")) < 1).withColumn("recordGroupSample", $"recordGroupSample" cast "String" as "recordGroupSample").withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample")).filter($"recordGroupSample" === $"BC1").withColumn("recordGroupSample", concat($"recordGroupSample", $"BC2")).withColumn("readName", concat($"recordGroupSample", lit(":"), $"readName")).withColumn("recordGroupName", concat($"RecordGroupSample", lit("."), $"recordGroupName")).withColumn("oldRG", splitRG($"attributes")).withColumn("attributes", replace($"attributes" , $"oldRG", $"recordGroupName")).drop("oldZA", "ZA", "seqLength", "bc1", "oldRG", "barcodeID", "bc_sequence", "BC2").as[org.bdgenomics.adam.sql.AlignmentRecord]})
+
+
+val readsTransform = sc.loadAlignments("*.bam").
+transformDataset(temp => {
+
+val df = temp.toDF().
+  withColumn("oldZA", splitZA($"attributes")).
+  withColumn("ZA", $"oldZA" cast "Int" as "oldZA").
+  withColumn("seqLength", length($"sequence")).
+  withColumn("passZA", when($"ZA" === $"seqLength", 1).otherwise(0)).
+  withColumn("passMap", when($"mapq" > 4 and $"ZA" === $"seqLength", 1).otherwise(0)).
+  withColumn("recordGroupSample", $"recordGroupSample" cast "String" as "recordGroupSample").
+  withColumn("filename", $"recordGroupSample")
+
+val read_summary_df = df.
+  groupBy("filename").
+  agg(countDistinct('readName).alias("total reads"),
+      sum($"passZA").alias("pass ZA reads"),
+      sum($"passMap").alias("pass mapq reads"))
+
+val dfReturn = df.
+  filter($"mapq" > 4 and $"ZA" === $"seqLength").
+  join(barcodesJoined, hammingUDF(df("sequence"), barcodesJoined("bc_sequence")) < 1).
+  withColumn("recordGroupSample", concat(lit("A"), $"recordGroupSample")).
+  filter($"recordGroupSample" === $"BC1").
+  withColumn("recordGroupSample", concat($"recordGroupSample", $"BC2")).
+  withColumn("readName", concat($"recordGroupSample", lit(":"), $"readName")).
+  withColumn("recordGroupName", concat($"RecordGroupSample", lit("."), $"recordGroupName")).
+  withColumn("oldRG", splitRG($"attributes")).
+  withColumn("attributes", replace($"attributes" , $"oldRG", $"recordGroupName"))
+
+val read_summary_2_df = dfReturn.
+  groupBy("filename").
+  agg(countDistinct('readName).alias("pass hamming reads")).
+  join(read_summary_df, "filename").
+  withColumn("pass za percent", bround($"pass za reads" / $"total reads", 2)).
+  withColumn("pass mapq", bround($"pass mapq reads" / $"total reads", 2)).
+  withColumn("pass hamming percent / final qualified percent", bround($"pass hamming reads" / $"total reads", 2)).
+  orderBy($"pass hamming percent / final qualified percent").
+  coalesce(1).write.format("com.databricks.spark.csv").option("header", "true").mode("overwrite").save("read_summary_df.csv")
+
+dfReturn.
+drop("oldZA", "ZA", "seqLength", "bc1", "oldRG", "barcodeID", "bc_sequence", "BC2", "passZA", "passMap", "filename").
+as[org.bdgenomics.adam.sql.AlignmentRecord]
+
+})
+
 
 val namesList = readsTransform.toDF.select($"recordGroupName").distinct
 

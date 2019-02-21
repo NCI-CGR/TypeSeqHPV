@@ -59,6 +59,7 @@ variant_table = vcf_files %>%
     filter(file_exists(vcf_out)) %>%
     split(.$vcf_out) %>%
     future_map_dfr(vcf_to_dataframe) %>%
+    glimpse() %>%
     mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
 
