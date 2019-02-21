@@ -21,7 +21,8 @@ command_line_args = data_frame(
     start_plugin = optigrab::opt_get('start_plugin'),
     config_file = optigrab::opt_get('config_file'),
     ram = optigrab::opt_get('ram'),
-    cores = optigrab::opt_get('cores')) %>%
+    cores = optigrab::opt_get('cores'),
+    tvc_cores = optigrab::opt_get('tvc_cores')) %>%
     glimpse()
 
 #### B. create workflow plan ####
@@ -50,7 +51,7 @@ vcf_files = sorted_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
     split(.$sample) %>%
-    future_map_dfr(tvc_cli, args_df) %>%
+    future_map_dfr(tvc_cli) %>%
     glimpse(),
 
 #### 6. merge vcf files in to 1 table ####
