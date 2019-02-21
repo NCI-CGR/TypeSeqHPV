@@ -7,7 +7,7 @@ samtools_sort <- function(bam_files){
 
     system(paste0("samtools sort ", bam_files$bam_path, " ", bam_files$sample, "_sorted"), wait = TRUE)
 
-    system(paste0("samtools index ", temp$sorted_path), wait = TRUE)
+    system(paste0("samtools index ", bam_files$sorted_path), wait = TRUE)
 
     return(bam_files)
 
