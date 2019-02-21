@@ -20,6 +20,7 @@ adam_demux <- function(user_files, ram, cores){
             as_tibble()
         }) %>%
         ungroup() %>%
+        glimpse() %>%
         mutate(sample = str_sub(read_group, end = 6)) %>%
         mutate(bam_path = paste0(sample, ".bam")) %>%
         mutate(sorted_path = paste0(sample, "_sorted.bam")) %>%
@@ -28,7 +29,12 @@ adam_demux <- function(user_files, ram, cores){
         do({
             temp = as_tibble(.)
 
-            write_csv(temp$read_group, read_group_path)
+            temp %>%
+            select(read_group) %>%
+            write_csv(temp$read_group_path, col_names = FALSE)
+
+            temp = temp
+
         }) %>%
         glimpse()
 
