@@ -55,8 +55,8 @@ vcf_files = sorted_bam %T>%
 
 #### 6. merge vcf files in to 1 table ####
 variant_table = vcf_files %>%
-    filter(file_exists(vcf)) %>%
-    split(.$vcf) %>%
+    filter(file_exists(vcf_out)) %>%
+    split(.$vcf_out) %>%
     future_map_dfr(vcf_to_dataframe) %>%
     mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
