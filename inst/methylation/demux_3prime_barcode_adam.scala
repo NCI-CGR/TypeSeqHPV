@@ -98,7 +98,7 @@ val read_summary_2_df = dfReturn.
   withColumn("pass hamming percent / final qualified percent",
   bround($"pass hamming reads" / $"total reads", 2)).
   orderBy($"pass hamming percent / final qualified percent").
-  select($"total reads", $"pass za reads", $"pass mapq reads",
+  select($"filename", $"total reads", $"pass za reads", $"pass mapq reads",
     $"pass hamming reads", $"pass za percent", $"pass mapq percent",
     $"pass hamming percent / final qualified percent").
   coalesce(1).
