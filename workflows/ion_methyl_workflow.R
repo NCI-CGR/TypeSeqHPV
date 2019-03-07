@@ -23,7 +23,9 @@ command_line_args = data_frame(
     config_file = optigrab::opt_get('config_file'),
     ram = optigrab::opt_get('ram'),
     cores = optigrab::opt_get('cores'),
-    tvc_cores = optigrab::opt_get('tvc_cores')) %>%
+    tvc_cores = optigrab::opt_get('tvc_cores'),
+    filteringTable = optigrab::opt_get('filteringTable'),
+    posConversionTable = optigrab::opt_get('posConversionTable')) %>%
     glimpse()
 
 #### B. create workflow plan ####
@@ -47,6 +49,9 @@ sorted_bam = demux_bam %>%
     future_map_dfr(samtools_sort) %>%
     glimpse(),
 
+
+  
+  
 #### 5. run tvc on demux bams ####
 vcf_files = sorted_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
@@ -64,16 +69,13 @@ variant_table = vcf_files %>%
     mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
 
-#### 7. joing variant table with sample sheet and write to file ####
-variant_table_join = user_files$manifest %>%
-    mutate(barcode = paste0(BC1, BC2)) %>%
-    left_join(variant_table) %>%
-    select(-filename, -BC1, -BC2) %>%
-    glimpse() %>%
-    write_csv("variant_table.csv")
+#### 7. joining variant table with sample sheet and write to file ####
+variants_final = methyl_variant_filter(variant_df, 
+                                      args_df$filteringTable, 
+                                      args_df$posConversionTable) 
 )
+
 #### C. execute workflow plan ####
-system("mkdir sorted_bams")
 system("mkdir vcf")
 
 future::plan(multiprocess)
