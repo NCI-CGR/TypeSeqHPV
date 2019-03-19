@@ -35,7 +35,8 @@ if ( args_df$is_torrent_server == "yes") {
 manifest = read_csv(args_df$manifest) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
-    glimpse()
+    glimpse() %>%
+    write_csv("manifest.csv") # csv needed for ADAM demux part
 
 control_defs = read_csv(args_df$control_definitions) %>%
     map_if(is.factor, as.character) %>%
@@ -45,12 +46,14 @@ control_defs = read_csv(args_df$control_definitions) %>%
 barcode_file = read_csv(args_df$barcode_file) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
-    glimpse()
+    glimpse() %>%
+    write_csv("barcodes.csv") # csv needed for ADAM demux part
+
 
 #return list output
 
 return(list(manifest = manifest,
-            barocde_file = barcode_file,
+            barcode_file = barcode_file,
             control_definitions = control_defs
             ))
 
