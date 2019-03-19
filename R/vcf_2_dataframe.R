@@ -75,11 +75,9 @@ filtered_variants = variants %>%
 
  return_table = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
-    left_join(filterd_variants) %>%
+    left_join(filtered_variants) %>%
     select(-filename, -BC1, -BC2) %>%
     write_csv("variant_table.csv")
-
- return_table = filtered_variants
 
  coverage_matrix = return_table %>%
   group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%
