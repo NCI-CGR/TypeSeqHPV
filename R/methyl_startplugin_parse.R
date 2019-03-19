@@ -15,12 +15,12 @@ if ( args_df$is_torrent_server == "yes") {
         glimpse() %>%
         write_csv("manifest.csv")
 
-    # #control_defs
-    # data_frame(values = plugin_json$pluginconfig$control_definitions) %>%
-    #     mutate(values = str_replace(values, "\n", "" )) %>%
-    #     separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
-    #     slice(2:n()) %>%
-    #     write_csv("control_defs.csv")
+    #control_defs
+    data_frame(values = plugin_json$pluginconfig$control_definitions) %>%
+        mutate(values = str_replace(values, "\n", "" )) %>%
+        separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
+        slice(2:n()) %>%
+        write_csv("control_defs.csv")
 
     #barcode_file
     data_frame(values = plugin_json$pluginconfig$barcode_file) %>%
@@ -37,9 +37,10 @@ manifest = read_csv(args_df$manifest) %>%
     as_tibble() %>%
     write_csv("manifest.csv")
 
-# control_defs = read_csv(args_df$control_definitions) %>%
-#     map_if(is.factor, as.character) %>%
-#     as_tibble()
+control_defs = read_csv(args_df$control_definitions) %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble()  %>%
+    write_csv("control_defs.csv")
 
 barcode_file = read_csv(args_df$barcode_file) %>%
     map_if(is.factor, as.character) %>%
@@ -49,7 +50,8 @@ barcode_file = read_csv(args_df$barcode_file) %>%
 #return list output
 
 return(list(manifest = manifest,
-            barocde_file = barcode_file
+            barocde_file = barcode_file,
+            control_defs = control_defs
             ))
 
 

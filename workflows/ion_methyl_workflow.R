@@ -70,7 +70,8 @@ variant_table = vcf_files %>%
 variants_final = methyl_variant_filter(variant_table,
                                       args_df$filteringTable,
                                       args_df$posConversionTable,
-                                      user_files$manifest)
+                                      user_files$manifest,
+                                      user_files$control_definitions)
 )
 
 #### C. execute workflow plan ####

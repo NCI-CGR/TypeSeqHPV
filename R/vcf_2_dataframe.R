@@ -18,7 +18,7 @@ vcf_to_dataframe <- function(vcf_files){
 
 }
 
-methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest){
+methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest, control_defs){
 
 filteringTable = read_tsv(filteringTablePath) %>%
   map_if(is.factor, as.character) %>%
@@ -88,7 +88,9 @@ filtered_variants = variants %>%
   glimpse() %>%
   write_csv("coverage_matrix.csv")
 
- freq_matrix = return_table %>%
+ #freq_matrix
+
+ return_table %>%
   group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%
   summarize(mean_freq = mean(methyl_freq)) %>%
   ungroup() %>%
@@ -97,4 +99,27 @@ filtered_variants = variants %>%
   glimpse() %>%
   write_csv("freq_matrix.csv")
 
+ control_defs = control_defs %>%
+   tidyr::gather("chrom", "min_coverage", -control_code) %>%
+   glimpse()
+
+ coverage_matrix %>%
+   gather("chrom", "depth", -Owner_Sample_ID, -barcode) %>%
+   mutate(depth = as.integer(depth)) %>%
+   fuzzy_join(control_defs, mode = "inner", by = c("Owner_Sample_ID" = "control_code"), match_fun = function(x, y) str_detect(x, fixed(y, ignore_case = TRUE))) %>%
+   filter(chrom.x == chrom.y) %>%
+   mutate(control_result = ifelse(depth >= min_coverage, "pass", "fail")) %>%
+   glimpse() %>%
+   select(Owner_Sample_ID, barcode, chrom = chrom.x, control_result) %>%
+   arrange(Owner_Sample_ID, chrom) %>%
+   spread(chrom, control_result) %>%
+   write_csv("control_results.csv")
+
+ return(return_table)
+
+
 }
+
+
+
+
