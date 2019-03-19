@@ -99,6 +99,8 @@ filtered_variants = variants %>%
   glimpse() %>%
   write_csv("freq_matrix.csv")
 
+
+
  control_defs = control_defs %>%
    tidyr::gather("chrom", "min_coverage", -control_code) %>%
    glimpse()

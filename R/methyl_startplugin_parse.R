@@ -40,6 +40,7 @@ manifest = read_csv(args_df$manifest) %>%
 control_defs = read_csv(args_df$control_definitions) %>%
     map_if(is.factor, as.character) %>%
     as_tibble()  %>%
+    glimpse() %>%
     write_csv("control_defs.csv")
 
 barcode_file = read_csv(args_df$barcode_file) %>%
