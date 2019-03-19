@@ -37,7 +37,8 @@ args_df = methyl_command_line_args(command_line_args) %>%
     glimpse(),
 
 #### 2. parse plugin data ####
-user_files = methyl_startplugin_parse(args_df),
+user_files = methyl_startplugin_parse(args_df) %>%
+  glimpse(),
 
 #### 3. demux bams ####
 demux_bam = adam_demux(user_files, args_df$ram, args_df$cores) %>%

@@ -102,6 +102,7 @@ filtered_variants = variants %>%
 
 
  control_defs = control_defs %>%
+   glimpse() %>%
    tidyr::gather("chrom", "min_coverage", -control_code) %>%
    glimpse()
 

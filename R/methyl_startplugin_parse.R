@@ -35,24 +35,23 @@ if ( args_df$is_torrent_server == "yes") {
 manifest = read_csv(args_df$manifest) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
-    write_csv("manifest.csv")
+    glimpse()
 
 control_defs = read_csv(args_df$control_definitions) %>%
     map_if(is.factor, as.character) %>%
     as_tibble()  %>%
-    glimpse() %>%
-    write_csv("control_defs.csv")
+    glimpse()
 
 barcode_file = read_csv(args_df$barcode_file) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
-    write_csv("barcodes.csv")
+    glimpse()
 
 #return list output
 
 return(list(manifest = manifest,
             barocde_file = barcode_file,
-            control_defs = control_defs
+            control_definitions = control_defs
             ))
 
 
