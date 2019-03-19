@@ -20,6 +20,9 @@ vcf_to_dataframe <- function(vcf_files){
 
 methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest, control_defs){
 
+require(fuzzyjoin)
+
+
 filteringTable = read_tsv(filteringTablePath) %>%
   map_if(is.factor, as.character) %>%
   as_tibble() %>%
@@ -98,8 +101,6 @@ filtered_variants = variants %>%
   spread(chr_amplicon, mean_freq) %>%
   glimpse() %>%
   write_csv("freq_matrix.csv")
-
-
 
  control_defs = control_defs %>%
    glimpse() %>%
