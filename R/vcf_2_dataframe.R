@@ -13,7 +13,20 @@ vcf_to_dataframe <- function(vcf_files){
     mutate(filename = vcf_files$vcf_out) %>%
     select(filename, everything())
 
-    return(temp)
+    variant_table_snv = temp %>%
+      filter(!(str_detect(ALT, ","))) %>%
+      glimpse()
+
+    variant_table_mult_split = temp %>%
+      filter(str_detect(ALT, ",")) %>%
+      separate_rows(ALT, AO, SAF, SAR, FAO, AF, FSAF, FSAR, TYPE, LEN, HRUN, MLLD,
+                    FWDB, REVB, REFB, VARB, STB, STBP, RBI,
+                    FR, SSSB, SSEN, SSEP, PB, PBP, FDVR, sep = ",") %>%
+      glimpse()
+
+    variant_table_return = bind_rows(variant_table_snv, variant_table_mult_split)
+
+    return(variant_table_return)
 
 
 }
