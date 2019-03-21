@@ -27,7 +27,21 @@ run_type = plugin_json$runplugin$run_type
 
 cat('
 
-[Hotpsot variant data - all samples](./hotspot_variants_table.csv)
+[variant table](./target_variants_results.csv)
+
+[read summary](./read_summary.csv)
+
+[coverage matrix](./coverage_matrix_results.csv)
+
+[frequency matrix](./freq_matrix_results.csv)
+
+[lineage variants](./lineage_variants_results.csv)
+
+[control results](./control_results.csv)
+
+[non-target variant results](./non_target_variants_results.csv)
+
+[archive of outputs](./TypeSeqHPVMethyl_outputs.zip)
 
 
 

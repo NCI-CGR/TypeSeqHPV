@@ -8,8 +8,10 @@ library(furrr)
 library(future)
 library(fs)
 library(jsonlite)
+library(optigrab)
+library(magrittr)
 
-command_line_args = data_frame(
+command_line_args = tibble(
     manifest = optigrab::opt_get('manifest'),
     control_definitions = optigrab::opt_get('control_definitions'),
     barcode_file = optigrab::opt_get('barcode_file'),
@@ -19,7 +21,12 @@ command_line_args = data_frame(
     hotspot_vcf = optigrab::opt_get('hotspot_vcf'),
     is_torrent_server = optigrab::opt_get('is_torrent_server'),
     start_plugin = optigrab::opt_get('start_plugin'),
-    config_file = optigrab::opt_get('config_file')) %>%
+    config_file = optigrab::opt_get('config_file'),
+    ram = optigrab::opt_get('ram'),
+    cores = optigrab::opt_get('cores'),
+    tvc_cores = optigrab::opt_get('tvc_cores'),
+    filteringTable = optigrab::opt_get('filteringTable'),
+    posConversionTable = optigrab::opt_get('posConversionTable')) %>%
     glimpse()
 
 #### B. create workflow plan ####
@@ -31,57 +38,54 @@ args_df = methyl_command_line_args(command_line_args) %>%
     glimpse(),
 
 #### 2. parse plugin data ####
-user_files = methyl_startplugin_parse(args_df),
+user_files = methyl_startplugin_parse(args_df) %>%
+  glimpse(),
 
 #### 3. demux bams ####
-demux_bams = adam_demux(user_files) %>%
+demux_bam = adam_demux(user_files, args_df$ram, args_df$cores) %>%
     glimpse(),
 
-#### 4. picard sort and create index ####
-sorted_bams = demux_bams %>%
-    split(.$path) %>%
+#### 4. split, sort, and index bams ####
+sorted_bam = demux_bam %>%
+    split(.$sample) %>%
     future_map_dfr(samtools_sort) %>%
     glimpse(),
 
 #### 5. run tvc on demux bams ####
-vcf_files = sorted_bams %T>%
+vcf_files = sorted_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
-    select(path = sorted_path) %>%
-    split(.$path) %>%
+    split(.$sample) %>%
     future_map_dfr(tvc_cli, args_df) %>%
     glimpse(),
 
-#### 6. vcf to json adam ####
-vcf_to_json_files = vcf_files %>%
-    vcf_to_json() %>%
+#### 6. merge vcf files in to 1 table ####
+variant_table = vcf_files %>%
+    filter(file_exists(vcf_out)) %>%
+    split(.$vcf_out) %>%
+    future_map_dfr(vcf_to_dataframe) %>%
+    glimpse() %>%
+    mutate(barcode = str_sub(filename, 5, 10)) %>%
     glimpse(),
 
-#### 7. merge json files in to 1 table ####
-hotspot_df = vcf_to_json_files %>%
-    group_by(path) %>%
-    do({
-        temp = as_tibble(.)
-
-        temp = flatten(stream_in(file(temp$path))) #%>%
-            #mutate(filtersFailed = unlist(filtersFailed))
-
-    }) %>%
-    filter(annotation.attributes.HS == "true") %>%
-    ungroup() %>%
-    rename(sample_name = path) %>%
-    mutate(sample_name = str_sub(sample_name, start = 5, end = 10)) %>%
-    glimpse() %>%
-    select_if(negate(is.list)) %>%
-    write_csv("hotspot_variants_table.csv")
+#### 7. joining variant table with sample sheet and write to file ####
+variants_final_table = methyl_variant_filter(variant_table,
+                                      args_df$filteringTable,
+                                      args_df$posConversionTable,
+                                      user_files$manifest,
+                                      user_files$control_definitions) %T>%
+  map_df(~ system("zip -j TypeSeqHPVMethyl_outputs.zip read_summary.csv *results.csv"))
 
 )
 
 #### C. execute workflow plan ####
-system("mkdir sorted_bams")
 system("mkdir vcf")
 
 future::plan(multiprocess)
+
+num_cores = availableCores() - 1
+future::plan(multicore, workers = num_cores)
+
 drake::make(ion_plan)
 
 #### E. make html block for torrent server ####
