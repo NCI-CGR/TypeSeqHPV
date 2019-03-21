@@ -1,5 +1,5 @@
 #'
-methyl_command_line_args <- function(args_df){
+get_command_line_args <- function(args_df){
     require(jsonlite)
     require(tidyverse)
     library(optigrab)
