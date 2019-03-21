@@ -41,7 +41,11 @@ filteringTable = read_tsv(filteringTablePath) %>%
   as_tibble() %>%
   rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
 
+
+#hotspot vars...
+
 GA_variants = variants %>%
+  filter(HS) %>%
   filter(!(ALT %in% c("C", "T"))) %>%
   glimpse()
 
@@ -131,6 +135,17 @@ filtered_variants = variants %>%
    arrange(Owner_Sample_ID, chrom) %>%
    spread(chrom, control_result) %>%
    write_csv("control_results.csv")
+
+
+ #non-hotspot vars...
+non_hotspot_vars = variants %>%
+  filter(!HS)
+
+manifest %>%
+  mutate(barcode = paste0(BC1, BC2)) %>%
+  left_join(non_hotspot_vars) %>%
+  select(-filename, -BC1, -BC2) %>%
+  write_csv("non_target_variants.csv")
 
  return(return_table)
 
