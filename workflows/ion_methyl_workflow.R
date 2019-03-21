@@ -68,11 +68,13 @@ variant_table = vcf_files %>%
     glimpse(),
 
 #### 7. joining variant table with sample sheet and write to file ####
-variants_final = methyl_variant_filter(variant_table,
+variants_final_table = methyl_variant_filter(variant_table,
                                       args_df$filteringTable,
                                       args_df$posConversionTable,
                                       user_files$manifest,
-                                      user_files$control_definitions)
+                                      user_files$control_definitions) %T>%
+map_df(~ system("zip -j TypeSeqHPVMethyl_outputs.zip read_summary.csv *results.csv"))
+
 )
 
 #### C. execute workflow plan ####

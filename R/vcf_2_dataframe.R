@@ -53,7 +53,7 @@ manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(GA_variants) %>%
     select(-filename, -BC1, -BC2) %>%
-    write_csv("lineage_variants.csv")
+    write_csv("lineage_variants_results.csv")
 
 pos_conversion = read_tsv(posConversionTable) %>%
   map_if(is.factor, as.character) %>%
@@ -97,7 +97,7 @@ filtered_variants = variants %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(filtered_variants) %>%
     select(-filename, -BC1, -BC2) %>%
-    write_csv("variant_table.csv")
+    write_csv("target_variants_results.csv")
 
  coverage_matrix = return_table %>%
   group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%
@@ -106,7 +106,7 @@ filtered_variants = variants %>%
   group_by(barcode, Owner_Sample_ID) %>%
   spread(chr_amplicon, depth) %>%
   glimpse() %>%
-  write_csv("coverage_matrix.csv")
+  write_csv("coverage_matrix_results.csv")
 
  #freq_matrix
 
@@ -117,7 +117,7 @@ filtered_variants = variants %>%
   group_by(barcode, Owner_Sample_ID) %>%
   spread(chr_amplicon, mean_freq) %>%
   glimpse() %>%
-  write_csv("freq_matrix.csv")
+  write_csv("freq_matrix_results.csv")
 
  control_defs = control_defs %>%
    glimpse() %>%
@@ -145,7 +145,7 @@ manifest %>%
   mutate(barcode = paste0(BC1, BC2)) %>%
   left_join(non_hotspot_vars) %>%
   select(-filename, -BC1, -BC2) %>%
-  write_csv("non_target_variants.csv")
+  write_csv("non_target_variants_results.csv")
 
  return(return_table)
 

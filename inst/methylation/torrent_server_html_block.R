@@ -31,13 +31,16 @@ cat('
 
 [read summary](./read_summary.csv)
 
-[coverage matrix](./coverage_matrix.csv)
+[coverage matrix](./coverage_matrix_results.csv)
 
-[frequency matrix](./freq_matrix.csv)
+[frequency matrix](./freq_matrix_results.csv)
 
-[lineage variants](./lineage_variants.csv)
+[lineage variants](./lineage_variants_results.csv)
 
 [control results](./control_results.csv)
+
+[archive of outputs](./TypeSeqHPVMethyl_outputs.zip)
+
 
 
 ')
