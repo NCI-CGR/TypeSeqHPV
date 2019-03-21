@@ -9,6 +9,7 @@ library(future)
 library(fs)
 library(jsonlite)
 library(optigrab)
+library(magrittr)
 
 command_line_args = tibble(
     manifest = optigrab::opt_get('manifest'),
@@ -73,7 +74,7 @@ variants_final_table = methyl_variant_filter(variant_table,
                                       args_df$posConversionTable,
                                       user_files$manifest,
                                       user_files$control_definitions) %T>%
-map_df(~ system("zip -j TypeSeqHPVMethyl_outputs.zip read_summary.csv *results.csv"))
+  map_df(~ system("zip -j TypeSeqHPVMethyl_outputs.zip read_summary.csv *results.csv"))
 
 )
 
