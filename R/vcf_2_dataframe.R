@@ -41,7 +41,6 @@ filteringTable = read_tsv(filteringTablePath) %>%
   as_tibble() %>%
   rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
 
-
 #hotspot vars...
 
 GA_variants = variants %>%
@@ -50,10 +49,10 @@ GA_variants = variants %>%
   glimpse()
 
 manifest %>%
-    mutate(barcode = paste0(BC1, BC2)) %>%
-    left_join(GA_variants) %>%
-    select(-filename, -BC1, -BC2) %>%
-    write_csv("lineage_variants_results.csv")
+  mutate(barcode = paste0(BC1, BC2)) %>%
+  inner_join(GA_variants) %>%
+  select(-filename, -BC1, -BC2) %>%
+  write_csv("lineage_variants_results.csv")
 
 pos_conversion = read_tsv(posConversionTable) %>%
   map_if(is.factor, as.character) %>%
