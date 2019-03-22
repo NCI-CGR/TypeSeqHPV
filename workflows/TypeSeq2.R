@@ -76,9 +76,9 @@ ion_plan <- drake::drake_plan(
                                                  lineage_defs = args_df$lineage_defs,
                                                  manifest = user_files$manifest,
                                                  specimen_control_defs = user_files$control_definitions,
-                                                 internal_control_defs = user_files$internal_control_defs,
-                                                 pn_filters = user_files$pn_filters,
-                                                 scailing_table = user_files$scailing_table) %T>%
+                                                 internal_control_defs = args_df$internal_control_defs,
+                                                 pn_filters = args_df$pn_filters,
+                                                 scaling_table = args_df$scaling_table) %T>%
         map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv"))
 
 )

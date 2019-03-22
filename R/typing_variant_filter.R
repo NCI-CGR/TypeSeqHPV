@@ -2,9 +2,26 @@
 
 typing_variant_filter <- function(variants, lineage_defs, manifest,
                                   specimen_control_defs, internal_control_defs,
-                                  pn_filters, scailing_table){
+                                  pn_filters, scaling_table){
 
     require(fuzzyjoin)
+
+    coalesce_all_columns <- function(df, group_vars = NULL) {
+
+        if (is.null(group_vars)) {
+            group_vars <-
+                df %>%
+                purrr::keep(~ dplyr::n_distinct(.x) == 1L) %>%
+                names()
+        }
+
+        msk <- colnames(df) %in% group_vars
+        same_df <- df[1L, msk, drop = FALSE]
+        coal_df <- df[, !msk, drop = FALSE] %>%
+            purrr::map_dfc(na.omit)
+
+        cbind(same_df, coal_df)
+    }
 
     # add manifest to variants table ----
 
@@ -20,7 +37,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     read_counts_matrix_long = variants_with_manifest %>%
         group_by(Owner_Sample_ID, barcode, CHROM) %>%
         summarize(depth = max(DP)) %>%
-        group(barcode) %>%
+        group_by(barcode) %>%
         mutate(total_reads = sum(depth)) %>%
         group_by(barcode, Owner_Sample_ID)
 
@@ -33,6 +50,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     # scale the filters - calculate the average reads per sample ----
 
     average_total_reads_df = read_counts_matrix %>%
+        ungroup() %>%
         summarize(average_read_count = mean(total_reads))
 
     scaling_df = read_csv(scaling_table) %>%
@@ -49,9 +67,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     internal_control_defs = read_csv(internal_control_defs) %>%
         map_if(is.factor, as.character) %>%
         as_tibble() %>%
-        glimpse()  %>%
-        gather("type", "control_status", -internal_control_code, -qc_name, -qc_print) %>%
-        filter(!(is.na(control_status)))
+        tidyr::gather("CHROM", "control_status", -internal_control_code, -qc_name, -qc_print) %>%
+        filter(!(is.na(control_status))) %>%
+        glimpse()
 
     # read in pn_filters ----
 
@@ -62,24 +80,28 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         rename(CHROM = contig) %>%
         mutate(Min_reads_per_type = Min_reads_per_type * scaling_factor)
 
-
     # make detailed pn matrix ----
 
     detailed_pn_matrix_long = read_counts_matrix_long %>%
-        inner_join(pn_filters)
+        inner_join(pn_filters) %>%
         mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
         glimpse() %>%
         select(-depth) %>%
         left_join(internal_control_defs) %>%
         mutate(control_status_as_num = ifelse(status == control_status,
                                                   0, 1)) %>%
-        group_by(several_things) %>%
+        group_by(barcode, CHROM) %>%
         mutate(sum_control_status_as_num = sum(control_status_as_num)) %>%
-        mutate(qc_print = ifelse(sum_control_status_as_num == 0, qc_print, "Fail"))
-
-
-    detailed_pn_matrix_long %>%
+        mutate(qc_print = ifelse(sum_control_status_as_num == 0, qc_print, "Fail")) %>%
+        ungroup() %>%
+        select(Owner_Sample_ID, barcode, CHROM, status, qc_name, qc_print) %>%
+        distinct() %>%
         spread(CHROM, status) %>%
+        spread(qc_name, qc_print) %>%
+        select(-`<NA>`) %>%
+        group_by(barcode) %>%
+        do(coalesce_all_columns(.)) %>%
+        ungroup() %>%
         glimpse() %>%
         write_csv("detailed_pn_matrix_results.csv")
 
