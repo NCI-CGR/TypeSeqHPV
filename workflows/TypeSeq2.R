@@ -71,7 +71,7 @@ ion_plan <- drake::drake_plan(
         mutate(barcode = str_sub(filename, 5, 10)) %>%
         glimpse(),
 
-    #### 7. joining variant table with sample sheet and write to file ####
+#### 7. joining variant table with sample sheet and write to file ####
     variants_final_table = typing_variant_filter(variants = variant_table,
                                                  lineage_defs = args_df$lineage_defs,
                                                  manifest = user_files$manifest,
