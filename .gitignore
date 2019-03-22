@@ -11,5 +11,5 @@ inst/methylation/metastore_db/**
 inst/methylation/*.log
 TypeSeqHPVMethyl/**
 TypeSeqHPV-TSv1/**
-*.zip
+TypeSeq2/**
 .drake

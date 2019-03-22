@@ -25,6 +25,7 @@ command_line_args = tibble(
     lineage_defs = optigrab::opt_get('lineage_defs'),
     scaling_table = optigrab::opt_get('scaling_table'),
     pn_filters = optigrab::opt_get('pn_filters'),
+    internal_control_defs = optigrab::opt_get('internal_control_defs'),
     ram = optigrab::opt_get('ram'),
     cores = optigrab::opt_get('cores'),
     tvc_cores = optigrab::opt_get('tvc_cores'),
@@ -72,10 +73,12 @@ ion_plan <- drake::drake_plan(
 
     #### 7. joining variant table with sample sheet and write to file ####
     variants_final_table = typing_variant_filter(variants = variant_table,
-                                                 filteringTablePath = args_df$filteringTable,
                                                  lineage_defs = args_df$lineage_defs,
                                                  manifest = user_files$manifest,
-                                                 control_defs = user_files$control_definitions) %T>%
+                                                 specimen_control_defs = user_files$control_definitions,
+                                                 internal_control_defs = user_files$internal_control_defs,
+                                                 pn_filters = user_files$pn_filters,
+                                                 scailing_table = user_files$scailing_table) %T>%
         map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv"))
 
 )
