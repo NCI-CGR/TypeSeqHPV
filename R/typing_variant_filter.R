@@ -6,22 +6,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
     require(fuzzyjoin)
 
-    coalesce_all_columns <- function(df, group_vars = NULL) {
-
-        if (is.null(group_vars)) {
-            group_vars <-
-                df %>%
-                purrr::keep(~ dplyr::n_distinct(.x) == 1L) %>%
-                names()
-        }
-
-        msk <- colnames(df) %in% group_vars
-        same_df <- df[1L, msk, drop = FALSE]
-        coal_df <- df[, !msk, drop = FALSE] %>%
-            purrr::map_dfc(na.omit)
-
-        cbind(same_df, coal_df)
-    }
+    coalesce_all_columns <- function(df) {
+        return(coalesce(!!! as.list(df))) }
 
     # add manifest to variants table ----
 
@@ -97,12 +83,14 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(Owner_Sample_ID, barcode, CHROM, status, qc_name, qc_print) %>%
         distinct() %>%
         spread(CHROM, status) %>%
+        mutate(num = 1:n()) %>%
         spread(qc_name, qc_print) %>%
-        select(-`<NA>`) %>%
+        distinct() %>%
         group_by(barcode) %>%
-        do(coalesce_all_columns(.)) %>%
+        select(-num) %>%
+        summarise_all(coalesce_all_columns) %>%
+        select(-`<NA>`) %>%
         ungroup() %>%
-        glimpse() %>%
         write_csv("detailed_pn_matrix_results.csv")
 
     # make simple pn matrix ----
@@ -121,13 +109,15 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         distinct() %>%
         glimpse() %>%
         group_by(barcode, type) %>%
-        distinct() %>%
+        distinct()
+
+    simple_pn_matrix = simple_pn_matrix_long %>%
         spread(type, simple_status) %>%
         glimpse()
 
     simple_pn_matrix = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
-        inner_join(simple_pn_matrix_long) %>%
+        inner_join(simple_pn_matrix) %>%
         write_csv("pn_matrix_results.csv")
 
     specimen_control_defs_long = specimen_control_defs %>%
