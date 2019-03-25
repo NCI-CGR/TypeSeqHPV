@@ -154,57 +154,46 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
             inner_join(simple_pn_matrix) %>%
             write_csv("control_results.csv")
 
-    # # ?identify lineages ----
-    # filteringTable = read_csv(lineage_defs) %>%
-    #     map_if(is.factor, as.character) %>%
-    #     as_tibble() %>%
-    #     rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
-    #
-    # filtered_variants = variants %>%
-    #     inner_join(filteringTable) %>%
-    #     mutate(AF = as.double(AF)) %>%
-    #     mutate(qc_reason = "Pass") %>%
-    #     mutate(qc_reason = ifelse(DP >= min_DP, qc_reason,
-    #                               "min_DP")) %>%
-    #     mutate(qc_reason = ifelse(SRF >= min_coverage_pos, qc_reason,
-    #                               paste0(qc_reason, ";", "min_coverage_pos"))) %>%
-    #     mutate(qc_reason = ifelse(SRR >= min_coverage_neg, qc_reason,
-    #                               paste0(qc_reason, ";", "min_coverage_neg"))) %>%
-    #     mutate(qc_reason = ifelse(SAF >= min_allele_coverage_pos, qc_reason,
-    #                               paste0(qc_reason, ";", "min_allele_coverage_pos"))) %>%
-    #     mutate(qc_reason = ifelse(SAR >= min_allele_coverage_neg, qc_reason,
-    #                               paste0(qc_reason, ";", "min_allele_coverage_neg"))) %>%
-    #     mutate(qc_reason = ifelse(QUAL >= min_qual, qc_reason,
-    #                               paste0(qc_reason, ";", "min_qual"))) %>%
-    #     mutate(qc_reason = ifelse(STB <= max_alt_strand_bias, qc_reason,
-    #                               paste0(qc_reason, ";", "max_alt_strand_bias"))) %>%
-    #     mutate(qc_reason = ifelse(methyl_freq >= min_freq, qc_reason,
-    #                               paste0(qc_reason, ";", "min_freq"))) %>%
-    #     mutate(qc_reason = ifelse(methyl_freq <= max_freq, qc_reason,
-    #                               paste0(qc_reason, ";", "max_freq"))) %>%
-    #     mutate(qc_reason = ifelse(FILTER == "PASS", qc_reason,
-    #                               paste0(qc_reason, ";", FILTER))) %>%
-    #     mutate(status = ifelse(qc_reason == "Pass", "Pass", "Fail")) %>%
-    #     glimpse() %>%
-    #     inner_join(pos_conversion) %>%
-    #     select(chr, pos, DP, methyl_freq, QUAL, status, qc_reason, everything())
-    #
-    # return_table = manifest %>%
-    #     mutate(barcode = paste0(BC1, BC2)) %>%
-    #     left_join(filtered_variants) %>%
-    #     select(-filename, -BC1, -BC2) %>%
-    #     write_csv("target_variants_results.csv")
-    #
-    #
-    # return_table %>%
-    #     group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%
-    #     summarize(mean_freq = mean(methyl_freq)) %>%
-    #     ungroup() %>%
-    #     group_by(barcode, Owner_Sample_ID) %>%
-    #     spread(chr_amplicon, mean_freq) %>%
-    #     glimpse() %>%
-    #     write_csv("freq_matrix_results.csv")
+    # # identify lineages ----
+    lineage_defs = read_csv(lineage_defs) %>%
+        map_if(is.factor, as.character) %>%
+        as_tibble() %>%
+        rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
+
+    lineage_filtered = variants %>%
+        right_join(lineage_defs) %>%
+        mutate(AF = as.double(AF)) %>%
+        mutate(qc_reason = "Pass") %>%
+        mutate(qc_reason = ifelse(SRF >= min_coverage_pos, qc_reason,
+                                  paste0(qc_reason, ";", "min_coverage_pos"))) %>%
+        mutate(qc_reason = ifelse(SRR >= min_coverage_neg, qc_reason,
+                                  paste0(qc_reason, ";", "min_coverage_neg"))) %>%
+        mutate(qc_reason = ifelse(SAF >= min_allele_coverage_pos, qc_reason,
+                                  paste0(qc_reason, ";", "min_allele_coverage_pos"))) %>%
+        mutate(qc_reason = ifelse(SAR >= min_allele_coverage_neg, qc_reason,
+                                  paste0(qc_reason, ";", "min_allele_coverage_neg"))) %>%
+        mutate(qc_reason = ifelse(QUAL >= min_qual, qc_reason,
+                                  paste0(qc_reason, ";", "min_qual"))) %>%
+        mutate(qc_reason = ifelse(STB <= max_alt_strand_bias, qc_reason,
+                                  paste0(qc_reason, ";", "max_alt_strand_bias"))) %>%
+        mutate(qc_reason = ifelse(AF >= min_freq, qc_reason,
+                                  paste0(qc_reason, ";", "min_freq"))) %>%
+        mutate(qc_reason = ifelse(AF <= max_freq, qc_reason,
+                                  paste0(qc_reason, ";", "max_freq"))) %>%
+        mutate(qc_reason = ifelse(FILTER == "PASS", qc_reason,
+                                  paste0(qc_reason, ";", FILTER))) %>%
+        mutate(lineage_status = ifelse(qc_reason == "Pass", "Pass", "Fail")) %>%
+        mutate(AF = ifelse(lineage_status == "Pass", AF, 0)) %>%
+        select(barcode, Lineage_ID, AF) %>%
+        mutate(AF = scales::percent(AF)) %>%
+        spread(Lineage_ID, AF) %>%
+        replace(is.na(.), "0%")
 
 
+    lineage_manifest = manifest %>%
+        mutate(barcode = paste0(BC1, BC2)) %>%
+        inner_join(lineage_filtered) %>%
+        select(-BC1, -BC2) %>%
+        write_csv("lineage_results.csv")
 
 }
