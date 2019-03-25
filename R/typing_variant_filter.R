@@ -28,9 +28,13 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         group_by(barcode, Owner_Sample_ID)
 
 
-    read_counts_matrix = read_counts_matrix_long %>%
-        spread(CHROM, depth) %>%
-        glimpse() %>%
+    read_counts_matrix_wide = read_counts_matrix_long %>%
+        spread(CHROM, depth)
+
+    read_counts_matrix_wide = manifest %>%
+        mutate(barcode = paste0(BC1, BC2)) %>%
+        inner_join(read_counts_matrix_wide) %>%
+        select(-filename, -BC1, -BC2) %>%
         write_csv("read_counts_matrix_results.csv")
 
     # scale the filters - calculate the average reads per sample ----
