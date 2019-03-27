@@ -34,11 +34,11 @@ pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake::drake_plan(
 
 #### 1. adjust command line arguments ####
-args_df = methyl_command_line_args(command_line_args) %>%
+args_df = command_line_args(command_line_args) %>%
     glimpse(),
 
 #### 2. parse plugin data ####
-user_files = methyl_startplugin_parse(args_df) %>%
+user_files = startplugin_parse(args_df) %>%
   glimpse(),
 
 #### 3. demux bams ####
