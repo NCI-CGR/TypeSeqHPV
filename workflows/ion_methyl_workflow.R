@@ -34,7 +34,7 @@ pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake::drake_plan(
 
 #### 1. adjust command line arguments ####
-args_df = command_line_args(command_line_args) %>%
+args_df = get_command_line_args(command_line_args) %>%
     glimpse(),
 
 #### 2. parse plugin data ####
