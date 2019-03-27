@@ -156,7 +156,7 @@ non_hotspot_vars = variants %>%
 
 manifest %>%
   mutate(barcode = paste0(BC1, BC2)) %>%
-  left_joiturnn(non_hotspot_vars) %>%
+  inner_join(non_hotspot_vars) %>%
   select(-filename, -BC1, -BC2) %>%
   write_csv("non_target_variants_results.csv")
 
