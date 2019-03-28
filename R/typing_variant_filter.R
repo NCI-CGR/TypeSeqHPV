@@ -235,7 +235,7 @@ print("Line 208")
         mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
         select(barcode, Lineage_ID, AF) %>%
         #mutate(AF = scales::percent(AF)) %>%
-        #spread(Lineage_ID, AF) %>%
+        spread(Lineage_ID, AF) %>%
         distinct()# %>%
         #replace(is.na(.), "0%")
 
