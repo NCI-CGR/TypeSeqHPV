@@ -37,6 +37,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-BC1, -BC2) %>%
         write_csv("read_counts_matrix_results.csv")
 
+  
+  print("line 41")
+  
     # scale the filters - calculate the average reads per sample ----
 
     average_total_reads_df = read_counts_matrix_long %>%
@@ -52,6 +55,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         glimpse()
 
     scaling_factor = scaling_df$scaling_factor
+  
+  print("line 56")
 
     # read in internal controls ----
     internal_control_defs = read_csv(internal_control_defs) %>%
@@ -102,6 +107,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>% 
         spread(type_id, type_status)
   
+  print("line 110")
   
        manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
@@ -139,6 +145,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-BC1, -BC2) %>%
         write_csv("pn_matrix_results.csv")
   
+  print("line 148")
  
   
     specimen_control_defs_long = specimen_control_defs %>%
