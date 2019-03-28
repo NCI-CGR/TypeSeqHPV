@@ -143,6 +143,13 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         glimpse() %>%
         write_csv("samples_only_matrix.csv")
 
+    failed_samples_only_pn_matrix = simple_pn_matrix %>%
+        filter(str_detect(human_control, "fail", ignore_case=TRUE)) %>%
+        glimpse() %>%
+        write_csv("samples_only_matrix.csv")
+
+  
+  
     specimen_control_defs_long = specimen_control_defs %>%
         filter(!is.na(Control_Code)) %>%
         tidyr::gather("type", "status", -Control_Code, -qc_name, -Control_type) %>%
