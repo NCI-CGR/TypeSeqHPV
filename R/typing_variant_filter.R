@@ -107,6 +107,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         mutate(barcode = paste0(BC1, BC2)) %>%
         inner_join(detailed_pn_matrix) %>%
         select(-BC1, -BC2) %>%
+        select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%  
         write_csv("detailed_pn_matrix_results.csv")
   
 
