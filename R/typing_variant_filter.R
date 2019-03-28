@@ -138,17 +138,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-BC1, -BC2) %>%
         write_csv("pn_matrix_results.csv")
   
-     samples_only_pn_matrix = simple_pn_matrix %>%
-        filter(is.na(Control_Code)) %>%
-        glimpse() %>%
-        write_csv("samples_only_matrix.csv")
-
-    failed_samples_only_pn_matrix = simple_pn_matrix %>%
-        filter(str_detect(human_control, "fail", ignore_case=TRUE)) %>%
-        glimpse() %>%
-        write_csv("failed_samples_matrix.csv")
-
-  
+ 
   
     specimen_control_defs_long = specimen_control_defs %>%
         filter(!is.na(Control_Code)) %>%
@@ -183,6 +173,19 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
             select(-failed_type_sum, barcode, Owner_Sample_ID, Control_type, Control_Code, control_result) %>%
             inner_join(simple_pn_matrix) %>%
             write_csv("control_results.csv")
+                       
+     samples_only_pn_matrix = simple_pn_matrix %>%
+        left_join(select(control_results_final, barcode, Control_Code)) %>%
+        filter(is.na(Control_Code)) %>%
+        select(-Control_Code) %>%
+        glimpse() %>%
+        write_csv("samples_only_matrix.csv")
+
+    failed_samples_only_pn_matrix = samples_only_pn_Matrix %>%
+        filter(str_detect(human_control, "fail", ignore_case=TRUE)) %>%
+        glimpse() %>%
+        write_csv("failed_samples_matrix.csv")
+                
 
     # # identify lineages ----
     lineage_defs = read_csv(lineage_defs) %>%
