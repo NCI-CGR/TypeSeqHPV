@@ -181,7 +181,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         glimpse() %>%
         write_csv("samples_only_matrix.csv")
 
-    failed_samples_only_pn_matrix = samples_only_pn_Matrix %>%
+    failed_samples_only_pn_matrix = samples_only_pn_matrix %>%
         filter(str_detect(human_control, "fail", ignore_case=TRUE)) %>%
         glimpse() %>%
         write_csv("failed_samples_matrix.csv")
