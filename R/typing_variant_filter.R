@@ -137,6 +137,11 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         inner_join(simple_pn_matrix) %>%
         select(-BC1, -BC2) %>%
         write_csv("pn_matrix_results.csv")
+  
+     samples_only_pn_matrix = simple_pn_matrix %>%
+        filter(is.na(Control_Code)) %>%
+        glimpse() %>%
+        write_csv("samples_only_matrix.csv")
 
     specimen_control_defs_long = specimen_control_defs %>%
         filter(!is.na(Control_Code)) %>%
