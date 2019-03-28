@@ -234,11 +234,12 @@ print("Line 208")
         mutate(lineage_status_sum = sum(lineage_status)) %>%
         mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
         select(barcode, Lineage_ID, AF) %>%
-        mutate(AF = scales::percent(AF)) %>%
-        spread(Lineage_ID, AF) %>%
-        distinct() %>%
-        replace(is.na(.), "0%")
-print("line 241")
+        #mutate(AF = scales::percent(AF)) %>%
+        #spread(Lineage_ID, AF) %>%
+        distinct()# %>%
+        #replace(is.na(.), "0%")
+
+  print("line 241")
     lineage_manifest = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
         inner_join(lineage_filtered) %>%
