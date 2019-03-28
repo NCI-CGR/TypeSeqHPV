@@ -57,7 +57,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     internal_control_defs = read_csv(internal_control_defs) %>%
         map_if(is.factor, as.character) %>%
         as_tibble() %>%
-        tidyr::gather("CHROM", "control_status", -internal_control_code, -qc_name, -qc_print) %>%
+        tidyr::gather("CHROM", "control_status", -internal_control_code, -qc_name, -qc_print, factor_key = TRUE) %>%
         filter(!(is.na(control_status))) %>%
         glimpse()
 
@@ -96,7 +96,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         summarise_all(coalesce_all_columns) %>%
         select(-`<NA>`) %>%
         ungroup() %>%
-        tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
+        tidyr::gather("type_id", "type_status", starts_with("HPV"), factor_key = TRUE) %>%
         group_by(barcode) %>%
         mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
         mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>% 
@@ -113,7 +113,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     # make simple pn matrix ----
 
     simple_pn_matrix_long = detailed_pn_matrix %>%
-        gather("CHROM", "status", starts_with("HPV")) %>%
+        gather("CHROM", "status", starts_with("HPV"), factor_key = TRUE) %>%
         separate(CHROM, sep = "_", into = c("type"), remove = FALSE, extra = "drop") %>%
         glimpse() %>%
         mutate(status_as_integer = ifelse(status == "pos", 1, 0)) %>%
@@ -142,7 +142,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
     specimen_control_defs_long = specimen_control_defs %>%
         filter(!is.na(Control_Code)) %>%
-        tidyr::gather("type", "status", -Control_Code, -qc_name, -Control_type) %>%
+        tidyr::gather("type", "status", -Control_Code, -qc_name, -Control_type, factor_key = TRUE) %>%
         glimpse()
 
         # 2.  merge pn matrix with control defs
