@@ -155,6 +155,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
         # 2.  merge pn matrix with control defs
 
+  print("line 158")
+  
         control_results_pre = simple_pn_matrix_long %>%
             ungroup() %>%
             map_if(is.factor, as.character) %>%
@@ -181,6 +183,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
             select(-failed_type_sum, barcode, Owner_Sample_ID, Control_type, Control_Code, control_result) %>%
             inner_join(simple_pn_matrix) %>%
             write_csv("control_results.csv")
+       
+                       
+print("line 188")
                        
      samples_only_pn_matrix = simple_pn_matrix %>%
         left_join(select(control_results_final, barcode, Control_Code)) %>%
@@ -200,7 +205,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         map_if(is.factor, as.character) %>%
         as_tibble() %>%
         rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
-
+print("Line 208")
+                       
     lineage_filtered = variants %>%
         right_join(lineage_defs) %>%
         mutate(AF = as.double(AF)) %>%
@@ -232,7 +238,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         spread(Lineage_ID, AF) %>%
         distinct() %>%
         replace(is.na(.), "0%")
-
+print("line 241")
     lineage_manifest = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
         inner_join(lineage_filtered) %>%
