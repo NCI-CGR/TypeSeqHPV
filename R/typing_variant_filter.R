@@ -86,6 +86,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         ungroup() %>%
         select(Owner_Sample_ID, barcode, CHROM, status, qc_name, qc_print) %>%
         distinct() %>%
+           
         spread(CHROM, status) %>%
         mutate(num = 1:n()) %>%
         spread(qc_name, qc_print) %>%
@@ -94,7 +95,12 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-num) %>%
         summarise_all(coalesce_all_columns) %>%
         select(-`<NA>`) %>%
-        ungroup() 
+        ungroup() %>%
+        tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
+        group_by(barcode) %>%
+        mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
+        mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>% 
+        spread(type_id, type_status)
   
   
        manifest %>%
