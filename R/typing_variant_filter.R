@@ -236,8 +236,8 @@ print("Line 208")
         select(barcode, Lineage_ID, AF) %>%
         #mutate(AF = scales::percent(AF)) %>%
         spread(Lineage_ID, AF) %>%
-        distinct()# %>%
-        #replace(is.na(.), "0%")
+        distinct() %>%
+        replace(is.na(.), "0%")
 
   print("line 241")
     lineage_manifest = manifest %>%
