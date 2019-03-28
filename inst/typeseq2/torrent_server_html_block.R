@@ -1,5 +1,5 @@
 #' ---
-#' title: TypeSeq HPV Methylation Plugin
+#' title: TypeSeq2 HPV Plugin
 #' author: " "
 #' date: "`r format(Sys.time(), '%d %B, %Y')`"
 #' output:
@@ -27,21 +27,17 @@ run_type = plugin_json$runplugin$run_type
 
 cat('
 
-[variant table](./target_variants_results.csv)
+[positive negative matrix](./pn_matrix_results.csv)
 
-[read summary](./read_summary.csv)
+[detailed pn matrix](./detailed_pn_matrix_results.csv)
 
-[coverage matrix](./coverage_matrix_results.csv)
+[read count matrix](./read_counts_matrix_results.csv)
 
-[frequency matrix](./freq_matrix_results.csv)
-
-[lineage variants](./lineage_variants_results.csv)
+[lineage results](./lineage_results.csv)
 
 [control results](./control_results.csv)
 
-[non-target variant results](./non_target_variants_results.csv)
-
-[archive of outputs](./TypeSeqHPVMethyl_outputs.zip)
+[archive of outputs](./TypeSeq2_outputs.zip)
 
 
 
