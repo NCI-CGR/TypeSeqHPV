@@ -72,7 +72,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
     # make detailed pn matrix ----
 
-    detailed_pn_matrix_long = read_counts_matrix_long %>%
+    detailed_pn_matrix = read_counts_matrix_long %>%
         inner_join(pn_filters) %>%
         mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
         glimpse() %>%
@@ -94,12 +94,19 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-num) %>%
         summarise_all(coalesce_all_columns) %>%
         select(-`<NA>`) %>%
-        ungroup() %>%
+        ungroup() 
+  
+  
+       manifest %>%
+        mutate(barcode = paste0(BC1, BC2)) %>%
+        inner_join(detailed_pn_matrix) %>%
+        select(-BC1, -BC2) %>%
         write_csv("detailed_pn_matrix_results.csv")
+  
 
     # make simple pn matrix ----
 
-    simple_pn_matrix_long = detailed_pn_matrix_long %>%
+    simple_pn_matrix_long = detailed_pn_matrix %>%
         gather("CHROM", "status", starts_with("HPV")) %>%
         separate(CHROM, sep = "_", into = c("type"), remove = FALSE, extra = "drop") %>%
         glimpse() %>%
@@ -122,6 +129,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     simple_pn_matrix = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
         inner_join(simple_pn_matrix) %>%
+        select(-BC1, -BC2) %>%
         write_csv("pn_matrix_results.csv")
 
     specimen_control_defs_long = specimen_control_defs %>%
