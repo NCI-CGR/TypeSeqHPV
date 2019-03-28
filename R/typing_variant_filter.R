@@ -146,7 +146,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     failed_samples_only_pn_matrix = simple_pn_matrix %>%
         filter(str_detect(human_control, "fail", ignore_case=TRUE)) %>%
         glimpse() %>%
-        write_csv("samples_only_matrix.csv")
+        write_csv("failed_samples_matrix.csv")
 
   
   
@@ -212,13 +212,15 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
                                   paste0(qc_reason, ";", "max_freq"))) %>%
         mutate(qc_reason = ifelse(FILTER == "PASS", qc_reason,
                                   paste0(qc_reason, ";", FILTER))) %>%
-        mutate(lineage_status = ifelse(qc_reason == "Pass", "Pass", "Fail")) %>%
-        mutate(AF = ifelse(lineage_status == "Pass", AF, 0)) %>%
+        mutate(lineage_status = ifelse(qc_reason != "Pass", 1, 0)) %>%
+        group_by(barcode, Lineage_ID) %>%
+        mutate(lineage_status_sum = sum(lineage_status)) %>%
+        mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
         select(barcode, Lineage_ID, AF) %>%
         mutate(AF = scales::percent(AF)) %>%
         spread(Lineage_ID, AF) %>%
+        distinct() %>%
         replace(is.na(.), "0%")
-
 
     lineage_manifest = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
