@@ -39,7 +39,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
     # scale the filters - calculate the average reads per sample ----
 
-    average_total_reads_df = read_counts_matrix %>%
+    average_total_reads_df = read_counts_matrix_long %>%
         ungroup() %>%
         summarize(average_read_count = mean(total_reads))
 
