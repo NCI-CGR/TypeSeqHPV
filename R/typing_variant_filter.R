@@ -192,12 +192,12 @@ print("line 188")
         filter(is.na(Control_Code)) %>%
         select(-Control_Code) %>%
         glimpse() %>%
-        write_csv("samples_only_matrix.csv")
+        write_csv("samples_only_matrix_results.csv")
 
     failed_samples_only_pn_matrix = samples_only_pn_matrix %>%
         filter(str_detect(human_control, fixed("fail", ignore_case = TRUE))) %>%
         glimpse() %>%
-        write_csv("failed_samples_matrix.csv")
+        write_csv("failed_samples_matrix_restuls.csv")
                 
 
     # # identify lineages ----

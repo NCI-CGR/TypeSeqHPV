@@ -79,9 +79,13 @@ ion_plan <- drake::drake_plan(
                                                  internal_control_defs = args_df$internal_control_defs,
                                                  pn_filters = args_df$pn_filters,
                                                  scaling_table = args_df$scaling_table) %T>%
-        map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv"))
+        map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv"),
 
-)
+#### 8. generate qc report ####
+ion_qc_report = variants_final_table %T>% 
+  do(render("ion_Torrent_report.R"))
+
+))
 
 #### C. execute workflow plan ####
 system("mkdir vcf")
