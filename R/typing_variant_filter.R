@@ -197,7 +197,7 @@ print("line 188")
     failed_samples_only_pn_matrix = samples_only_pn_matrix %>%
         filter(str_detect(human_control, fixed("fail", ignore_case = TRUE))) %>%
         glimpse() %>%
-        write_csv("failed_samples_matrix_restuls.csv")
+        write_csv("failed_samples_matrix_results.csv")
                 
 
     # # identify lineages ----
