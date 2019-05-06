@@ -69,7 +69,8 @@ ion_plan <- drake::drake_plan(
         future_map_dfr(vcf_to_dataframe) %>%
         glimpse() %>%
         mutate(barcode = str_sub(filename, 5, 10)) %>%
-        glimpse(),
+        glimpse() %>%
+        write_csv("variant_table.csv"),
 
 #### 7. joining variant table with sample sheet and write to file ####
     variants_final_table = typing_variant_filter(variants = variant_table,
@@ -82,7 +83,7 @@ ion_plan <- drake::drake_plan(
         map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv"),
 
 #### 8. generate qc report ####
-ion_qc_report = variants_final_table %T>% 
+ion_qc_report = variants_final_table %T>%
   do(render("ion_Torrent_report.R"))
 
 ))

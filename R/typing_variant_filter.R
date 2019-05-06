@@ -37,9 +37,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-BC1, -BC2) %>%
         write_csv("read_counts_matrix_results.csv")
 
-  
+
   print("line 41")
-  
+
     # scale the filters - calculate the average reads per sample ----
 
     average_total_reads_df = read_counts_matrix_long %>%
@@ -55,7 +55,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         glimpse()
 
     scaling_factor = scaling_df$scaling_factor
-  
+
   print("line 56")
 
     # read in internal controls ----
@@ -91,7 +91,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         ungroup() %>%
         select(Owner_Sample_ID, barcode, CHROM, status, qc_name, qc_print) %>%
         distinct() %>%
-           
+
         spread(CHROM, status) %>%
         mutate(num = 1:n()) %>%
         spread(qc_name, qc_print) %>%
@@ -104,18 +104,18 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         tidyr::gather("type_id", "type_status", starts_with("HPV"), factor_key = TRUE) %>%
         group_by(barcode) %>%
         mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
-        mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>% 
+        mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>%
         spread(type_id, type_status)
-  
+
   print("line 110")
-  
+
        manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
         inner_join(detailed_pn_matrix) %>%
         select(-BC1, -BC2) %>%
-        select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%  
+        select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%
         write_csv("detailed_pn_matrix_results.csv")
-  
+
 
     # make simple pn matrix ----
 
@@ -144,19 +144,19 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         inner_join(simple_pn_matrix) %>%
         select(-BC1, -BC2) %>%
         write_csv("pn_matrix_results.csv")
-  
+
   print("line 148")
- 
-  
+
+
     specimen_control_defs_long = specimen_control_defs %>%
         filter(!is.na(Control_Code)) %>%
-        tidyr::gather("type", "status", -Control_Code, -qc_name, -Control_type, factor_key = TRUE) %>%
+        tidyr::gather("type", "status", -Control_Code, -qc_name, factor_key = TRUE) %>%
         glimpse()
 
         # 2.  merge pn matrix with control defs
 
   print("line 158")
-  
+
         control_results_pre = simple_pn_matrix_long %>%
             ungroup() %>%
             map_if(is.factor, as.character) %>%
@@ -166,7 +166,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
             filter(type.x == type.y) %>%
             arrange(Owner_Sample_ID, type.x) %>%
-            select(Owner_Sample_ID, barcode, Control_Code, type = type.x, Control_type, simple_status, status_control = status) %>%
+            select(Owner_Sample_ID, barcode, Control_Code, type = type.x, simple_status, status_control = status) %>%
 
         # 3. calculate result
 
@@ -177,16 +177,16 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
             ungroup()
 
         control_results_final = control_results_pre %>%
-            select(Control_Code, Owner_Sample_ID, barcode, Control_type, failed_type_sum) %>%
+            select(Control_Code, Owner_Sample_ID, barcode, failed_type_sum) %>%
             distinct() %>%
             mutate(control_result = ifelse(failed_type_sum == 0, "pass", "fail")) %>%
-            select(-failed_type_sum, barcode, Owner_Sample_ID, Control_type, Control_Code, control_result) %>%
+            select(-failed_type_sum, barcode, Owner_Sample_ID, Control_Code, control_result) %>%
             inner_join(simple_pn_matrix) %>%
             write_csv("control_results.csv")
-       
-                       
+
+
 print("line 188")
-                       
+
      samples_only_pn_matrix = simple_pn_matrix %>%
         left_join(select(control_results_final, barcode, Control_Code)) %>%
         filter(is.na(Control_Code)) %>%
@@ -198,7 +198,7 @@ print("line 188")
         filter(str_detect(human_control, fixed("fail", ignore_case = TRUE))) %>%
         glimpse() %>%
         write_csv("failed_samples_matrix_results.csv")
-                
+
 
     # # identify lineages ----
     lineage_defs = read_csv(lineage_defs) %>%
@@ -206,7 +206,7 @@ print("line 188")
         as_tibble() %>%
         rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
 print("Line 208")
-                       
+
     lineage_filtered = variants %>%
         right_join(lineage_defs) %>%
         mutate(AF = as.double(AF)) %>%
