@@ -205,7 +205,7 @@ print("line 188")
         map_if(is.factor, as.character) %>%
         as_tibble() %>%
         rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
-print("Line 208")
+cat("Line 208")
 
     lineage_filtered = variants %>%
         right_join(lineage_defs) %>%
@@ -234,16 +234,20 @@ print("Line 208")
         mutate(lineage_status_sum = sum(lineage_status)) %>%
         mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
         select(barcode, Lineage_ID, AF) %>%
-        #mutate(AF = scales::percent(AF)) %>%
-        spread(Lineage_ID, AF) %>%
-        distinct() %>%
-        replace(is.na(.), "0%")
+        write_csv("lineage_filtered.csv")
 
-  print("line 241")
+        #mutate(AF = scales::percent(AF)) %>%
+        #spread(Lineage_ID, AF) %>%
+        #distinct() %>%
+        #replace(is.na(.), "0%")
+
+  cat("line 241")
+
     lineage_manifest = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
-        inner_join(lineage_filtered) %>%
-        select(-BC1, -BC2) %>%
-        write_csv("lineage_results.csv")
+      write_csv("lineage_results.csv")
+    #inner_join(lineage_filtered) %>%
+     #   select(-BC1, -BC2) %>%
+      #  write_csv("lineage_results.csv")
 
 }
