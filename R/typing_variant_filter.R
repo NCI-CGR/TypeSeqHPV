@@ -234,7 +234,7 @@ cat("Line 208")
         mutate(lineage_status_sum = sum(lineage_status)) %>%
         mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
         select(barcode, Lineage_ID, AF) %>%
-        write_csv("lineage_filtered.csv")
+        write_csv("lineage_filtered_results.csv")
 
         #mutate(AF = scales::percent(AF)) %>%
         #spread(Lineage_ID, AF) %>%
