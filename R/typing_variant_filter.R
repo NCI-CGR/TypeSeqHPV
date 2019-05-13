@@ -229,7 +229,7 @@ print("line 188")
                                   paste0(qc_reason, ";", "max_freq"))) %>%
         mutate(qc_reason = ifelse(FILTER == "PASS", qc_reason,
                                   paste0(qc_reason, ";", FILTER))) %>%
-        mutate(qc_reason = ifelse(qc_reason == "", "Pass", qc_reasons)) %>% 
+        mutate(qc_reason = ifelse(qc_reason == "", "Pass", qc_reason)) %>% 
         mutate(lineage_status = ifelse(qc_reason != "Pass", 1, 0)) %>%
         group_by(barcode, Lineage_ID) %>%
         mutate(lineage_status_sum = sum(lineage_status)) %>%
