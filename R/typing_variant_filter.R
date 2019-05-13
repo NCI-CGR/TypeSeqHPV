@@ -233,7 +233,7 @@ cat("Line 208")
         group_by(barcode, Lineage_ID) %>%
         mutate(lineage_status_sum = sum(lineage_status)) %>%
         mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
-        select(barcode, Lineage_ID, AF) %>%
+        #select(barcode, Lineage_ID, AF) %>%
         write_csv("lineage_filtered_results.csv")
 
         #mutate(AF = scales::percent(AF)) %>%
