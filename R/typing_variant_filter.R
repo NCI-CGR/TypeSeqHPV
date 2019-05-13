@@ -205,12 +205,12 @@ print("line 188")
         map_if(is.factor, as.character) %>%
         as_tibble() %>%
         rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
-cat("Line 208")
 
     lineage_filtered = variants %>%
         right_join(lineage_defs) %>%
+        write_csv(variants, "variants_test_results.csv") %>% 
         mutate(AF = as.double(AF)) %>%
-        mutate(qc_reason = "Pass") %>%
+        mutate(qc_reason = "") %>%
         mutate(qc_reason = ifelse(SRF >= min_coverage_pos, qc_reason,
                                   paste0(qc_reason, ";", "min_coverage_pos"))) %>%
         mutate(qc_reason = ifelse(SRR >= min_coverage_neg, qc_reason,
@@ -229,19 +229,18 @@ cat("Line 208")
                                   paste0(qc_reason, ";", "max_freq"))) %>%
         mutate(qc_reason = ifelse(FILTER == "PASS", qc_reason,
                                   paste0(qc_reason, ";", FILTER))) %>%
+        mutate(qc_reason = ifelse(qc_reason == "", "Pass", qc_reasons)) %>% 
         mutate(lineage_status = ifelse(qc_reason != "Pass", 1, 0)) %>%
         group_by(barcode, Lineage_ID) %>%
         mutate(lineage_status_sum = sum(lineage_status)) %>%
         mutate(AF = ifelse(lineage_status_sum == 0, AF, 0)) %>%
-        #select(barcode, Lineage_ID, AF) %>%
+        select(barcode, CHROM, POS, Lineage_ID, AF) %>%
         write_csv("lineage_filtered_results.csv")
 
         #mutate(AF = scales::percent(AF)) %>%
         #spread(Lineage_ID, AF) %>%
         #distinct() %>%
         #replace(is.na(.), "0%")
-
-  cat("line 241")
 
     lineage_manifest = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
