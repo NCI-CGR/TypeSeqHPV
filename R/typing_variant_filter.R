@@ -208,7 +208,7 @@ print("line 188")
 
     lineage_filtered = variants %>%
         right_join(lineage_defs) %>%
-        write_csv(variants, "variants_test_results.csv") %>% 
+        write_csv("variants_test_results.csv") %>% 
         mutate(AF = as.double(AF)) %>%
         mutate(qc_reason = "") %>%
         mutate(qc_reason = ifelse(SRF >= min_coverage_pos, qc_reason,
