@@ -33,7 +33,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
     read_counts_matrix_wide = manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
-        inner_join(read_counts_matrix_wide) %>%
+        left_join(read_counts_matrix_wide) %>%
         select(-BC1, -BC2) %>%
         write_csv("read_counts_matrix_results.csv")
 
