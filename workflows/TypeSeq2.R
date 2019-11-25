@@ -11,6 +11,8 @@ library(jsonlite)
 library(optigrab)
 library(magrittr)
 
+drake::clean("variants_final_table")
+
 command_line_args = tibble(
     manifest = optigrab::opt_get('manifest'),
     control_definitions = optigrab::opt_get('control_definitions'),
