@@ -5,6 +5,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
                                   pn_filters, scaling_table){
 
     require(fuzzyjoin)
+ ##test
 
     coalesce_all_columns <- function(df) {
         return(coalesce(!!! as.list(df))) }
