@@ -85,7 +85,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
         select(-depth) %>%
         left_join(internal_control_defs) %>%
         mutate(control_status_as_num = ifelse(status == control_status,
-                                                  0, 1)) %>%
+                                                  1, 0)) %>%
         group_by(barcode, CHROM) %>%
         mutate(sum_control_status_as_num = sum(control_status_as_num)) %>%
         mutate(qc_print = ifelse(sum_control_status_as_num == 0, qc_print, "Fail")) %>%
