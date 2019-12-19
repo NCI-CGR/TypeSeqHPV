@@ -78,37 +78,53 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
     # make detailed pn matrix ----
 
-    detailed_pn_matrix = read_counts_matrix_long %>%
-        inner_join(pn_filters) %>%
-        mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
-        glimpse() %>%
-        select(-depth) %>%
-        left_join(internal_control_defs) %>%
-        mutate(control_status_as_num = ifelse(status == control_status,
-                                                  1, 0)) %>%
-        group_by(barcode, CHROM) %>%
-        mutate(sum_control_status_as_num = sum(control_status_as_num)) %>%
-        mutate(qc_print = ifelse(sum_control_status_as_num == 0, qc_print, "Fail")) %>%
-        ungroup() %>%
-        select(Owner_Sample_ID, barcode, CHROM, status, qc_name, qc_print) %>%
-        distinct() %>%
+  read_counts_matrix_long %>%
+   inner_join(pn_filters) %>%
+   mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
+   glimpse() %>%
+   select(-depth) %>%
+   select(-total_reads,-Owner_Sample_ID,-Min_reads_per_type) %>%
+   spread(CHROM, status) ->new
+  
+  str_replace_all(colnames(new),"[-]", "")-> colnames(new)
 
-        spread(CHROM, status) %>%
-        mutate(num = 1:n()) %>%
-        spread(qc_name, qc_print) %>%
-        distinct() %>%
-        group_by(barcode) %>%
-        select(-num) %>%
-        summarise_all(coalesce_all_columns) %>%
-        select(-`<NA>`) %>%
-        ungroup() %>%
-        tidyr::gather("type_id", "type_status", starts_with("HPV"), factor_key = TRUE) %>%
-        group_by(barcode) %>%
-        mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
-        mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>%
-        spread(type_id, type_status)
+ internal_control_defs<-as.data.frame(internal_control_defs)
+  internal_control_defs %>%
+  group_by(internal_control_code) %>%
+  summarize() -> get_list
+  
+get_list<-as.list(levels(get_list$internal_control_code))
+for (i in get_list) {
+  assign(paste0("output",i),internal_control_defs[internal_control_defs$internal_control_code == i,])
+}
 
-  print("line 110")
+new %>%
+  left_join(outputAssay_SIC, by = c("ASICHigh","ASICLow","ASICMed")) %>%
+  select(Owner_Sample_ID,barcode,ASICHigh,ASICLow,ASICMed,internal_control_code, qc_name, qc_print) %>%
+  spread(internal_control_code, qc_print) %>%
+  select(-qc_name) %>%
+  full_join(new) -> new
+new %>%
+  left_join(outputExt_SIC, by = c("ESICHigh","ESICLow","ESICMed")) %>%
+  select(Owner_Sample_ID,barcode,ESICHigh,ESICLow,ESICMed,internal_control_code, qc_name, qc_print) %>%
+  spread(internal_control_code, qc_print) %>%
+  select(-qc_name) %>%
+  full_join(new) -> new
+new %>%
+  left_join(outputspecimens, by = c("B2ML", "B2MS")) %>%
+  select(Owner_Sample_ID,barcode,B2ML,B2MS,internal_control_code, qc_name, qc_print) %>%
+  spread(internal_control_code, qc_print) %>%
+  select(-qc_name) %>%
+  full_join(new) -> new
+
+ new %>%  
+  tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
+  group_by(barcode) %>%
+  mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
+  mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>%
+  spread(type_id, type_status)-> detailed_pn_matrix
+
+#  print("line 110")
 
        manifest %>%
         mutate(barcode = paste0(BC1, BC2)) %>%
