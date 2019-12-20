@@ -63,8 +63,6 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     internal_control_defs = read_csv(internal_control_defs) %>%
         map_if(is.factor, as.character) %>%
         as_tibble() %>%
-        tidyr::gather("CHROM", "control_status", -internal_control_code, -qc_name, -qc_print, factor_key = TRUE) %>%
-        filter(!(is.na(control_status))) %>%
         glimpse()
 
     # read in pn_filters ----
