@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 # TypeSeq2 HPV
-VERSION="1.1903.2101"
+VERSION="2.1903.2101"
 #autorundisable
 echo Pipeline version $VERSION
 
