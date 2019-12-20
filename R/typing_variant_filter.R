@@ -90,31 +90,31 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
  internal_control_defs<-as.data.frame(internal_control_defs)
   internal_control_defs %>%
-  group_by(internal_control_code) %>%
+  group_by(qc_name) %>%
   summarize() -> get_list
   
-get_list<-as.list(levels(get_list$internal_control_code))
+get_list<-as.list(levels(get_list$qc_name))
 for (i in get_list) {
-  assign(paste0("output",i),internal_control_defs[internal_control_defs$internal_control_code == i,])
+  assign(paste0("output",i),internal_control_defs[internal_control_defs$qc_name == i,])
 }
 
 new %>%
   left_join(outputAssay_SIC, by = c("ASICHigh","ASICLow","ASICMed")) %>%
   select(Owner_Sample_ID,barcode,ASICHigh,ASICLow,ASICMed,internal_control_code, qc_name, qc_print) %>%
-  spread(internal_control_code, qc_print) %>%
-  select(-qc_name) %>%
+  spread(qc_name, qc_print) %>%
+  select(-internal_control_code) %>%
   full_join(new) -> new
 new %>%
   left_join(outputExt_SIC, by = c("ESICHigh","ESICLow","ESICMed")) %>%
   select(Owner_Sample_ID,barcode,ESICHigh,ESICLow,ESICMed,internal_control_code, qc_name, qc_print) %>%
-  spread(internal_control_code, qc_print) %>%
-  select(-qc_name) %>%
+  spread(qc_name, qc_print) %>%
+  select(-internal_control_code) %>%
   full_join(new) -> new
 new %>%
   left_join(outputspecimens, by = c("B2ML", "B2MS")) %>%
   select(Owner_Sample_ID,barcode,B2ML,B2MS,internal_control_code, qc_name, qc_print) %>%
-  spread(internal_control_code, qc_print) %>%
-  select(-qc_name) %>%
+  spread(qc_name, qc_print) %>%
+  select(-internal_control_code) %>%
   full_join(new) -> new
 
  new %>%  
