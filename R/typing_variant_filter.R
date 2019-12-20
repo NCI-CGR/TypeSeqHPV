@@ -260,10 +260,10 @@ print("line 188")
         #replace(is.na(.), "0%")
 
     lineage_manifest = manifest %>%
-        mutate(barcode = paste0(BC1, BC2)) %>%
-      write_csv("lineage_results.csv")
-    #inner_join(lineage_filtered) %>%
-     #   select(-BC1, -BC2) %>%
-      #  write_csv("lineage_results.csv")
+       mutate(barcode = paste0(BC1, BC2)) %>%
+     # write_csv("lineage_results.csv")
+       inner_join(lineage_filtered) %>%
+       select(-BC1, -BC2) %>%
+       write_csv("lineage_results.csv")
 
 }
