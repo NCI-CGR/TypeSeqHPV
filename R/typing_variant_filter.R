@@ -76,61 +76,61 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
     # make detailed pn matrix ----
 
-  read_counts_matrix_long %>%
-   inner_join(pn_filters) %>%
-   mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
-   glimpse() %>%
-   select(-depth) %>%
-   select(-total_reads,-Owner_Sample_ID,-Min_reads_per_type) %>%
-   spread(CHROM, status) ->new
+    read_counts_matrix_long %>%
+      inner_join(pn_filters) %>%
+      mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
+      glimpse() %>%
+      select(-depth) %>%
+      select(-total_reads,-Owner_Sample_ID,-Min_reads_per_type) %>%
+      spread(CHROM, status) ->new
   
-  str_replace_all(colnames(new),"[-]", "")-> colnames(new)
+    str_replace_all(colnames(new),"[-]", "")-> colnames(new)
 
- internal_control_defs<-as.data.frame(internal_control_defs)
- str_replace_all(names(internal_control_defs),"[-]", "")->colnames(internal_control_defs)
-  internal_control_defs %>%
-  group_by(qc_name) %>%
-  summarize() -> get_list
+    internal_control_defs<-as.data.frame(internal_control_defs)
+    str_replace_all(names(internal_control_defs),"[-]", "")->colnames(internal_control_defs)
+      internal_control_defs %>%
+      group_by(qc_name) %>%
+      summarize() -> get_list
   
-get_list<-as.list(levels(get_list$qc_name))
-for (i in get_list) {
-  assign(paste0("output",i),internal_control_defs[internal_control_defs$qc_name == i,])
-}
+    get_list<-as.list(levels(get_list$qc_name))
+    for (i in get_list) {
+      assign(paste0("output",i),internal_control_defs[internal_control_defs$qc_name == i,])
+    }
 
-new %>%
-  left_join(outputAssay_SIC, by = c("ASICHigh","ASICLow","ASICMed")) %>%
-  select(barcode,ASICHigh,ASICLow,ASICMed,internal_control_code, qc_name, qc_print) %>%
-  spread(qc_name, qc_print) %>%
-  select(-internal_control_code) %>%
-  full_join(new) -> new
-new %>%
-  left_join(outputExt_SIC, by = c("ESICHigh","ESICLow","ESICMed")) %>%
-  select(barcode,ESICHigh,ESICLow,ESICMed,internal_control_code, qc_name, qc_print) %>%
-  spread(qc_name, qc_print) %>%
-  select(-internal_control_code) %>%
-  full_join(new) -> new
-new %>%
-  left_join(outputspecimens, by = c("B2ML", "B2MS")) %>%
-  select(barcode,B2ML,B2MS,internal_control_code, qc_name, qc_print) %>%
-  spread(qc_name, qc_print) %>%
-  select(-internal_control_code) %>%
-  full_join(new) -> new
+    new %>%
+      left_join(outputAssay_SIC, by = c("ASICHigh","ASICLow","ASICMed")) %>%
+      select(barcode,ASICHigh,ASICLow,ASICMed,internal_control_code, qc_name, qc_print) %>%
+      spread(qc_name, qc_print) %>%
+      select(-internal_control_code) %>%
+      full_join(new) -> new
+    new %>%
+      left_join(outputExt_SIC, by = c("ESICHigh","ESICLow","ESICMed")) %>%
+      select(barcode,ESICHigh,ESICLow,ESICMed,internal_control_code, qc_name, qc_print) %>%
+      spread(qc_name, qc_print) %>%
+      select(-internal_control_code) %>%
+      full_join(new) -> new
+    new %>%
+      left_join(outputspecimens, by = c("B2ML", "B2MS")) %>%
+      select(barcode,B2ML,B2MS,internal_control_code, qc_name, qc_print) %>%
+      spread(qc_name, qc_print) %>%
+      select(-internal_control_code) %>%
+      full_join(new) -> new
 
- new %>%  
-  tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
-  group_by(barcode) %>%
-  mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
-  mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>%
-  spread(type_id, type_status)-> detailed_pn_matrix
+    new %>%  
+      tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
+      group_by(barcode) %>%
+      mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
+      mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>%
+      spread(type_id, type_status)-> detailed_pn_matrix
 
-#  print("line 110")
+  print("line 110")
 
-       manifest %>%
-        mutate(barcode = paste0(BC1, BC2)) %>%
-        inner_join(detailed_pn_matrix) %>%
-        select(-BC1, -BC2) %>%
-        select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%
-        write_csv("detailed_pn_matrix_results.csv")
+    manifest %>%
+      mutate(barcode = paste0(BC1, BC2)) %>%
+      inner_join(detailed_pn_matrix) %>%
+      select(-BC1, -BC2) %>%
+      select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%
+      write_csv("detailed_pn_matrix_results.csv")
 
 
     # make simple pn matrix ----
