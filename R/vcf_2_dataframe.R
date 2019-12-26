@@ -35,12 +35,10 @@ methyl_variant_filter <- function(variants, filteringTablePath, posConversionTab
 
 require(fuzzyjoin)
 
-
 filteringTable = read_tsv(filteringTablePath) %>%
   map_if(is.factor, as.character) %>%
   as_tibble() %>%
   rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
-
 
 #hotspot vars...
 
@@ -50,10 +48,10 @@ GA_variants = variants %>%
   glimpse()
 
 manifest %>%
-    mutate(barcode = paste0(BC1, BC2)) %>%
-    left_join(GA_variants) %>%
-    select(-filename, -BC1, -BC2) %>%
-    write_csv("lineage_variants_results.csv")
+  mutate(barcode = paste0(BC1, BC2)) %>%
+  inner_join(GA_variants) %>%
+  select(-filename, -BC1, -BC2) %>%
+  write_csv("lineage_variants_results.csv")
 
 pos_conversion = read_tsv(posConversionTable) %>%
   map_if(is.factor, as.character) %>%
@@ -96,7 +94,7 @@ filtered_variants = variants %>%
  return_table = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(filtered_variants) %>%
-    select(-filename, -BC1, -BC2) %>%
+    select(-BC1, -BC2) %>%
     write_csv("target_variants_results.csv")
 
  coverage_matrix = return_table %>%
@@ -105,26 +103,36 @@ filtered_variants = variants %>%
   ungroup() %>%
   group_by(barcode, Owner_Sample_ID) %>%
   spread(chr_amplicon, depth) %>%
-  glimpse() %>%
-  write_csv("coverage_matrix_results.csv")
+  glimpse() 
+    
+  manifest %>%
+  mutate(barcode = paste0(BC1, BC2)) %>%
+  inner_join(coverage_matrix) %>%
+  select(-BC1, -BC2) %>%
+  write_csv("coverage_matrix_results.csv") 
 
  #freq_matrix
 
- return_table %>%
+ freq_matrix = return_table %>%
   group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%
   summarize(mean_freq = mean(methyl_freq)) %>%
   ungroup() %>%
   group_by(barcode, Owner_Sample_ID) %>%
   spread(chr_amplicon, mean_freq) %>%
-  glimpse() %>%
-  write_csv("freq_matrix_results.csv")
+  glimpse() 
+    
+  manifest %>%
+  mutate(barcode = paste0(BC1, BC2)) %>%
+  inner_join(freq_matrix) %>%
+  select(-BC1, -BC2) %>%
+  write_csv("freq_matrix_results.csv") 
 
  control_defs = control_defs %>%
    glimpse() %>%
    tidyr::gather("chrom", "min_coverage", -control_code) %>%
    glimpse()
 
- coverage_matrix %>%
+ control_results = coverage_matrix %>%
    gather("chrom", "depth", -Owner_Sample_ID, -barcode) %>%
    mutate(depth = as.integer(depth)) %>%
    fuzzy_join(control_defs, mode = "inner", by = c("Owner_Sample_ID" = "control_code"), match_fun = function(x, y) str_detect(x, fixed(y, ignore_case = TRUE))) %>%
@@ -133,8 +141,13 @@ filtered_variants = variants %>%
    glimpse() %>%
    select(Owner_Sample_ID, barcode, chrom = chrom.x, control_result) %>%
    arrange(Owner_Sample_ID, chrom) %>%
-   spread(chrom, control_result) %>%
-   write_csv("control_results.csv")
+   spread(chrom, control_result) 
+                            
+  manifest %>%
+  mutate(barcode = paste0(BC1, BC2)) %>%
+  inner_join(control_results) %>%
+  select(-BC1, -BC2) %>%
+  write_csv("control_results.csv")
 
 
  #non-hotspot vars...
@@ -143,7 +156,7 @@ non_hotspot_vars = variants %>%
 
 manifest %>%
   mutate(barcode = paste0(BC1, BC2)) %>%
-  left_join(non_hotspot_vars) %>%
+  inner_join(non_hotspot_vars) %>%
   select(-filename, -BC1, -BC2) %>%
   write_csv("non_target_variants_results.csv")
 
@@ -151,7 +164,3 @@ manifest %>%
 
 
 }
-
-
-
-

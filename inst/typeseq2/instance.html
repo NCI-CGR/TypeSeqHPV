@@ -1,0 +1,218 @@
+<html>
+<head>
+<!-- java script required for interacting with the RESTful API -->
+<script type="text/javascript" src="/site_media/jquery/js/jquery-1.6.1.min.js"></script>
+
+    <!-- page style -->
+    <style type='text/css'>
+    #formwrap {
+        line-height: 2em;
+        background: #eef;
+        margin: 10px;
+        padding: 10px;
+        height:350px;
+        text-align: left;
+    }
+    body {
+        font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+    </style>
+
+<script type='text/javascript'>
+    default_key = "";
+    pluginGET = "";
+
+    $(document).ready(function(){
+
+    });
+
+        $( window ).load(function() {
+
+        });
+
+    //use the RESTful API to post the json variable
+    $(function() {
+        $('#postbutton').click(function() {
+
+            //the name of the form used here, in this case "inputform" should match the one in the html code
+            console.log("you clicked submit");
+
+            pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
+              "pluginconfig": {typing_manifest,
+                control_definitions,
+                barcode_file, config_file}};
+                pluginAPIJSON = JSON.stringify(pluginAPIJSON);
+            console.log(pluginAPIJSON);
+
+            pluginURL = "/rundb/api/v1/results/" + TB_result + "/plugin/";
+            console.log(pluginURL);
+
+
+         $.ajax({
+           type: 'POST',
+                url: pluginURL,
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    $("#json_result").html('<div style="text-align: center;"><img src="/site_media/jquery/colorbox/images/loading.gif" alt="Running Plugin" style="float:center"></img><p>Starting the Plugin...</p></div>');
+                    setTimeout("parent.$.fn.colorbox.close()" ,2000);
+                },
+                data: pluginAPIJSON,
+                dataType: "json"
+            });
+        });
+    });
+
+</script>
+</head>
+
+  <!-- set up the html page that the user interacts with -->
+<body>
+  <div>
+    <!-- the form name here, in this case "inputform" should match the one used in the put java script -->
+    <div class="page-header">
+     <h1 align="center">TypeSeq2 HPV  Plugin</h1>
+    </div>
+
+    <form id="inputform">
+        <div id="formwrap">
+        <br>
+<h2> Please select the 3 required file inputs </h2>
+<h2> All inputs are in csv format only </h2>
+<h2> The config file is optional </h2>
+<p> Sample sheet (can include optional meta data columns)
+<input name = 'manifest_name' id = 'manifest_id' type='file' accept='.csv'><br>
+<p> Control Definitions
+<input name = 'control_definitions_name' id = 'control_definitions_id' type='file' accept='.csv'><br>
+<p> Barcode File
+<input name = 'barcode_file' id = 'barcode_file_id' type='file' accept='.csv'><br>
+<p> Config File
+<input name = 'config_file_name' id = 'config_file_id' type='file' accept='.csv'><br>
+
+<script>
+
+var typing_manifest;
+var control_definitions;
+var barcode_file;
+var config_file;
+
+function readFile_manifest(event) {
+  var file = event.target.files[0];
+  if (file) {
+    new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.readAsText(file);
+      reader.onerror = reject;
+    })
+    .then(processFileContent_manifest)
+    .catch(function(err) {
+      console.log(err)
+    });
+  }
+}
+
+function readFile_control(event) {
+  var file = event.target.files[0];
+  if (file) {
+    new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.readAsText(file);
+      reader.onerror = reject;
+    })
+    .then(processFileContent_controls)
+    .catch(function(err) {
+      console.log(err)
+    });
+  }
+}
+
+function readFile_barcode_file(event) {
+  var file = event.target.files[0];
+  if (file) {
+    new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.readAsText(file);
+      reader.onerror = reject;
+    })
+    .then(processFileContent_barcode_file)
+    .catch(function(err) {
+      console.log(err)
+    });
+  }
+}
+
+function readFile_report_config(event) {
+  var file = event.target.files[0];
+  if (file) {
+    new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.readAsText(file);
+      reader.onerror = reject;
+    })
+    .then(processFileContent_report_config)
+    .catch(function(err) {
+      console.log(err)
+    });
+  }
+}
+
+function processFileContent_manifest(data) {
+  typing_manifest = data.split("\n");
+  console.log("you uploaded a manifest")
+  console.log(typing_manifest);
+};
+
+function processFileContent_controls(data) {
+  control_definitions = data.split("\n");
+  console.log("you uploaded control info")
+  console.log(control_definitions);
+};
+
+function processFileContent_barcode_file(data) {
+  barcode_file = data.split("\n");
+  console.log("you uploaded a barcode file")
+  console.log(barcode_file);
+};
+
+function processFileContent_report_config(data) {
+  config_file = data.split("\n");
+  console.log("you uploaded a config file")
+  console.log(config_file);
+};
+
+document.getElementById('manifest_id')
+.addEventListener('change', readFile_manifest, false);
+
+document.getElementById('control_definitions_id')
+.addEventListener('change', readFile_control, false);
+
+document.getElementById('barcode_file_id')
+.addEventListener('change', readFile_barcode_file, false);
+
+document.getElementById('config_file_id')
+.addEventListener('change', readFile_report_config, false);
+
+</script>
+
+ </p>
+</div>
+</form>
+</div>
+
+<p><center><input id="postbutton" type="submit" value="Submit"></center>
+
+<div id="json_result"> </div>
+</body>
+</html>

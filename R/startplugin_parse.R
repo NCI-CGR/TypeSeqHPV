@@ -1,5 +1,5 @@
 #'
-startplugin_parse <- function(args_start_plugin,
+old_startplugin_parse <- function(args_start_plugin,
                               args_custom_groups,
                               args_control_defs,
                               args_run_manifest,

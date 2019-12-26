@@ -188,6 +188,5 @@ html_block_and_client_outputs = grouped_samples_only_matrix %T>%
 prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
                                     otherwise = data.frame())
 
-
 future::plan(multiprocess)
 drake::make(ion_plan)

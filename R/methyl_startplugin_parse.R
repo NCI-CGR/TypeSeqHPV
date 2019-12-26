@@ -1,5 +1,5 @@
 #'
-methyl_startplugin_parse <- function(args_df){
+startplugin_parse <- function(args_df){
     require(jsonlite)
     require(tidyverse)
 
@@ -29,7 +29,6 @@ if ( args_df$is_torrent_server == "yes") {
         slice(2:n()) %>%
         glimpse() %>%
         write_csv("barcodes.csv")
-
 }
 
 manifest = read_csv(args_df$manifest) %>%
