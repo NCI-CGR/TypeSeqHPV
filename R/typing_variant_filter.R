@@ -47,7 +47,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     ungroup() %>%
     summarize(average_read_count = mean(total_reads))
   
-  scaling_df = scaling_table %>%
+  scaling_df = read.csv(scaling_table) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
     glimpse() %>%
@@ -60,14 +60,14 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   print("line 56")
   
   # read in internal controls ----
-  internal_control_defs = internal_control_defs %>%
+  internal_control_defs = read.csv(internal_control_defs) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
     glimpse()
   
   # read in pn_filters ----
   
-  pn_filters = pn_filters %>%
+  pn_filters = read.csv(pn_filters) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
     glimpse() %>%
