@@ -87,7 +87,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   str_replace_all(colnames(new),"[-]", "")-> colnames(new)
   
   internal_control_defs<-as.data.frame(internal_control_defs)
-  str_replace_all(names(internal_control_defs),"[-]", "")->colnames(internal_control_defs)
+  str_replace_all(names(internal_control_defs),"[.]", "")->colnames(internal_control_defs)
   internal_control_defs %>%
     group_by(qc_name) %>%
     summarize() -> get_list
@@ -110,7 +110,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     select(-internal_control_code) %>%
     full_join(new) -> new
   new %>%
-    left_join(outputspecimens, by = c("B2ML", "B2MS")) %>%
+    left_join(outputhuman_control, by = c("B2ML", "B2MS")) %>%
     select(barcode,B2ML,B2MS,internal_control_code, qc_name, qc_print) %>%
     spread(qc_name, qc_print) %>%
     select(-internal_control_code) %>%
