@@ -92,7 +92,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     group_by(qc_name) %>%
     summarize() -> get_list
   
-  get_list<-as.list(levels(get_list$qc_name))
+  get_list<-as.list(get_list$qc_name))
   for (i in get_list) {
     assign(paste0("output",i),internal_control_defs[internal_control_defs$qc_name == i,])
   }
@@ -217,7 +217,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   
   # # identify lineages ----
-  lineage_defs = lineage_defs %>%
+  lineage_defs = read.csv(lineage_defs) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
     rename(CHROM = Chr, POS = Base_num, REF = Base_ID, ALT = vcf_variant)
