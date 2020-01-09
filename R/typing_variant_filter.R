@@ -120,8 +120,21 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
     group_by(barcode) %>%
     mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
+    mutate(type2 = type_id) %>%
+    mutate(type_id = gsub("_.*","",type_id)) -> new2
+  
+  
+  new2 %>%
+    select(barcode,type_id,Num_Types_Pos) %>%
+    unique() %>%
     mutate(Num_Types_Pos = sum(Num_Types_Pos)) %>%
-    spread(type_id, type_status)-> detailed_pn_matrix
+    select(-type_id) %>%
+    unique() -> table_with_final_count
+  
+    final<-merge(new,table_final_count, by = "barcode")
+    
+    final %>%
+    rename("ASIC_High"=ASICHigh, "ASIC_Low"=ASICLow, "ASIC_Med"=ASICMed, "ESIC_High"=ESICHigh,"ESIC_Low"=ESICLow,"ESIC_Med"=ESICMed, "B2M_L"=B2ML, "B2M_S"=B2MS)-> detailed_pn_matrix
   
   #  print("line 110")
   
