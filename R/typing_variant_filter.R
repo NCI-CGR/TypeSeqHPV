@@ -93,7 +93,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     summarize() -> get_list
   
   get_list<-as.list(get_list$qc_name)
-  for (i in get_list) {
+ 
+   for (i in get_list) {
     assign(paste0("output",i),internal_control_defs[internal_control_defs$qc_name == i,])
   }
   
@@ -131,7 +132,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     select(-type_id) %>%
     unique() -> table_with_final_count
   
-    final<-merge(new,table_final_count, by = "barcode")
+    final<-merge(new,table_with_final_count, by = "barcode")
     
     final %>%
     rename("ASIC_High"=ASICHigh, "ASIC_Low"=ASICLow, "ASIC_Med"=ASICMed, "ESIC_High"=ESICHigh,"ESIC_Low"=ESICLow,"ESIC_Med"=ESICMed, "B2M_L"=B2ML, "B2M_S"=B2MS)-> detailed_pn_matrix
