@@ -1,11 +1,11 @@
-rm -R TypeSeqHPVMethyl
-mkdir TypeSeqHPVMethyl
+rm -R TypeSeqHPVMethyl-Dev
+mkdir TypeSeqHPVMethyl-Dev
 
 # ion torrent plugin specific files
-cp inst/methylation/instance.html TypeSeqHPVMethyl/
-cp inst/methylation/launch.sh TypeSeqHPVMethyl/
-cp inst/methylation/plan.html TypeSeqHPVMethyl/
-cp inst/methylation/pluginsettings.json TypeSeqHPVMethyl/
+cp inst/methylation/instance.html TypeSeqHPVMethyl-Dev/
+cp inst/methylation/launch.sh TypeSeqHPVMethyl-Dev/
+cp inst/methylation/plan.html TypeSeqHPVMethyl-Dev/
+cp inst/methylation/pluginsettings.json TypeSeqHPVMethyl-Dev/
 
 # zip plugin package
-zip -r TypeSeqHPVMethyl_Plugin.zip TypeSeqHPVMethyl
+zip -r TypeSeqHPVMethyl-Dev_Plugin.zip TypeSeqHPVMethyl-Dev
