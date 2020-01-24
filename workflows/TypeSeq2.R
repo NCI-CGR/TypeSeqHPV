@@ -86,7 +86,7 @@ ion_plan <- drake::drake_plan(
 
 #### 8. generate qc report ####
 ion_qc_report = variants_final_table %T>%
-  do(render("ion_Torrent_report.R"))
+  do(render("ion_Torrent_report.R", output_dir = "./"))
 
 ))
 
