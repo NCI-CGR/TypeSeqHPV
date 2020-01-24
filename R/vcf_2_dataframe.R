@@ -18,7 +18,11 @@ vcf_to_dataframe <- function(vcf_files){
       glimpse()
 
     #This step is added to prevent selecting columns with NA which will cause problems in seperate rows step
-    temp[,complete.cases(t(temp))] %>% colnames() -> id_all
+    
+    temp %>%
+      filter(str_detect(ALT, ",")) -> get_names
+    
+    get_names[,complete.cases(t(get_names))] %>% colnames() -> id_all
     id_select<-c("ALT", "AO", "SAF", "SAR", "FAO", "AF", "FSAF", "FSAR", "TYPE", "LEN", "HRUN", "MLLD", 
                  "FWDB", "REVB", "REFB", "VARB", "STB", "STBP", "RBI", 
                  "FR", "SSSB", "SSEN", "SSEP", "PB", "PBP", "FDVR") 
