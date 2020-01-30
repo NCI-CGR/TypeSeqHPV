@@ -16,7 +16,7 @@
 
 get_run_metadata_safe <- possibly(get_run_metadata, otherwise = data.frame())
 
-startPluginDf = get_run_metadata_safe(args_start_plugin)
+startPluginDf = get_run_metadata_safe(args_df$start_plugin)
 
 #' \newpage
 #' ## SAMPLE Results Summary
@@ -24,7 +24,8 @@ startPluginDf = get_run_metadata_safe(args_start_plugin)
 #+ SAMPLE Results Summary, echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", results='asis', eval=TRUE
 sample_summary_safe <- possibly(sample_summary, otherwise =  data.frame())
 #samples_only_matrix_results.csv
-temp = sample_summary_safe(split_deliverables$samples_only_matrix)
+
+temp = sample_summary_safe(samples_only_pn_matrix)
 
 #' ## PLATE Results Summary
 
@@ -40,7 +41,7 @@ temp = plate_summary_safe(split_deliverables)
 #samples_only matrix
 percent_positive_histogram_safe <- possibly(TypeSeqHPV::percent_positive_histogram, otherwise = data.frame())
 
-temp = percent_positive_histogram_safe(split_deliverables$samples_only_matrix, bam_header_df)
+temp = percent_positive_histogram_safe(samples_only_matrix, bam_header_df)
 
 #' \newpage
 #' ## Coinfection Rate Histogram
@@ -49,7 +50,7 @@ temp = percent_positive_histogram_safe(split_deliverables$samples_only_matrix, b
 coinfection_rate_histogram_safe <- possibly(coinfection_rate_histogram,
                                             otherwise = data.frame())
 
-temp = coinfection_rate_histogram_safe(split_deliverables$samples_only_matrix)
+temp = coinfection_rate_histogram_safe(samples_only_matrix)
 
 #' \newpage
 #' ## Signal-to-Noise Plot
@@ -57,8 +58,8 @@ temp = coinfection_rate_histogram_safe(split_deliverables$samples_only_matrix)
 #scaling file and simple pn matrix and read counts matrix
 signal_to_noise_plot_safe <- possibly(TypeSeqHPV::signal_to_noise_plot, otherwise = data.frame())
 
-temp = signal_to_noise_plot_safe(hpv_types_df %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")),
-                            final_pn_matrix,
+temp = signal_to_noise_plot_safe(read_counts_matrix_wide %>% gather(HPV_Type, HPV_Type_count, starts_with("HPV")),
+                            detailed_pn_matrix,
                             scaling_list)
 #' \newpage
 #' ## Distribution of Sample HPV Positivity by Project
@@ -67,7 +68,7 @@ temp = signal_to_noise_plot_safe(hpv_types_df %>% gather(HPV_Type, HPV_Type_coun
 # samples only matrix
 hpv_status_circle_plot_safe <- possibly(TypeSeqHPV::hpv_status_circle_plot, otherwise = data.frame())
 
-temp = hpv_status_circle_plot_safe(split_deliverables$samples_only_matrix)
+temp = hpv_status_circle_plot_safe(samples_only_matrix)
 
 #' \newpage
 #' ## Lineage Plots
