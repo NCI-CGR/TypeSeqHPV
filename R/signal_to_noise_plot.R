@@ -2,9 +2,9 @@ signal_to_noise_plot <- function(hpv_types, final_pn_matrix, pn_filters){
 
 # merge final pn matrix and hpv_types
 signalNoiseDf1 = hpv_types %>%
- inner_join(final_pn_matrix, by=c("barcode", "HPV_Type")) %>%
-#inner_join(final_pn_matrix %>% gather(HPV_Type, hpvStatus, starts_with("HPV")), by=c("barcode", "HPV_Type")) %>%
-#filter(HPV_Type!="B2M") %>%
+# inner_join(final_pn_matrix, by=c("barcode", "HPV_Type")) %>%
+inner_join(final_pn_matrix %>% gather(HPV_Type, hpvStatus, starts_with("HPV")), by=c("barcode", "HPV_Type")) %>%
+filter(HPV_Type!="B2M") %>%
 select(barcode, HPV_Type, HPV_Type_count, hpvStatus) %>%
 #sort by types and count
 # group by type, pn status (pos/neg)
