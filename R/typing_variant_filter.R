@@ -202,8 +202,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   print("line 148")
   
-  specimen_control_defs%>%
-    rename("B2M_S"=B2M.S, "B2M_L"=B2M.L) -> specimen_control_defs 
+  # specimen_control_defs%>%
+  #  rename("B2M_S"=B2M.S, "B2M_L"=B2M.L) -> specimen_control_defs 
   
   specimen_control_defs_long = specimen_control_defs %>%
     filter(!is.na(Control_Code)) %>%
