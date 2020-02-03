@@ -1,20 +1,20 @@
 #' plate_summary
 #'
 
-plate_summary <- function(split_deliverables){
+plate_summary <- function(control_matrix,samples_only_matrix){
 
     require(pander)
 
-    controls_df = split_deliverables$control_matrix %>%
+    controls_df = control_matrix %>%
         mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
                                                "NA", PreExtraction_Plate_ID)) %>%
         mutate(Assay_Plate_Code = ifelse(is.na(Assay_Plate_Code),
                "NA", Assay_Plate_Code)) %>%
-        group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_type, control_result) %>%
+        group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_Code, control_result) %>%
         summarize(count = n()) %>%
         ungroup() %>%
-        mutate(control_result = paste0(Control_type, "_", control_result)) %>%
-        select(-Control_type) %>%
+        mutate(control_result = paste0(Control_Code, "_", control_result)) %>%
+        select(-Control_Code) %>%
         bind_rows(
             data_frame(PreExtraction_Plate_ID = "temp",
                        control_result = c("pos_pass", "pos_fail",
@@ -30,31 +30,31 @@ plate_summary <- function(split_deliverables){
 
 
 
-    samples_and_controls_df = split_deliverables$samples_only_matrix %>%
+    samples_and_controls_df = samples_only_matrix %>%
         mutate(has_positive = ifelse(Num_Types_Pos == 0,0, 1)) %>%
         group_by(PreExtraction_Plate_ID, Assay_Plate_Code) %>%
         mutate(number_of_samples = n()) %>%
         mutate(plate_total_reads = sum(total_reads, na.rm = TRUE)) %>%
-        mutate(plate_b2m_reads = sum(B2M, na.rm = TRUE)) %>%
-        mutate(sample_status_for_count = ifelse(Human_Control == "failed_to_amplify", 1, 0)) %>%
+     #   mutate(plate_b2m_reads = sum(B2M, na.rm = TRUE)) %>%
+        mutate(sample_status_for_count = ifelse(human_control == "failed_to_amplify", 1, 0)) %>%
         mutate(hpv_pos_rate = sum(has_positive) / number_of_samples) %>%
         mutate(num_samples_failed = sum(sample_status_for_count)) %>%
-        select(PreExtraction_Plate_ID, Assay_Plate_Code, number_of_samples, plate_total_reads,
-               plate_b2m_reads, hpv_pos_rate, num_samples_failed) %>%
+        select(Assay_Plate_Code, number_of_samples, plate_total_reads,
+               hpv_pos_rate, num_samples_failed) %>%
         distinct() %>%
         mutate(hpv_pos_perc = scales::percent(hpv_pos_rate)) %>%
-        mutate(perc_b2m_reads = scales::percent(plate_b2m_reads / plate_total_reads)) %>%
-        mutate(plate_b2m_reads = scales::comma(plate_b2m_reads)) %>%
+      #  mutate(perc_b2m_reads = scales::percent(plate_b2m_reads / plate_total_reads)) %>%
+      #  mutate(plate_b2m_reads = scales::comma(plate_b2m_reads)) %>%
         mutate(plate_total_reads = scales::comma(plate_total_reads)) %>%
         select(-hpv_pos_rate) %>%
+        transform(Assay_Plate_Code = as.integer(Assay_Plate_Code)) %>%
         left_join(controls_df, by = "Assay_Plate_Code") %>%
-        arrange(PreExtraction_Plate_ID, Assay_Plate_Code)
+        arrange(Assay_Plate_Code)
 
     panderOptions("table.split.cells", 5)
 
     samples_and_controls_df %>%
-        select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
-               `Assay Plate Code` = Assay_Plate_Code,
+        select(`Assay Plate Code` = Assay_Plate_Code,
                `HPV % Positive` = hpv_pos_perc,
                `# neg controls failed` = neg_fail,
                `# pos controls failed` = pos_fail,
@@ -65,11 +65,10 @@ plate_summary <- function(split_deliverables){
                      caption = "Assay Plate Performance")
 
     samples_and_controls_df %>%
-        select(`PreExtraction plate ID` = PreExtraction_Plate_ID,
-               `Assay Plate Code` = Assay_Plate_Code,
+        select(`Assay Plate Code` = Assay_Plate_Code,
                `total reads` = plate_total_reads,
-               `total B2M reads` = plate_b2m_reads,
-               `% B2M reads` = perc_b2m_reads,
+             #  `total B2M reads` = plate_b2m_reads,
+             #  `% B2M reads` = perc_b2m_reads,
                `# samples total` = number_of_samples,
                `# total controls` = total_controls
         ) %>%
