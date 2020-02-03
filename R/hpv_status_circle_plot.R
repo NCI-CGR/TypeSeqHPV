@@ -27,8 +27,8 @@ mutate(hpv_status = case_when(Num_Types_Pos == 0 ~ "HPV_neg",
                               HPV56 == "pos" ~ "hrHPV_pos",
                               HPV58 == "pos" ~ "hrHPV_pos",
                               HPV59 == "pos" ~ "hrHPV_pos",
-                              HPV68a == "pos" ~ "hrHPV_pos",
-                              HPV68b == "pos" ~ "hrHPV_pos",
+                              HPV68 == "pos" ~ "hrHPV_pos",
+                             # HPV68b == "pos" ~ "hrHPV_pos",
                               TRUE ~ "lrHPV_pos")) %>%
 select(Owner_Sample_ID, Num_Types_Pos, hpv_status) %>%
 mutate(totalSamples = n()) %>%
