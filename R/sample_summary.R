@@ -9,10 +9,10 @@ sample_summary <- function(df){
     sampleSummary = df %>%
         group_by(Project) %>%
         mutate(numSamplesTested = n()) %>%
-        group_by(Project, numSamplesTested, Human_Control) %>%
+        group_by(Project, numSamplesTested, human_control) %>%
         summarize(count = n()) %>%
         ungroup() %>%
-        spread(Human_Control, count, fill=0) %>%
+        spread(human_control, count, fill=0) %>%
         select(Project_ID = Project, `Number Samples Tested` = numSamplesTested,
                `Number Passed` = pass, `Number Failed` = failed_to_amplify) %>%
         arrange(Project_ID) %>%
