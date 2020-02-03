@@ -1,6 +1,7 @@
 #'
 render_ion_qc_report <- function(args_start_plugin,
-                                 split_deliverables,
+                                 control_for_report,
+                                 samples_only_for_report,
                                  samples_and_controls_df_out,
                                  control_results,
                                  hpv_types_df,
