@@ -7,8 +7,7 @@ render_ion_qc_report <- function(args_start_plugin,
                                  read_count_matrix_report,
                                  detailed_pn_matrix_for_report,
                                  pn_filters,
-                                 lineage_for_report,
-                                 bam_header_df){
+                                 lineage_for_report){
 
 require(dplyr)
 require(knitr)
