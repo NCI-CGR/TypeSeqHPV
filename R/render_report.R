@@ -4,10 +4,10 @@ render_ion_qc_report <- function(args_start_plugin,
                                  samples_only_for_report,
                                  samples_and_controls_df_out,
                                  control_results,
-                                 hpv_types_df,
-                                 final_pn_matrix,
-                                 scaling_list,
-                                 lineage_df,
+                                 read_count_matrix_report,
+                                 detailed_pn_matrix_for_report,
+                                 pn_filters,
+                                 lineage_for_report,
                                  bam_header_df){
 
 require(dplyr)
