@@ -1,9 +1,9 @@
-signal_to_noise_plot <- function(hpv_types, final_pn_matrix, pn_filters){
+signal_to_noise_plot <- function(read_count_matrix_report, detailed_pn_matrix_for_report, pn_filters){
 
-# merge final pn matrix and hpv_types
-signalNoiseDf1 = hpv_types %>%
+# merge final pn matrix and read_counts_matrix_wide
+signalNoiseDf1 = read_count_matrix_report %>%
 # inner_join(final_pn_matrix, by=c("barcode", "HPV_Type")) %>%
-inner_join(final_pn_matrix %>% gather(HPV_Type, hpvStatus, starts_with("HPV")), by=c("barcode", "HPV_Type")) %>%
+inner_join(detailed_pn_matrix_for_report, by=c("barcode", "HPV_Type", "Owner_Sample_ID")) %>%
 filter(HPV_Type!="B2M") %>%
 select(barcode, HPV_Type, HPV_Type_count, hpvStatus) %>%
 #sort by types and count
@@ -21,7 +21,7 @@ select(HPV_Type, hpvStatus, HPV_Type_count, plotOrder) %>%
 # select top 10 lowest count positives and 5 highest negatives ()
 filter(plotOrder <= 10) %>%
 transform(HPV_Type_count = as.integer(HPV_Type_count)) %>%
-group_by(HPV_Type, hpvStatus) %>%
+group_by(HPV_Type, hpvStatus) %>% 
 # find mean!
 summarize(meanCount = mean(HPV_Type_count)) %>%
 transform(meanCount = as.numeric(meanCount)) %>%
@@ -46,13 +46,13 @@ mutate(hpvNum = ifelse(HPV_Type == "B2M_L" | HPV_Type == "B2M_S",1,hpvNum)) %>%
 separate(hpvNum, c("hpvNum2", "temp"), "_", remove=FALSE) %>%
 select(-temp) %>% 
 separate(hpvNum2, c("hpvNum3", "temp"), "_", remove=FALSE) %>%
-select(-temp) %>%
+select(-temp) %>% group_by(HPV_Type) %>% 
 #separate(hpvNum3, c("hpvNum4", "temp"), "v", remove=FALSE) %>%
-select(HPV_Type = hpvNum2, hpvNum = hpvNum3,hpvStatus, meanCount) %>%
+select(HPV_Type, hpvNum = hpvNum3,hpvStatus, meanCount) %>%
 distinct() %>%
-mutate(n = 1:n()) %>%
-group_by(HPV_Type) %>%
-mutate(num = row_number()) %>%
+#mutate(n = 1:n()) %>%
+#group_by(HPV_Type) %>%
+#mutate(num = row_number()) %>%
 mutate(hpvNum = as.integer(hpvNum)) %>%
 spread(hpvStatus, meanCount) %>%
 arrange(hpvNum) %>%
@@ -60,22 +60,22 @@ ungroup() %>%
 transform(HPV_Type = as.character(HPV_Type)) %>%
 #mutate(HPV_Type = factor(HPV_Type, as.character(HPV_Type))) %>%
 mutate(riskStatus = case_when(
-                              HPV_Type==16 ~ "high risk HPV",
-                              HPV_Type==18 ~ "high risk HPV",
-                              HPV_Type==31 ~ "high risk HPV",
-                              HPV_Type==33 ~ "high risk HPV",
-                              HPV_Type==35 ~ "high risk HPV",
-                              HPV_Type==39 ~ "high risk HPV",
-                              HPV_Type==45 ~ "high risk HPV",
-                              HPV_Type==51 ~ "high risk HPV",
-                              HPV_Type==52 ~ "high risk HPV",
-                              HPV_Type==56 ~ "high risk HPV",
-                              HPV_Type==58 ~ "high risk HPV",
-                              HPV_Type==59 ~ "high risk HPV",
-                              HPV_Type=="68" ~ "high risk HPV",
+                              HPV_Type=="HPV16" ~ "high risk HPV",
+                              HPV_Type=="HPV18" ~ "high risk HPV",
+                              HPV_Type=="HPV31" ~ "high risk HPV",
+                              HPV_Type=="HPV33" ~ "high risk HPV",
+                              HPV_Type=="HPV35" ~ "high risk HPV",
+                              HPV_Type=="HPV39" ~ "high risk HPV",
+                              HPV_Type=="HPV45" ~ "high risk HPV",
+                              HPV_Type=="HPV51" ~ "high risk HPV",
+                              HPV_Type=="HPV52" ~ "high risk HPV",
+                              HPV_Type=="HPV56" ~ "high risk HPV",
+                              HPV_Type=="HPV58" ~ "high risk HPV",
+                              HPV_Type=="HPV59" ~ "high risk HPV",
+                              HPV_Type=="HPV68" ~ "high risk HPV",
                           #    HPV_Type=="68b" ~ "high risk HPV",
-                              TRUE ~ "low risk HPV")) %>%
-mutate(textColor = ifelse(riskStatus == "high risk HPV", "#DF8F44FF", "#00A1D5FF")) %>%
+                              TRUE ~ "low risk HPV")) %>%   #DF8F44FF
+mutate(textColor = ifelse(riskStatus == "high risk HPV", "#FF7D33", "#00A1D5FF")) %>%
 select(HPV_Type,riskStatus, textColor, Cneg = neg, Bpos = pos, Amin_reads = min_reads) %>%
 group_by(HPV_Type,riskStatus, textColor) %>%
 gather(hpvStatus, meanCount, Bpos, Cneg, Amin_reads, -HPV_Type, -riskStatus, -textColor)
