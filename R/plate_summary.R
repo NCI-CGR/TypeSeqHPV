@@ -1,11 +1,11 @@
 #' plate_summary
 #'
 
-plate_summary <- function(control_matrix,samples_only_matrix){
+plate_summary <- function(control_matrix,samples_only_for_report){
 
     require(pander)
 
-    controls_df = control_matrix %>%
+    controls_df = control_for_report %>%
         mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
                                                "NA", PreExtraction_Plate_ID)) %>%
         mutate(Assay_Plate_Code = ifelse(is.na(Assay_Plate_Code),
@@ -27,12 +27,9 @@ plate_summary <- function(control_matrix,samples_only_matrix){
 
 
 
-
-
-
-    samples_and_controls_df = samples_only_matrix %>%
+    samples_and_controls_df = samples_only_for_report %>%
         mutate(has_positive = ifelse(Num_Types_Pos == 0,0, 1)) %>%
-        group_by(PreExtraction_Plate_ID, Assay_Plate_Code) %>%
+        group_by(Assay_Plate_Code) %>%
         mutate(number_of_samples = n()) %>%
         mutate(plate_total_reads = sum(total_reads, na.rm = TRUE)) %>%
      #   mutate(plate_b2m_reads = sum(B2M, na.rm = TRUE)) %>%
@@ -76,3 +73,4 @@ plate_summary <- function(control_matrix,samples_only_matrix){
         pandoc.table(style = "multiline")
 
 }
+
