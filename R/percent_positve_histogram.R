@@ -24,10 +24,10 @@ group_by(hpvType, sampleCount) %>%
 summarize(posCount = n()) %>%
 mutate(percPos = posCount / sampleCount) %>%
 ungroup() %>%
-full_join(bam_header %>% select(hpvType = HPV_Type) %>%
-                         filter(!(hpvType %in% c("HPV34",
-                                                 "HPV54_B_C_consensus",
-                                                 "HPV74_EU911625", "HPV74_EU911664", "HPV74_U40822", "B2M")))) %>%
+#full_join(bam_header %>% select(hpvType = HPV_Type) %>%
+ #                        filter(!(hpvType %in% c("HPV34",
+  #                                               "HPV54_B_C_consensus",
+   #                                              "HPV74_EU911625", "HPV74_EU911664", "HPV74_U40822", "B2M")))) %>%
 mutate(posCount = ifelse(is.na(posCount), 0, posCount)) %>%
 mutate(percPos = ifelse(is.na(percPos), 0, percPos)) %>%
 separate(hpvType, c("temp", "hpvNum"), "HPV", remove=FALSE) %>%
@@ -37,25 +37,25 @@ select(-temp) %>%
 separate(hpvNum2, c("hpvNum3", "temp"), "b", remove=FALSE) %>%
 select(-temp) %>%
 separate(hpvNum3, c("hpvNum4", "temp"), "v", remove=FALSE) %>%
-select(hpvType = hpvNum, hpvNum = hpvNum4, posCount, percPos, sampleCount) %>%
+select(hpvType, hpvNum = hpvNum4, posCount, percPos, sampleCount) %>%
 mutate(hpvNum = as.integer(hpvNum)) %>%
 arrange(hpvNum) %>%
 mutate(hpvType = factor(hpvType, as.character(hpvType))) %>%
 mutate(riskStatus = case_when(
-                              hpvType==16 ~ "high risk HPV",
-                              hpvType==18 ~ "high risk HPV",
-                              hpvType==31 ~ "high risk HPV",
-                              hpvType==33 ~ "high risk HPV",
-                              hpvType==35 ~ "high risk HPV",
-                              hpvType==39 ~ "high risk HPV",
-                              hpvType==45 ~ "high risk HPV",
-                              hpvType==51 ~ "high risk HPV",
-                              hpvType==52 ~ "high risk HPV",
-                              hpvType==56 ~ "high risk HPV",
-                              hpvType==58 ~ "high risk HPV",
-                              hpvType==59 ~ "high risk HPV",
-                              hpvType=="68a" ~ "high risk HPV",
-                              hpvType=="68b" ~ "high risk HPV",
+                              hpvType=="HPV16" ~ "high risk HPV",
+                              hpvType=="HPV18" ~ "high risk HPV",
+                              hpvType=="HPV31" ~ "high risk HPV",
+                              hpvType=="HPV33" ~ "high risk HPV",
+                              hpvType=="HPV35" ~ "high risk HPV",
+                              hpvType=="HPV39" ~ "high risk HPV",
+                              hpvType=="HPV45" ~ "high risk HPV",
+                              hpvType=="HPV51" ~ "high risk HPV",
+                              hpvType=="HPV52" ~ "high risk HPV",
+                              hpvType=="HPV56" ~ "high risk HPV",
+                              hpvType=="HPV58" ~ "high risk HPV",
+                              hpvType=="HPV59" ~ "high risk HPV",
+                              hpvType=="HPV68" ~ "high risk HPV",
+                          #    hpvType=="68b" ~ "high risk HPV",
                               TRUE ~ "low risk HPV")) %>%
 mutate(textColor = ifelse(riskStatus == "high risk HPV", "#DF8F44FF", "#00A1D5FF"))
 
@@ -115,3 +115,5 @@ temp = temp
 }) %>%
 write_csv("types_positive_histogram_plot_data.csv")
 }
+
+
