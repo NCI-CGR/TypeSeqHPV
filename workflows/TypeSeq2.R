@@ -89,13 +89,10 @@ ion_qc_report = render_ion_qc_report(
   args_start_plugin = args_df$start_plugin,
   control_for_report = control_for_report,
   samples_only_for_report = samples_only_for_report,
-  samples_and_controls_df_out = detailed_pn_matrix_for_report,
-  control_results = control_for_report,
-  hpv_types_df = hpv_types_df,
-  final_pn_matrix = detailed_pn_matrix,
-  scaling_list = pn_filters,
-  lineage_df = lineage_df,
-  bam_header_df = bam_header_df)
+  detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
+  read_count_matrix_report = read_count_matrix_report,
+  pn_filters = pn_filters,
+  lineage_for_report = lineage_for_report)
   
   
   
