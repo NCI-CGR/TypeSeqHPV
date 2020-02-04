@@ -92,8 +92,8 @@ ion_qc_report = render_ion_qc_report(
   detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
   read_count_matrix_report = read_count_matrix_report,
   pn_filters = pn_filters,
-  lineage_for_report = lineage_for_report),
-  
+  lineage_for_report = lineage_for_report)
+))  
 
 #### C. execute workflow plan ####
 system("mkdir vcf")
