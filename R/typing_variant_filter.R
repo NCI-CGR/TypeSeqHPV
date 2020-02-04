@@ -52,6 +52,10 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     select(barcode,Owner_Sample_ID, `ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything()) %>%
     write_csv("read_counts_matrix_results.csv")
   
+  read_count_matrix_report = read_counts_matrix_wide %>%
+    gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`) 
+    
+  
   
   print("line 41")
   
@@ -158,16 +162,15 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   #  print("line 110")
   
-  detatiled_pn_matrix_for_report = manifest %>%
+  manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     inner_join(detailed_pn_matrix) %>%
     select(-BC1, -BC2) %>%
     select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%
     write_csv("detailed_pn_matrix_results.csv")
   
-  detailed_pn_matrix_for_report = detatiled_pn_matrix_for_report %>%
-    select(barcode, Owner_Sample_ID, Num_Types_Pos, human_control) %>%
-    inner_join(read_counts_matrix_wide ,by = c("barcode","Owner_Sample_ID")) 
+  detailed_pn_matrix_for_report = detailed_pn_matrix %>%
+    gather(HPV_Type, hpvStatus, starts_with("HPV"))
   
  # str_replace_all(colnames(r),"-","_") -> colnames(temp_detailed_pn_matrix)
   
