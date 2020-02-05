@@ -91,18 +91,17 @@ ion_plan <- drake::drake_plan(
                                          detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
                                          read_count_matrix_report = read_count_matrix_report,
                                          pn_filters = pn_filters,
-                                         lineage_for_report = lineage_for_report)
-               
+                                         lineage_for_report = lineage_for_report),
                
     
-#### 8. generate qc report ####
-   # ion_qc_report = render_ion_qc_report(args_start_plugin = args_df$start_plugin,
-    #                                     control_for_report = control_for_report,
-     #                                    samples_only_for_report = samples_only_for_report,
-      #                                   detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
-       #                                  read_count_matrix_report = read_count_matrix_report,
-        #                                 pn_filters = pn_filters,
-         #                                lineage_for_report = lineage_for_report)
+    #### 8. generate qc report ####
+    ion_qc_report = render_ion_qc_report(args_start_plugin = args_df$start_plugin,
+                                         control_for_report = control_for_report,
+                                         samples_only_for_report = samples_only_for_report,
+                                         detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
+                                         read_count_matrix_report = read_count_matrix_report,
+                                         pn_filters = pn_filters,
+                                         lineage_for_report = lineage_for_report)
                
                
                
