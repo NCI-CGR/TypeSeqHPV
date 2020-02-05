@@ -162,7 +162,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   #  print("line 110")
   
-  manifest %>%
+  deatiled_pn_matrix_for_report1 = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     inner_join(detailed_pn_matrix) %>%
     select(-BC1, -BC2) %>%
@@ -246,8 +246,10 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     write_csv("samples_only_matrix_results.csv")
   
   samples_only_for_report = samples_only_pn_matrix %>%
-    inner_join(manifest) %>%
+    inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2))) %>%
+    inner_join(read_counts_matrix_wide %>% select(barcode, Owner_Sample_ID, total_reads)) %>%
     write_csv("samples_only_for_report")
+  
   
   failed_samples_only_pn_matrix = samples_only_pn_matrix %>%
     filter(str_detect(human_control, fixed("fail", ignore_case = TRUE))) %>%
