@@ -2,7 +2,6 @@
 render_ion_qc_report <- function(args_start_plugin,
                                  control_for_report,
                                  samples_only_for_report,
-                                 samples_and_controls_df_out,
                                  control_results,
                                  read_count_matrix_report,
                                  detailed_pn_matrix_for_report,
