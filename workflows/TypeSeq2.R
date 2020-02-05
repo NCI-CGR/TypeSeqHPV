@@ -82,8 +82,7 @@ ion_plan <- drake::drake_plan(
                                          detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
                                          read_count_matrix_report = read_count_matrix_report,
                                          pn_filters = pn_filters,
-                                         lineage_for_report = lineage_for_report) %T>%
-       map_df(~ system("zip -j TypeSeqHPV_QC_report.pdf.zip TypeSeqHPV_QC_report.pdf"),
+                                         lineage_for_report = lineage_for_report),
 
     #### 7. joining variant table with sample sheet and write to file ####
     variants_final_table = typing_variant_filter(variants = variant_table,
@@ -106,10 +105,7 @@ ion_plan <- drake::drake_plan(
                
                
                
-               
-               
-
-  ))  
+))  
 
 #### C. execute workflow plan ####
 system("mkdir vcf")
