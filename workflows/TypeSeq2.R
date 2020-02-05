@@ -73,16 +73,6 @@ ion_plan <- drake::drake_plan(
         mutate(barcode = str_sub(filename, 5, 10)) %>%
         glimpse() %>%
         write_csv("variant_table.csv"),
-    
-    
-    #### 8. generate qc report ####
-    ion_qc_report = render_ion_qc_report(args_start_plugin = args_df$start_plugin,
-                                         control_for_report = control_for_report,
-                                         samples_only_for_report = samples_only_for_report,
-                                         detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
-                                         read_count_matrix_report = read_count_matrix_report,
-                                         pn_filters = pn_filters,
-                                         lineage_for_report = lineage_for_report),
 
     #### 7. joining variant table with sample sheet and write to file ####
     variants_final_table = typing_variant_filter(variants = variant_table,
@@ -92,8 +82,19 @@ ion_plan <- drake::drake_plan(
                                                  internal_control_defs = args_df$internal_control_defs,
                                                  pn_filters = args_df$pn_filters,
                                                  scaling_table = args_df$scaling_table) %T>%
-        map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv")
-
+        map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv"),
+    
+    #### 8. generate qc report ####
+    ion_qc_report = render_ion_qc_report(args_start_plugin = args_df$start_plugin,
+                                         control_for_report = control_for_report,
+                                         samples_only_for_report = samples_only_for_report,
+                                         detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
+                                         read_count_matrix_report = read_count_matrix_report,
+                                         pn_filters = pn_filters,
+                                         lineage_for_report = lineage_for_report)
+               
+               
+    
 #### 8. generate qc report ####
    # ion_qc_report = render_ion_qc_report(args_start_plugin = args_df$start_plugin,
     #                                     control_for_report = control_for_report,
