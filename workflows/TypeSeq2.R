@@ -91,6 +91,7 @@ ion_plan <- drake::drake_plan(
                                          detailed_pn_matrix_for_report = detailed_pn_matrix_for_report,
                                          read_count_matrix_report = read_count_matrix_report,
                                          pn_filters = pn_filters,
+                                         variant_final_table = variants_final_table,
                                          lineage_for_report = lineage_for_report)
                
                
