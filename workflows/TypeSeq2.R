@@ -107,7 +107,6 @@ num_cores = availableCores() - 1
 future::plan(multicore, workers = num_cores)
 
 drake::make(ion_plan)
-drake::vis_drake_graph(ion_plan)
 #### E. make html block for torrent server ####
 html_block = if ( command_line_args$is_torrent_server == "yes") {
     render("/TypeSeqHPV/inst/typeseq2/torrent_server_html_block.R",
