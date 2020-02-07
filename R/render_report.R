@@ -5,7 +5,7 @@ render_ion_qc_report <- function(args_start_plugin,
                                  control_results,
                                  read_count_matrix_report,
                                  detailed_pn_matrix_for_report,
-                                 variants_final_table,
+                                 variant_final_table,
                                  pn_filters,
                                  lineage_for_report){
 
