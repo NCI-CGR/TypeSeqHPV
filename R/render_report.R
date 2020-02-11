@@ -2,13 +2,11 @@
 render_ion_qc_report <- function(args_start_plugin,
                                  control_for_report,
                                  samples_only_for_report,
-                                 samples_and_controls_df_out,
-                                 control_results,
                                  read_count_matrix_report,
                                  detailed_pn_matrix_for_report,
+                                 variant_final_table,
                                  pn_filters,
-                                 lineage_for_report,
-                                 bam_header_df){
+                                 lineage_for_report){
 
 require(dplyr)
 require(knitr)
@@ -23,7 +21,7 @@ library(pander)
 #                   "reports", "Ion_Torrent_report.R", package = "TypeSeqHPV"),
 #               " ./"))
 
-system("cp /TypeSeqHPV/inst/reports/Ion_Torrent_report.R ./")
+system("cp /TypeSeqHPV/inst/typeseq2/Ion_Torrent_report.R ./")
 
 render(input = "Ion_Torrent_report.R",
        output_dir = "./", output_file = "TypeSeqHPV_QC_report.pdf")
