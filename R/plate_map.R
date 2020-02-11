@@ -2,7 +2,6 @@ library(gtools)
 library(gridExtra)
 
 #Date of completion - 02/07/2020
-#Author - Amulya Shastry
 #This scripts creates plate maps for 2 internal control types(ASIC and B2M) and batch controls.
 #Takes in manifest, detailed_pn_matrix and control_results.
 
@@ -29,6 +28,7 @@ manifest %>%
   separate(Assay_Well_ID,c("rownum","colnum"),sep =1) %>%
   drop_na() -> plate_data
 
+  
 #Create empty wells to make sure we get a proper 96 well plate
 
 well_num = seq(1,12,length.out = 12)  
@@ -44,7 +44,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   data %>% 
     full_join(empty_wells %>% transform(colnum = as.character(colnum))) %>%
     mutate(color = ifelse(is.na(color),"empty",color)) %>%
-    mutate(shape = ifelse(is.na(Owner_Sample_ID),"empty","control")) 
+    mutate(shape = ifelse(is.na(Owner_Sample_ID),"empty","control")) %>%
     mutate(colnum = fct_reorder(colnum, as.numeric(colnum))) -> data
   
   data = data[order(as.numeric(as.character(data$colnum))),]
@@ -53,7 +53,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     geom_point(aes(colour = color), size =12) + 
     scale_shape_manual(values = c("empty"=16,"control"=17))+
     scale_color_manual(values = cols) + theme_bw() +
-    labs(x= i, y = "TypeSeqHPV_plate_data") + scale_x_discrete(limits = rev(levels(data$rownum))) 
+    labs(x= i, y = "TypeSeqHPV_plate_data")  
   
   plot_list[[i]] = print(plot)
   
@@ -86,9 +86,8 @@ manifest %>%
   mutate(color = ifelse(sum_count == 1,"1/2_present",color)) %>%
   mutate(color = ifelse(sum_count == 2,"2/2_present",color)) %>%
   separate(Assay_Well_ID,c("rownum","colnum"),sep =1) %>%
-  mutate(Control_code = ifelse(Control_code == ""))
   drop_na() -> plate_data
-
+  plate_data <-as.data.frame(plate_data)
 #Create empty wells
 well_num = seq(1,12,length.out = 12)  
 well_ID = LETTERS[1:8]
@@ -103,17 +102,18 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   data %>%
     full_join(empty_wells %>% transform(colnum = as.character(colnum))) %>%
     mutate(color = ifelse(is.na(color),"empty",color)) %>%
-    mutate(shape = ifelse(is.na(Owner_Sample_ID),"empty",Owner_Sample_ID)) %>%
-    mutate(Control_code = ifesle(Control_code = )
-    mutate(colnum = fct_reorder(colnum, as.numeric(colnum))) -> data
+    mutate(shape = ifelse(is.na(Owner_Sample_ID),"empty","control")) %>%
+    mutate(colnum = fct_reorder(colnum, as.numeric(colnum))) %>%
+    mutate(colnum = fct_reorder(colnum, as.numeric(colnum)))-> data
  
   data = data[order(as.numeric(as.character(data$colnum))),]
   cols = c("0/2_present"="red","1/2_present"="yellow","2/2_present" = "green","empty"="grey")
-  plot = ggplot(data, aes(x = factor(colnum),y = factor(rownum),shape = shape)) + 
+  plot = ggplot(data, aes(x = colnum,y = rownum,shape = shape)) + 
     geom_point(aes(colour = color), size =12) +
     scale_shape_manual(values = c("empty"=16,"control"=17), limit = c("empty","control"), drop = F) +
-    scale_color_manual(values = cols, limits = c("0/2_present","1/2_present","2/2_present","empty"),  drop = F) + theme_bw() +
-    labs(x= i, y = "TypeSeqHPV_plate_data") 
+    scale_color_manual(values = cols, limits = c("0/2_present","1/2_present","2/2_present","empty"),  drop = F) +
+    labs(x= i, y = "TypeSeqHPV_plate_data")
+    
 
   
   plot_list[[i]] = print(plot)
