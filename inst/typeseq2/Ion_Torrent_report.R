@@ -33,7 +33,7 @@ temp = sample_summary_safe(samples_only_for_report)
 plate_summary_safe <- possibly(plate_summary, otherwise = data.frame())
 #needs controls only and samples only matrix
 temp = plate_summary_safe(control_for_report,samples_only_for_report)
-
+plate_summary_safe(control_for_report,samples_only_for_report)
 #' \newpage
 #' ## Counts and Percentage of Types Positive by Project
 
