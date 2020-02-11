@@ -128,6 +128,8 @@ RUN Rscript -e 'install.packages(c("tidyverse", "devtools", "jsonlite", "pander"
 "stringi",\
 "V8",\
 "DT",\
+"gtools",\
+"gridExtra",\
 "furrr"))'
 
 RUN Rscript -e 'source("https://bioconductor.org/biocLite.R"); biocLite("GenomicAlignments")'
