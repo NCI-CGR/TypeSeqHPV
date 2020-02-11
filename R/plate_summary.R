@@ -5,7 +5,7 @@ plate_summary <- function(control_matrix,samples_only_for_report){
 
     require(pander)
 
-    controls_df = control_for_report %>%
+    controls_df = control_matrix %>%
         transform(Assay_Plate_Code = as.character(Assay_Plate_Code)) %>%
         mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
                                                "NA", PreExtraction_Plate_ID)) %>%
@@ -17,12 +17,12 @@ plate_summary <- function(control_matrix,samples_only_for_report){
         mutate(control_result = paste0(Control_Code, "_", control_result)) %>%
         select(-Control_Code) %>%
         bind_rows(
-            data_frame(PreExtraction_Plate_ID = "temp",
+            data_frame(Assay_Plate_Code = "temp",
                        control_result = c("pos_pass", "pos_fail",
                                           "neg_pass", "neg_fail"),
                        count = c(0,0,0,0))) %>%
         spread(control_result, count, fill = 0) %>%
-        filter(PreExtraction_Plate_ID != "temp") %>%
+        filter(Assay_Plate_Code != "temp") %>%
         mutate(total_controls = neg_fail + neg_pass + pos_fail + pos_pass) %>% 
         select(Assay_Plate_Code, pos_fail, neg_fail, total_controls)
 
@@ -75,4 +75,3 @@ plate_summary <- function(control_matrix,samples_only_for_report){
         pandoc.table(style = "multiline")
 
 }
-
