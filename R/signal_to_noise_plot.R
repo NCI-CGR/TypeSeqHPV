@@ -3,7 +3,7 @@ signal_to_noise_plot <- function(read_count_matrix_report, detailed_pn_matrix_fo
 # merge final pn matrix and read_counts_matrix_wide
 signalNoiseDf1 = read_count_matrix_report %>%
 # inner_join(final_pn_matrix, by=c("barcode", "HPV_Type")) %>%
-inner_join(detailed_pn_matrix_for_report, by=c("barcode", "HPV_Type", "Owner_Sample_ID")) %>%
+inner_join(detailed_pn_matrix_for_report %>% gather(HPV_Type, hpvStatus, starts_with("HPV")), by=c("barcode", "HPV_Type", "Owner_Sample_ID")) %>%
 filter(HPV_Type!="B2M") %>%
 select(barcode, HPV_Type, HPV_Type_count, hpvStatus) %>%
 #sort by types and count
