@@ -7,20 +7,18 @@ library(dplyr)
 
 #Date of completion - 02/07/2020
 #This scripts creates plate maps for 2 internal control types(ASIC and B2M) and batch controls.
-#Takes in manifest, detailed_pn_matrix and control_results.
+#Takes in manifest, detailed_pn_matrix_for_report and control_results.
 
 
 #Plate map for ASICs
-plate_map <- function(manifest,detailed_pn_matrix){
-
-ASIC_plot <- function(manifest,detailed_pn_matrix){
+plate_map <- function(manifest,detailed_pn_matrix_for_report, specimen_control_defs,control_for_report){
 
   plate_data <- manifest %>%
     mutate(barcode = paste0(BC1,BC2)) %>%
     full_join(specimen_control_defs %>% select(Control_Code,Control_type) %>%
               mutate(Owner_Sample_ID = Control_Code),
               by = "Owner_Sample_ID") %>%
-    inner_join(detailed_pn_matrix, by = c("barcode","Owner_Sample_ID")) %>%
+    inner_join(detailed_pn_matrix_for_report, by = c("barcode","Owner_Sample_ID")) %>%
     gather(type,status,starts_with("ASIC")) %>%
     mutate(count = ifelse(status == "pos",1,0)) %>%
     select(barcode,Owner_Sample_ID,Assay_SIC,Assay_Well_ID,Assay_Plate_Code,Control_Code,type,status,count) %>%
@@ -70,22 +68,16 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
 
 plot = do.call(grid.arrange,c(plot_list, newpage = T))
 
-print(plot)
-
-}
-
 
 
 #plate map for BM2s
-
-B2M_plot = function(manifest,detailed_pn_matrix){
 
   plate_data <- manifest %>%
   mutate(barcode = paste0(BC1,BC2)) %>%
   full_join(specimen_control_defs %>% select(Control_Code,Control_type) %>%
                mutate(Owner_Sample_ID = Control_Code),
              by = "Owner_Sample_ID") %>%
-  inner_join(detailed_pn_matrix, by = c("barcode","Owner_Sample_ID")) %>%
+  inner_join(detailed_pn_matrix_for_report, by = c("barcode","Owner_Sample_ID")) %>%
   gather(type,status,starts_with("B2M")) %>%
   mutate(count = ifelse(status == "pos",1,0)) %>%
   select(barcode,Owner_Sample_ID,Assay_SIC,Assay_Well_ID,Assay_Plate_Code,Control_Code,type,status,count) %>%
@@ -134,19 +126,18 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
 
 temp<-do.call(grid.arrange,plot_list)
 
-print(temp)
 
-}
-B2M_plot(manifest,detailed_pn_matrix)
+
+#B2M_plot(manifest,detailed_pn_matrix_for_report)
 
 #Plate map for all batch-controls
 
-batch_control_plot = function(control_results_final,specimen_control_defs,detailed_pn_matrix) {
+#batch_control_plot = function(control_results_final,specimen_control_defs,detailed_pn_matrix_for_report) {
 
-  plate_data <- control_results_final %>% 
+  plate_data <- control_for_report %>% 
   select(barcode, Owner_Sample_ID,control_result) %>% 
   inner_join(specimen_control_defs %>% select(Control_Code,Control_type), by =c("Owner_Sample_ID" ="Control_Code")) %>%
-  full_join(detailed_pn_matrix %>% select(barcode,Owner_Sample_ID)) %>%
+  full_join(detailed_pn_matrix_for_report %>% select(barcode,Owner_Sample_ID)) %>%
   transform(Control_type = as.character(Control_type)) %>%
   mutate(control_result = ifelse(is.na(control_result),"sample",control_result)) %>%
   mutate(Control_type = ifelse(is.na(Control_type),as.character("sample"),Control_type)) %>%
@@ -196,9 +187,9 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-batch_plot = do.call(grid.arrange,plot_list)
-print(batch_plot)
+do.call(grid.arrange,plot_list)
+
 
 }
 
-}
+#}
