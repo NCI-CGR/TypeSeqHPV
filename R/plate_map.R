@@ -1,5 +1,7 @@
 #library(gtools)
 #library(gridExtra)
+library(dplyr)
+
 
 #Date of completion - 02/07/2020
 #This scripts creates plate maps for 2 internal control types(ASIC and B2M) and batch controls.
