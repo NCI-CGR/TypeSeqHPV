@@ -8,29 +8,29 @@
 
 #Plate map for ASICs
 
-ASIC_plot = function(manifest,detailed_pn_matrix){
+ASIC_plot <- function(manifest,detailed_pn_matrix){
 
-manifest %>%
-  mutate(barcode = paste0(BC1,BC2)) %>%
-  full_join(specimen_control_defs %>% select(Control_Code,Control_type) %>%
+  plate_data <- manifest %>%
+    mutate(barcode = paste0(BC1,BC2)) %>%
+    full_join(specimen_control_defs %>% select(Control_Code,Control_type) %>%
               mutate(Owner_Sample_ID = Control_Code),
               by = "Owner_Sample_ID") %>%
-  inner_join(detailed_pn_matrix, by = c("barcode","Owner_Sample_ID")) %>%
-  gather(type,status,starts_with("ASIC")) %>%
-  mutate(count = ifelse(status == "pos",1,0)) %>%
-  select(barcode,Owner_Sample_ID,Assay_SIC,Assay_Well_ID,Assay_Plate_Code,Control_Code,type,status,count) %>%
-  group_by(barcode,Owner_Sample_ID,Assay_Plate_Code) %>%
-  mutate(sum_count = sum(count)) %>%
-  select(-count)%>%
-  spread(type,status) %>%
-  mutate(color = "white") %>% 
-  mutate(color = ifelse(sum_count == 0,"0/3_present",color)) %>%
-  mutate(color = ifelse(sum_count == 1,"1/3_present",color)) %>%
-  mutate(color = ifelse(sum_count == 2,"2/3_present",color)) %>%
-  mutate(color = ifelse(sum_count == 3,"3/3_present",color)) %>%
-  mutate(Control_Code = ifelse(is.na(Control_Code),"sample","control")) %>%
-  separate(Assay_Well_ID,c("rownum","colnum"),sep =1) %>%
-  drop_na() -> plate_data
+    inner_join(detailed_pn_matrix, by = c("barcode","Owner_Sample_ID")) %>%
+    gather(type,status,starts_with("ASIC")) %>%
+    mutate(count = ifelse(status == "pos",1,0)) %>%
+    select(barcode,Owner_Sample_ID,Assay_SIC,Assay_Well_ID,Assay_Plate_Code,Control_Code,type,status,count) %>%
+    group_by(barcode,Owner_Sample_ID,Assay_Plate_Code) %>%
+    mutate(sum_count = sum(count)) %>%
+    select(-count)%>%
+    spread(type,status) %>%
+    mutate(color = "white") %>% 
+    mutate(color = ifelse(sum_count == 0,"0/3_present",color)) %>%
+    mutate(color = ifelse(sum_count == 1,"1/3_present",color)) %>%
+    mutate(color = ifelse(sum_count == 2,"2/3_present",color)) %>%
+    mutate(color = ifelse(sum_count == 3,"3/3_present",color)) %>%
+    mutate(Control_Code = ifelse(is.na(Control_Code),"sample","control")) %>%
+    separate(Assay_Well_ID,c("rownum","colnum"),sep =1) %>%
+    drop_na()
 
   
 #Create empty wells to make sure we get a proper 96 well plate
@@ -75,7 +75,7 @@ print(plot)
 
 B2M_plot = function(manifest,detailed_pn_matrix){
 
-manifest %>%
+  plate_data <- manifest %>%
   mutate(barcode = paste0(BC1,BC2)) %>%
   full_join(specimen_control_defs %>% select(Control_Code,Control_type) %>%
                mutate(Owner_Sample_ID = Control_Code),
@@ -94,7 +94,7 @@ manifest %>%
   mutate(color = ifelse(sum_count == 2,"2/2_present",color)) %>%
   mutate(Control_Code = ifelse(is.na(Control_Code),"sample","control")) %>% 
   separate(Assay_Well_ID,c("rownum","colnum"),sep =1) %>%
-  drop_na() -> plate_data
+  drop_na() 
   plate_data <-as.data.frame(plate_data)
 #Create empty wells
 well_num = seq(1,12,length.out = 12)  
@@ -138,7 +138,7 @@ B2M_plot(manifest,detailed_pn_matrix)
 
 batch_control_plot = function(control_results_final,specimen_control_defs,detailed_pn_matrix) {
 
-control_results_final %>% 
+  plate_data <- control_results_final %>% 
   select(barcode, Owner_Sample_ID,control_result) %>% 
   inner_join(specimen_control_defs %>% select(Control_Code,Control_type), by =c("Owner_Sample_ID" ="Control_Code")) %>%
   full_join(detailed_pn_matrix %>% select(barcode,Owner_Sample_ID)) %>%
@@ -155,7 +155,7 @@ control_results_final %>%
   mutate(color =ifelse(control_result == "sample","sample",color)) %>%
   mutate(Control_code = ifelse(Control_type == "sample","sample",Owner_Sample_ID)) %>%
   separate(Assay_Well_ID,c("rownum","colnum"),sep =1) %>%
-  drop_na() -> plate_data 
+  drop_na() 
 
 # creat empty wells
 well_num = seq(1,12,length.out = 12)  
