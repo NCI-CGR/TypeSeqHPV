@@ -3,7 +3,7 @@
 
 #Using detailed_pn_matrix, manifest and control results
 
-control_summary <- function(detailed_pn_matrix,manifest,control_for_report){
+Internal_control_summary <- function(detailed_pn_matrix,manifest,control_for_report){
 detailed_pn_matrix_for_report %>%
   inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2)) %>% select(-BC1,-BC2)) %>% 
   full_join(control_for_report %>% select(Owner_Sample_ID,Control_Code)) %>%
@@ -61,8 +61,36 @@ control_df2 = detailed_pn_matrix_for_report %>%
                 caption = "Control Summary")
  
 
+ #table5 
+ 
+ control_df3 = control_for_report %>%
+   select(barcode,Owner_Sample_ID,Control_Code,control_result) %>%
+   distinct() %>%
+   inner_join(specimen_control_defs) %>%
+   full_join(manifest %>% mutate(barcode = paste0(BC1,BC2)) %>% select(barcode, Owner_Sample_ID,Assay_Plate_Code)) %>%
+   select(barcode, Owner_Sample_ID, Control_Code,control_result,Control_type,Assay_Plate_Code) %>%
+   mutate(Num_Pos_Con_Passed = ifelse(control_result == "pass" & Control_type == "pos", 1,0)) %>%
+   mutate(Num_Neg_Con_Passed = ifelse(control_result == "pass" & Control_type == "neg", 1,0)) %>% 
+   mutate(Num_Pos_Con_Passed = ifelse(is.na(Num_Pos_Con_Passed),0,Num_Pos_Con_Passed),Num_Neg_Con_Passed = ifelse(is.na(Num_Neg_Con_Passed),0,Num_Neg_Con_Passed)) %>%
+   mutate(Num_pos_con_failed = ifelse(Num_Pos_Con_Passed == 1,1,0),Num_neg_con_failed = ifelse(Num_Neg_Con_Passed == 1,1,0)) %>%
+   mutate(Num_sample_failed = ifelse(control_result == "pass",0,1 )) %>%
+   group_by(Assay_Plate_Code) %>% 
+   mutate(Num_Pos_Con_Passed = sum(Num_Pos_Con_Passed),Num_Neg_Con_Passed = sum(Num_Neg_Con_Passed),Num_pos_con_failed = sum(Num_pos_con_failed),Num_neg_con_failed= sum(Num_neg_con_failed)) %>%
+   select(Assay_Plate_Code,Num_Pos_Con_Passed,Num_Neg_Con_Passed,Num_pos_con_failed,Num_neg_con_failed) %>%
+   ungroup() %>%
+   distinct() %>% drop_na() %>%
+   add_row(Assay_Plate_Code = "All_plates", Num_Pos_Con_Passed = sum(.$Num_Pos_Con_Passed),Num_pos_con_failed = sum(.$Num_pos_con_failed),
+           Num_Neg_Con_Passed = sum(.$Num_Neg_Con_Passed), Num_neg_con_failed = sum(.$Num_neg_con_failed))
 
-}
+
+ panderOptions("table.split.cells", 5)
+ 
+ control_df3 %>%
+   pandoc.table(style = "multiline",
+                caption = "Control Summary")
+ 
+ 
+ }
 
 
 
