@@ -53,7 +53,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     write_csv("read_counts_matrix_results.csv")
   
   read_count_matrix_report = read_counts_matrix_wide %>%
-    gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`) 
+    gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`)%>%
+    write.csv("read_count_matrix_report")
     
   
   
@@ -232,7 +233,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     write_csv("control_results.csv")
   
   control_for_report = control_results_final %>%
-    inner_join(manifest)
+    inner_join(manifest) %>%
+    write.csv("control_for_report")
   
   
   print("line 188")
