@@ -11,7 +11,7 @@ library(dplyr)
 
 
 #Plate map for ASICs
-
+plate_map <- function(manifest,detailed_pn_matrix){
 
 ASIC_plot <- function(manifest,detailed_pn_matrix){
 
@@ -201,4 +201,4 @@ print(batch_plot)
 
 }
 
-
+}
