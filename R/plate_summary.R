@@ -5,7 +5,7 @@ plate_summary <- function(control_matrix,samples_only_for_report){
 
     require(pander)
 
-    controls_df = control_matrix %>%
+    controls_df = control_for_report %>%
         transform(Assay_Plate_Code = as.character(Assay_Plate_Code)) %>%
         mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
                                                "NA", PreExtraction_Plate_ID)) %>%
@@ -48,30 +48,20 @@ plate_summary <- function(control_matrix,samples_only_for_report){
         select(-hpv_pos_rate) %>%
         transform(Assay_Plate_Code = Assay_Plate_Code) %>%
         left_join(controls_df, by = "Assay_Plate_Code") %>%
-        arrange(Assay_Plate_Code)
+        arrange(Assay_Plate_Code) 
+       
 
     panderOptions("table.split.cells", 5)
 
     samples_and_controls_df %>%
         select(`Assay Plate Code` = Assay_Plate_Code,
                `HPV % Positive` = hpv_pos_perc,
-               `# neg controls failed` = neg_fail,
-               `# pos controls failed` = pos_fail,
+               `total reads` = plate_total_reads,
+               `# samples total` = number_of_samples,
                `# samples failed` = num_samples_failed,
         ) %>%
 
         pandoc.table(style = "multiline",
                      caption = "Assay Plate Performance")
-
-    samples_and_controls_df %>%
-        select(`Assay Plate Code` = Assay_Plate_Code,
-               `total reads` = plate_total_reads,
-             #  `total B2M reads` = plate_b2m_reads,
-             #  `% B2M reads` = perc_b2m_reads,
-               `# samples total` = number_of_samples,
-               `# total controls` = total_controls
-        ) %>%
-
-        pandoc.table(style = "multiline")
-
+    
 }
