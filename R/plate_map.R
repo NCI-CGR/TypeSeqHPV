@@ -62,11 +62,11 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     scale_color_manual(values = cols) + theme_bw() +
     labs(x= i, y = "TypeSeqHPV_plate_data")  
   
-  plot_list[[i]] = print(plot)
+  plot_list[[i]] = plot
   
 }
 
-plot = do.call(grid.arrange,c(plot_list, newpage = T))
+do.call(grid.arrange,c(grobs = plot_list, newpage = T, ncol = 2))
 
 
 
@@ -120,11 +120,11 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     
 
   
-  plot_list[[i]] = print(plot)
+  plot_list[[i]] = plot
   
 }
 
-temp<-do.call(grid.arrange,plot_list)
+do.call(grid.arrange,c(grobs = plot_list, newpage = T, ncol = 2))
 
 
 
@@ -187,7 +187,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-do.call(grid.arrange,plot_list)
+do.call(grid.arrange,c(grobs = plot_list, newpage = T, ncol = 2))
 
 
 }

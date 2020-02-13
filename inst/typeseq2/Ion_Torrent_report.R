@@ -27,6 +27,7 @@ sample_summary_safe <- possibly(sample_summary, otherwise =  data.frame())
 
 temp = sample_summary_safe(samples_only_for_report)
 
+#' \newpage
 #' ## PLATE Results Summary
 
 #+ PLATE Results Summary, echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", results='asis', eval=TRUE
@@ -85,7 +86,7 @@ temp = lineage_plot_safe(lineage_for_report, 2)
 
 #' \newpage
 #' ## Plate map
-#' Plate map, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
+#+ Plate map, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 
 plate_map_safe <- possibly(plate_map,otherwise = data.frame())
 temp = plate_map_safe(manifest,detailed_pn_matrix_for_report,specimen_control_defs,control_for_report)
@@ -93,6 +94,7 @@ temp = plate_map_safe(manifest,detailed_pn_matrix_for_report,specimen_control_de
 
 #' \newpage
 #' ##Control_summary
+#+ Control_summary echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 
 Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
 temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report)
