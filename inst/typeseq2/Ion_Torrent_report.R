@@ -94,7 +94,8 @@ temp = plate_map_safe(manifest,detailed_pn_matrix_for_report,specimen_control_de
 
 #' \newpage
 #' ##Control_summary
-#+ Control_summary echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
+
+#+ Control_summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 
 Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
 temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report)
