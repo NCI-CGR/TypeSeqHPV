@@ -91,8 +91,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     as_tibble() %>%
     glimpse() %>%
     rename(CHROM = contig) %>%
-    mutate(Min_reads_per_type = Min_reads_per_type * scaling_factor) %>%
-    write.csv("pn_filters_report")
+    mutate(Min_reads_per_type = Min_reads_per_type * scaling_factor)
+    write.csv(pn_filters,"pn_filters_report")
  
  
   
@@ -160,8 +160,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     rename("ASIC_High"=ASICHigh, "ASIC_Low"=ASICLow, "ASIC_Med"=ASICMed, "ESIC_High"=ESICHigh,"ESIC_Low"=ESICLow,"ESIC_Med"=ESICMed, "B2M_L"=B2ML, "B2M_S"=B2MS)-> detailed_pn_matrix
     
   detailed_pn_matrix = detailed_pn_matrix[,str_sort(colnames(detailed_pn_matrix), numeric = T)] %>%
-    select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything()) %>%
-    write.csv("detailed_pn_matrix_report")
+    select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything()) 
+  write.csv(detailed_pn_matrix,"detailed_pn_matrix_report")
   
   #  print("line 110")
   
