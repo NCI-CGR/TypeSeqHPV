@@ -1,7 +1,7 @@
 #' plate_summary
 #'
 
-plate_summary <- function(control_matrix,samples_only_for_report){
+plate_summary <- function(control_for_report,samples_only_for_report){
 
     require(pander)
 
