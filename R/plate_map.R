@@ -66,8 +66,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-do.call(grid.arrange,c(grobs = plot_list, newpage = T, ncol = 2))
-
+print(grid.arrange(grobs = plot_list, newpage = T, ncol = 2))
 
 
 #plate map for BM2s
@@ -124,7 +123,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-do.call(grid.arrange,c(grobs = plot_list, newpage = T, ncol = 2))
+print(grid.arrange(grobs = plot_list, newpage = T, ncol = 2))
 
 
 
@@ -183,11 +182,11 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     labs(x= i, y = "TypeSeqHPV_plate_data") +
     scale_x_discrete(limits = rev(levels(data$colnum))) 
   
-  plot_list[[i]] = print(plot)
+  plot_list[[i]] = plot
   
 }
 
-do.call(grid.arrange,c(grobs = plot_list, newpage = T, ncol = 2))
+print(grid.arrange(grobs = plot_list, newpage = T, ncol = 2))
 
 
 }

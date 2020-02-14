@@ -3,8 +3,8 @@
 
 #Using detailed_pn_matrix, manifest and control results
 
-Internal_control_summary <- function(detailed_pn_matrix,manifest,control_for_report){
-detailed_pn_matrix_for_report %>%
+Internal_control_summary <- function(detailed_pn_matrix_for_report,manifest,control_for_report,specimen_control_defs){
+  detailed_pn_matrix_for_report %>%
   inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2)) %>% select(-BC1,-BC2)) %>% 
   full_join(control_for_report %>% select(Owner_Sample_ID,Control_Code)) %>%
   select(barcode,Owner_Sample_ID,ASIC_Low,ASIC_Med,ASIC_High,B2M_L,B2M_S,ESIC_High,ESIC_Low,ESIC_Med,Assay_Plate_Code,Assay_SIC,Ext_SIC,human_control) %>%
@@ -82,7 +82,7 @@ control_df2 = detailed_pn_matrix_for_report %>%
    add_row(Assay_Plate_Code = "All_plates", Num_Pos_Con_Passed = sum(.$Num_Pos_Con_Passed),Num_pos_con_failed = sum(.$Num_pos_con_failed),
            Num_Neg_Con_Passed = sum(.$Num_Neg_Con_Passed), Num_neg_con_failed = sum(.$Num_neg_con_failed))
 
-
+ panderOptions("table.split.table", 100)
  panderOptions("table.split.cells", 5)
  
  control_df3 %>%
