@@ -1,4 +1,5 @@
-FROM cgrlab/typeseqhpv:base_190221
+FROM cgrlab/typeseqhpv:base_200214
+#FROM cgrlab/typeseqhpv:base_190221
 
 WORKDIR /mnt
 
