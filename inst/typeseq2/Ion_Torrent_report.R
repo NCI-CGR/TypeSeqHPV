@@ -79,6 +79,7 @@ lineage_plot_safe <- possibly(TypeSeqHPV::lineage_plot, otherwise = data.frame()
 # lineage results .csv
 temp = lineage_plot_safe(lineage_for_report, 1)
 
+
 #' \newpage
 #+ normalized lineage table plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 temp = lineage_plot_safe(lineage_for_report, 2)
@@ -93,7 +94,7 @@ temp = plate_map_safe(manifest,detailed_pn_matrix_for_report,specimen_control_de
 
 
 #' \newpage
-#' ##Control_summary
+#' ## Control Summary
 
 #+ Control_summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 
