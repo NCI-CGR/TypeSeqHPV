@@ -53,12 +53,12 @@ control_df2 = detailed_pn_matrix_for_report %>%
   inner_join(control_df1) %>%
   select(-plate_B2M_perc)
 
-
+ panderOptions("table.split.table", 100)
  panderOptions("table.split.cells", 4)
  
  control_df2 %>%
    pandoc.table(style = "multiline",
-                caption = "Control Summary")
+                caption = "Internal Control Summary")
  
 
  #table5 
