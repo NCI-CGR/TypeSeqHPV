@@ -1,10 +1,12 @@
-get_run_metadata <- function(args_start_plugin_path){
+get_run_metadata <- function(args_df){
 
 require(tidyverse)
 require(pander)
 require(jsonlite)
 
-plugin_json = fromJSON(args_start_plugin_path, simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
+    
+    if ( args_df$is_torrent_server == "yes") {
+plugin_json = fromJSON(file("./startplugin.json"), simplifyDataFrame = TRUE, simplifyMatrix = TRUE)
 
     run_info = data_frame(
         run_name = plugin_json$plan$planName,
@@ -28,4 +30,5 @@ plugin_json = fromJSON(args_start_plugin_path, simplifyDataFrame = TRUE, simplif
 
 return(run_info)
 
+}
 }

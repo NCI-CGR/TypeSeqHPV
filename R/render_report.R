@@ -1,5 +1,5 @@
 #'
-render_ion_qc_report <- function(args_start_plugin,
+render_ion_qc_report <- function(args_df,
                                  manifest,
                                  control_for_report,
                                  samples_only_for_report,
