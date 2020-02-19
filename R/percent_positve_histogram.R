@@ -1,7 +1,8 @@
 #'
 percent_positive_histogram <- function(df){
 
-percentPositveHistrogramDf = df %>%
+percentPositveHistrogramDf = samples_only_for_report %>%
+filter(!is.na(Project)) %>%
 group_by(Project) %>%
 do({
 
@@ -32,12 +33,12 @@ mutate(posCount = ifelse(is.na(posCount), 0, posCount)) %>%
 mutate(percPos = ifelse(is.na(percPos), 0, percPos)) %>%
 separate(hpvType, c("temp", "hpvNum"), "HPV", remove=FALSE) %>%
 select(-temp) %>%
-separate(hpvNum, c("hpvNum2", "temp"), "a", remove=FALSE) %>%
-select(-temp) %>%
-separate(hpvNum2, c("hpvNum3", "temp"), "b", remove=FALSE) %>%
-select(-temp) %>%
-separate(hpvNum3, c("hpvNum4", "temp"), "v", remove=FALSE) %>%
-select(hpvType, hpvNum = hpvNum4, posCount, percPos, sampleCount) %>%
+#separate(hpvNum, c("hpvNum2", "temp"), "a", remove=FALSE) %>%
+#select(-temp) %>%
+#separate(hpvNum2, c("hpvNum3", "temp"), "b", remove=FALSE) %>%
+#select(-temp) %>%
+#separate(hpvNum3, c("hpvNum4", "temp"), "v", remove=FALSE) %>%
+select(hpvType, hpvNum, posCount, percPos, sampleCount) %>%
 mutate(hpvNum = as.integer(hpvNum)) %>%
 arrange(hpvNum) %>%
 mutate(hpvType = factor(hpvType, as.character(hpvType))) %>%
@@ -59,6 +60,7 @@ mutate(riskStatus = case_when(
                               TRUE ~ "low risk HPV")) %>%
 mutate(textColor = ifelse(riskStatus == "high risk HPV", "#DF8F44FF", "#00A1D5FF"))
 
+
 plotCount = ggplot(temp, aes(hpvType, posCount, fill=factor(riskStatus))) +
 geom_bar(stat = "identity") +
 theme_light() +
@@ -68,7 +70,7 @@ theme(
       axis.line = element_line(colour = "darkblue",  size = 2, linetype = "solid")) +
 theme(strip.background = element_blank(),
       legend.position="none") +
-labs(title=paste0("Number of Samples Positive by Type for Project -- ", project_id), x= "hpv type", y = "sample count") +
+labs(title=paste0("Number of Samples Positive by Type for Project -- ", project_id), x= "hpv type", y = "sample count")+
 theme(
   panel.background = element_rect(fill = "white"),
   plot.margin = margin(0.5, 0.5, 0.5, 0, "cm"),
@@ -78,11 +80,13 @@ theme(
     size = 1
   )
 ) +
-scale_y_continuous(breaks= pretty_breaks()) +
+scale_y_continuous(breaks= pretty_breaks())+
 geom_text(aes(label=posCount), hjust = 0.5, vjust=-0.25, size=2.75) +
-geom_text(aes(y=posCount * 1.1, label="")) +
-scale_fill_manual(values=pal_jama(alpha = 0.8)(9)[2:9]) +
+geom_text(aes(y=posCount * 1.1, label=""))+
+scale_fill_manual(values=pal_futurama(alpha = 0.8)(9)[2:9]) +
 theme(legend.title=element_blank())
+
+
 
 plotPercent = ggplot(temp, aes(hpvType, percPos, fill=factor(riskStatus))) +
 geom_bar(stat = "identity") +
@@ -100,9 +104,9 @@ theme(
   plot.background = element_rect(
     fill = "grey90",
     colour = "black",
-    size = 1)) +
+    size = 1)) + 
 scale_y_continuous(labels = scales::percent) +
-scale_fill_manual(values=pal_jama(alpha = 0.8)(9)[2:9]) +
+scale_fill_manual(values=pal_futurama(alpha = 0.8)(9)[2:9]) +
 geom_text(aes(label=round(100* percPos, digits=1)), hjust = 0.5, vjust=-0.25, size=2.75) +
 geom_text(aes(y=percPos * 1.1, label="")) +
 theme(legend.title=element_blank())
