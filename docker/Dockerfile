@@ -7,3 +7,6 @@ RUN Rscript -e 'require(devtools); install_github("cgrlab/TypeSeqHPV", ref = "de
 
 #clone repo to get other docs
 RUN cd / && git clone --single-branch --branch development https://github.com/cgrlab/TypeSeqHPV.git
+
+RUN wget https://github.com/jgm/pandoc/releases/download/2.9.2/pandoc-2.9.2-1-amd64.deb \
+&& dpkg -i pandoc-2.9.2-1-amd64.deb
