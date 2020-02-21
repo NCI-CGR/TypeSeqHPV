@@ -1,22 +1,23 @@
 lineage_plot <- function(df, whichPlot){
 
-lineage_plot_table = df %>%
-ungroup() %>%
-gather(lineage_id, lineage_percent, starts_with("HPV")) %>%
-mutate(lineage_percent = ifelse(is.na(lineage_percent), 0, lineage_percent)) %>% # really don't like this fix
+lineage_plot_table = lineage_for_report %>%
+#ungroup() %>%
+#gather(Lineage_ID, lineage_percent, starts_with("HPV")) %>%
+#mutate(lineage_percent = ifelse(is.na(lineage_percent), 0, lineage_percent)) %>% # really don't like this fix
+rename(lineage_percent = AF) %>%
 mutate(lineage_found = ifelse(lineage_percent > 0, 1, 0)) %>%
-group_by(lineage_id) %>%
+group_by(Lineage_ID) %>%
 mutate(typeCount = sum(lineage_found)) %>%
 ungroup() %>%
-mutate(HPV_Type = str_sub(lineage_id, end =5)) %>%
-select(HPV_Type, lineage_id, typeCount) %>%
+mutate(HPV_Type = str_sub(Lineage_ID, end =5)) %>%
+select(HPV_Type, Lineage_ID, typeCount) %>%
 distinct() %>%
-arrange(HPV_Type, lineage_id) %>%
+arrange(HPV_Type, Lineage_ID) %>%
 group_by(HPV_Type) %>%
 mutate(lineage_num = 1:n()) %>%
 mutate(lineage_num = factor(lineage_num)) 
   
-returnPlot1 = ggplot(lineage_plot_table, aes(x=lineage_id, y=typeCount, fill = lineage_num)) +
+returnPlot1 = ggplot(lineage_plot_table, aes(x=Lineage_ID, y=typeCount, fill = lineage_num)) +
 geom_bar(stat="identity", position = position_dodge(width=0.5)) +
   
 theme_light() +
