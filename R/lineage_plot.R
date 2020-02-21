@@ -1,6 +1,6 @@
 lineage_plot <- function(df, whichPlot){
 
-lineage_plot_table = lineage_for_report %>%
+lineage_plot_table = df %>%
 #ungroup() %>%
 #gather(Lineage_ID, lineage_percent, starts_with("HPV")) %>%
 #mutate(lineage_percent = ifelse(is.na(lineage_percent), 0, lineage_percent)) %>% # really don't like this fix
