@@ -51,7 +51,7 @@ temp = percent_positive_histogram_safe(samples_only_for_report)
 coinfection_rate_histogram_safe <- possibly(coinfection_rate_histogram,
                                             otherwise = data.frame())
 
-temp = coinfection_rate_histogram(samples_only_for_report)
+temp = coinfection_rate_histogram_safe(samples_only_for_report)
 
 #' \newpage
 #' ## Signal-to-Noise Plot
