@@ -2,9 +2,9 @@ lineage_plot <- function(df, whichPlot){
 
 lineage_plot_table = df %>%
 #ungroup() %>%
-#gather(Lineage_ID, lineage_percent, starts_with("HPV")) %>%
-#mutate(lineage_percent = ifelse(is.na(lineage_percent), 0, lineage_percent)) %>% # really don't like this fix
-rename(lineage_percent = AF) %>%
+gather(Lineage_ID, lineage_percent, starts_with("HPV")) %>%
+mutate(lineage_percent = ifelse(is.na(lineage_percent), 0, lineage_percent)) %>% # really don't like this fix
+#rename(lineage_percent = AF) %>%
 mutate(lineage_found = ifelse(lineage_percent > 0, 1, 0)) %>%
 group_by(Lineage_ID) %>%
 mutate(typeCount = sum(lineage_found)) %>%
