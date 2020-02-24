@@ -66,7 +66,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-grid.arrange(grobs = plot_list, nrow = 6, ncol =2, newpage = T)
+gridExtra::grid.arrange(grobs = plot_list, nrow = 6, ncol =2, newpage = T)
 #ggplotGrob(plot_list)
 
 #plate map for BM2s
@@ -123,7 +123,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-print(grid.arrange(grobs = plot_list,  nrow = 6,ncol = 2, newpage = T))
+print(gridExtra::grid.arrange(grobs = plot_list,  nrow = 6,ncol = 2, newpage = T))
 
 
 
@@ -186,7 +186,7 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
   
 }
 
-print(grid.arrange(grobs =plot_list,  nrow = 6))
+print(gridExtra::grid.arrange(grobs =plot_list,  nrow = 6))
 
 
 }
