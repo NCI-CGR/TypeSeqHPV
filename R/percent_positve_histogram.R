@@ -1,7 +1,7 @@
 #'
 percent_positive_histogram <- function(df){
 
-percentPositveHistrogramDf = samples_only_for_report %>%
+percentPositveHistrogramDf = df %>%
 filter(!is.na(Project)) %>%
 group_by(Project) %>%
 do({
