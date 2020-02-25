@@ -29,6 +29,16 @@ if ( args_df$is_torrent_server == "yes") {
         slice(2:n()) %>%
         glimpse() %>%
         write_csv("barcodes.csv")
+    
+    
+    data_frame(values = plugin_json$pluginconfig$grouping_file) %>%
+        mutate(values = str_replace(values, "\n", "" )) %>%
+        separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
+        slice(2:n()) %>%
+        glimpse() %>%
+        write_csv("grouping.csv")
+    
+    
 }
 
 manifest = read_csv(args_df$manifest) %>%
@@ -49,11 +59,18 @@ barcode_file = read_csv(args_df$barcode_file) %>%
     write_csv("barcodes.csv") # csv needed for ADAM demux part
 
 
+grouping_defs = read_csv(args_df$grouping_file) %>%
+    map_if(is.factor, as.character) %>%
+    as_tibble() %>%
+    glimpse() 
+
+
 #return list output
 
 return(list(manifest = manifest,
             barcode_file = barcode_file,
-            control_definitions = control_defs
+            control_definitions = control_defs,
+            grouping_defs = grouping_defs
             ))
 
 
