@@ -95,7 +95,7 @@
 
 var typing_manifest;
 var control_definitions;
-var report_grouping_definitions;
+var barcode;
 var config_file;
 var grouping_defs;
 
@@ -136,7 +136,7 @@ function readFile_control(event) {
   }
 }
 
-function readFile_report_grouping(event) {
+function readFile_barcode(event) {
   var file = event.target.files[0];
   if (file) {
     new Promise(function(resolve, reject) {
@@ -147,7 +147,7 @@ function readFile_report_grouping(event) {
       reader.readAsText(file);
       reader.onerror = reject;
     })
-    .then(processFileContent_report_grouping)
+    .then(processFileContent_barcode)
     .catch(function(err) {
       console.log(err)
     });
@@ -230,7 +230,7 @@ document.getElementById('control_definitions_id')
 .addEventListener('change', readFile_control, false);
 
 document.getElementById('barcode_file_id')
-.addEventListener('change', readFile_barcode_file, false);
+.addEventListener('change', readFile_barcode, false);
 
 document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
