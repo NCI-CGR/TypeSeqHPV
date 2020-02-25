@@ -1,7 +1,7 @@
 <html>
 <head>
 <!-- java script required for interacting with the RESTful API -->
-<script type="text/javascript" src="/site_media/jquery/js/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="https://ts-pgm.epigenetic.ru/site_media/jquery/js/jquery-1.6.1.min.js"></script>
 
     <!-- page style -->
     <style type='text/css'>
@@ -41,7 +41,8 @@
             pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
               "pluginconfig": {typing_manifest,
                 control_definitions,
-                barcode_file, config_file, grouping_defs }};
+                barcode_file, config_file,
+                grouping_defs }};
                 pluginAPIJSON = JSON.stringify(pluginAPIJSON);
             console.log(pluginAPIJSON);
 
@@ -96,7 +97,7 @@ var typing_manifest;
 var control_definitions;
 var barcode_file;
 var config_file;
-var grouping_file;
+var grouping_defs;
 
 function readFile_manifest(event) {
   var file = event.target.files[0];
@@ -217,7 +218,7 @@ function processFileContent_report_config(data) {
 function processFileContent_report_grouping(data) {
   config_file = data.split("\n");
   console.log("you uploaded a config file")
-  console.log(grouping_file);
+  console.log(grouping_defs);
 };
 
 
@@ -234,7 +235,7 @@ document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
 
 document.getElementById('grouping_file_id')
-.addEventListener('change', readFile_report_grouping, false);
+.addEventListener('change', readFile_grouping, false);
 
 </script>
 
