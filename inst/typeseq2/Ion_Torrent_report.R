@@ -28,7 +28,7 @@ startPluginDf = get_run_metadata_safe(args_df)
 sample_summary_safe <- possibly(sample_summary, otherwise =  data.frame())
 #samples_only_matrix_results.csv
 
-temp = sample_summary_safe(samples_only_for_report)
+temp = sample_summary(samples_only_for_report)
 
 #' \newpage
 #' ## PLATE Results Summary
@@ -36,7 +36,7 @@ temp = sample_summary_safe(samples_only_for_report)
 #+ PLATE Results Summary, echo=FALSE, message=FALSE, warning=FALSE, fig.align = "center", results='asis', eval=TRUE
 plate_summary_safe <- possibly(plate_summary, otherwise = data.frame())
 #needs controls only and samples only matrix
-temp = plate_summary_safe(control_for_report,samples_only_for_report)
+temp = plate_summary(control_for_report,samples_only_for_report)
 
 #' \newpage
 #' ## Counts and Percentage of Types Positive by Project
@@ -45,7 +45,7 @@ temp = plate_summary_safe(control_for_report,samples_only_for_report)
 #samples_only matrix
 percent_positive_histogram_safe <- possibly(TypeSeqHPV::percent_positive_histogram, otherwise = data.frame())
 
-temp = percent_positive_histogram_safe(samples_only_for_report)
+temp = percent_positive_histogram(samples_only_for_report)
 
 #' \newpage
 #' ## Coinfection Rate Histogram
@@ -54,7 +54,7 @@ temp = percent_positive_histogram_safe(samples_only_for_report)
 coinfection_rate_histogram_safe <- possibly(coinfection_rate_histogram,
                                             otherwise = data.frame())
 
-temp = coinfection_rate_histogram_safe(samples_only_for_report)
+temp = coinfection_rate_histogram(samples_only_for_report)
 
 #' \newpage
 #' ## Signal-to-Noise Plot
