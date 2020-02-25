@@ -14,6 +14,7 @@ docker run -i -v $(pwd):/mnt -v /mnt:/user_files \
         --config_file config_file.csv \
         --barcode_file barcodes.csv \
         --control_definitions control_defs.csv \
+        --grouping_defs grouping_defs.csv \
         --cores 22 \
         --manifest manifest.csv \
         --ram 80G \

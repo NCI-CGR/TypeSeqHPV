@@ -10,7 +10,7 @@
         background: #eef;
         margin: 10px;
         padding: 10px;
-        height:350px;
+        height:400px;
         text-align: left;
     }
     body {
@@ -41,7 +41,7 @@
             pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
               "pluginconfig": {typing_manifest,
                 control_definitions,
-                barocde_file, config_file}};
+                barocde_file, config_file, grouping_defs}};
                 pluginAPIJSON = JSON.stringify(pluginAPIJSON);
             console.log(pluginAPIJSON);
 
@@ -77,7 +77,7 @@
     <form id="inputform">
         <div id="formwrap">
         <br>
-<h2> Please select the 3 required file inputs </h2>
+<h2> Please select the 4 required file inputs </h2>
 <h2> All inputs are in csv format only </h2>
 <h2> The config file is optional </h2>
 <p> Sample sheet (can include optional meta data columns)
@@ -88,6 +88,8 @@
 <input name = 'barcode_file' id = 'barcode_file_id' type='file' accept='.csv'><br>
 <p> Config File
 <input name = 'config_file_name' id = 'config_file_id' type='file' accept='.csv'><br>
+<p> Grouping File
+<input name = 'grouping_file_name' id = 'grouping_file_id' type='file' accept='.csv'> <br>
 
 <script>
 
@@ -95,6 +97,8 @@ var typing_manifest;
 var control_definitions;
 var report_grouping_definitions;
 var config_file;
+var grouping_defs
+
 
 function readFile_manifest(event) {
   var file = event.target.files[0];
@@ -168,6 +172,29 @@ function readFile_report_config(event) {
   }
 }
 
+
+function readFile_grouping_defs(event) {
+  var file = event.target.files[0];
+  if (file) {
+    new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.readAsText(file);
+      reader.onerror = reject;
+    })
+    .then(processFileContent_grouping_defs)
+    .catch(function(err) {
+      console.log(err)
+    });
+  }
+}
+
+
+
+
+
 function processFileContent_manifest(data) {
   typing_manifest = data.split("\n");
   console.log("you uploaded a manifest")
@@ -192,6 +219,14 @@ function processFileContent_report_config(data) {
   console.log(config_file);
 };
 
+
+function processFileContent_grouping_defs(data) {
+  config_file = data.split("\n");
+  console.log("you uploaded a config file")
+  console.log(grouping_defs);
+};
+
+
 document.getElementById('manifest_id')
 .addEventListener('change', readFile_manifest, false);
 
@@ -203,6 +238,9 @@ document.getElementById('barcode_file_id')
 
 document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
+
+document.getElementById('grouping_file_id')
+.addEventListener('change', readFile_grouping_defs, false);
 
 </script>
 
@@ -216,3 +254,5 @@ document.getElementById('config_file_id')
 <div id="json_result"> </div>
 </body>
 </html>
+
+
