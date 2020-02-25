@@ -25,7 +25,7 @@ library(pander)
 system("cp /TypeSeqHPV/inst/typeseq2/Ion_Torrent_report.R ./")
 
 render(input = "Ion_Torrent_report.R",
-       output_dir = "./", output_file = "TypeSeqHPV_QC_report.pdf")
+       output_dir = "./", output_file = "TypeSeqHPV_QC_report.pdf", clean = FALSE)
 
 return(data_frame(path = "Ion_Torrent_report.pdf"))
 

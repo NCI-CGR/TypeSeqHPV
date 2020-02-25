@@ -7,6 +7,9 @@
 #'     toc: true
 #'     toc_depth: 3
 #' classoption: landscape
+#' html_document:
+#'    toc: true
+#'    theme: united
 #' ---
 
 #' ## Run Metadata
@@ -95,7 +98,7 @@ temp = plate_map(manifest,detailed_pn_matrix_for_report,specimen_control_defs,co
 #' \newpage
 #' ## Control Summary
 
-#+ Control_summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
+#+ Control summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
 
 Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
 temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report,specimen_control_defs)
