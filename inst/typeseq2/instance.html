@@ -10,7 +10,7 @@
         background: #eef;
         margin: 10px;
         padding: 10px;
-        height:350px;
+        height:400px;
         text-align: left;
     }
     body {
@@ -41,7 +41,7 @@
             pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
               "pluginconfig": {typing_manifest,
                 control_definitions,
-                barcode_file, config_file}};
+                barcode_file, config_file, grouping_defs}};
                 pluginAPIJSON = JSON.stringify(pluginAPIJSON);
             console.log(pluginAPIJSON);
 
@@ -88,7 +88,8 @@
 <input name = 'barcode_file' id = 'barcode_file_id' type='file' accept='.csv'><br>
 <p> Config File
 <input name = 'config_file_name' id = 'config_file_id' type='file' accept='.csv'><br>
-
+<p> Grouping File
+<input name = 'grouping_file_name' id = 'grouping_file_id' type='file' accept='.csv'><br>
 <script>
 
 var typing_manifest;
@@ -168,6 +169,26 @@ function readFile_report_config(event) {
   }
 }
 
+
+function readFile_report_grouping(event) {
+  var file = event.target.files[0];
+  if (file) {
+    new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.readAsText(file);
+      reader.onerror = reject;
+    })
+    .then(processFileContent_report_grouping)
+    .catch(function(err) {
+      console.log(err)
+    });
+  }
+}
+
+
 function processFileContent_manifest(data) {
   typing_manifest = data.split("\n");
   console.log("you uploaded a manifest")
@@ -192,6 +213,13 @@ function processFileContent_report_config(data) {
   console.log(config_file);
 };
 
+function processFileContent_report_grouping(data) {
+  config_file = data.split("\n");
+  console.log("you uploaded a config file")
+  console.log(grouping_file);
+};
+
+
 document.getElementById('manifest_id')
 .addEventListener('change', readFile_manifest, false);
 
@@ -203,6 +231,9 @@ document.getElementById('barcode_file_id')
 
 document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
+
+document.getElementById('grouping_file_id')
+.addEventListener('change', readFile_report_grouping, false);
 
 </script>
 
@@ -216,3 +247,4 @@ document.getElementById('config_file_id')
 <div id="json_result"> </div>
 </body>
 </html>
+
