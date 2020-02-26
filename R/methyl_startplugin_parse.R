@@ -36,7 +36,7 @@ if ( args_df$is_torrent_server == "yes") {
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
         glimpse() %>%
-        write_csv("grouping.csv")
+        write_csv("grouping_defs.csv")
     
     
 }
