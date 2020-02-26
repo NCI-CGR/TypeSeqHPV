@@ -172,7 +172,7 @@ function readFile_report_config(event) {
 }
 
 
-function readFile_report_grouping(event) {
+function readFile_grouping_defs(event) {
   var file = event.target.files[0];
   if (file) {
     new Promise(function(resolve, reject) {
@@ -183,7 +183,7 @@ function readFile_report_grouping(event) {
       reader.readAsText(file);
       reader.onerror = reject;
     })
-    .then(processFileContent_report_grouping)
+    .then(processFileContent_grouping_defs)
     .catch(function(err) {
       console.log(err)
     });
@@ -215,7 +215,7 @@ function processFileContent_report_config(data) {
   console.log(config_file);
 };
 
-function processFileContent_report_grouping(data) {
+function processFileContent_grouping_defs(data) {
   config_file = data.split("\n");
   console.log("you uploaded a config file")
   console.log(grouping_defs);
@@ -235,7 +235,7 @@ document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
 
 document.getElementById('grouping_file_id')
-.addEventListener('change', readFile_grouping, false);
+.addEventListener('change', readFile_grouping_defs, false);
 
 </script>
 
