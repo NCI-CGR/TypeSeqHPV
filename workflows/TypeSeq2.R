@@ -16,6 +16,7 @@ drake::clean("variants_final_table")
 command_line_args = tibble(
     manifest = optigrab::opt_get('manifest'),
     control_definitions = optigrab::opt_get('control_definitions'),
+    grouping_defs = optigrab::opt_get('grouping_defs'),
     barcode_file = optigrab::opt_get('barcode_file'),
     tvc_parameters = optigrab::opt_get('tvc_parameters'),
     reference = optigrab::opt_get('reference'),
@@ -93,11 +94,11 @@ ion_plan <- drake::drake_plan(
                                          read_count_matrix_report = read.csv("read_count_matrix_report"),
                                          pn_filters = read.csv("pn_filters_report"),
                                          specimen_control_defs = user_files$control_definitions,
-                                         lineage_for_report = read.csv("lineage_filtered_results.csv") )
+                                         lineage_for_report = read.csv("lineage_filtered_results.csv") ),
     
     #### 9. generate grouped pn_matrix           
- #   grouped_outputs = get_grouped_df(simple_pn_matrix_final = read.csv("pn_matrix_results.csv"),
-  #                                   groups_defs = user_files$grouping_defs)
+    grouped_outputs = get_grouped_df(simple_pn_matrix_final = read.csv("pn_matrix_results.csv"),
+                                     groups_defs = user_files$grouping_defs)
     
     
     

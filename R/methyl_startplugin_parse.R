@@ -59,10 +59,11 @@ barcode_file = read_csv(args_df$barcode_file) %>%
     write_csv("barcodes.csv") # csv needed for ADAM demux part
 
 
-grouping_defs = read_csv(args_df$grouping_file) %>%
+grouping_defs = read_csv(args_df$grouping_defs) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
-    glimpse() 
+    glimpse() %>%
+    write_csv("grouping_defs.csv")
 
 
 #return list output
