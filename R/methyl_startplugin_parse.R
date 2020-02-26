@@ -30,8 +30,8 @@ if ( args_df$is_torrent_server == "yes") {
         glimpse() %>%
         write_csv("barcodes.csv")
     
-    
-    data_frame(values = plugin_json$pluginconfig$grouping_file) %>%
+    #grouping
+    data_frame(values = plugin_json$pluginconfig$grouping_defs) %>%
         mutate(values = str_replace(values, "\n", "" )) %>%
         separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
         slice(2:n()) %>%
