@@ -7,11 +7,9 @@ plate_summary <- function(control_for_report,samples_only_for_report){
 
     controls_df = control_for_report %>%
         transform(Assay_Plate_Code = as.character(Assay_Plate_Code)) %>%
-        mutate(PreExtraction_Plate_ID = ifelse(is.na(PreExtraction_Plate_ID),
-                                               "NA", PreExtraction_Plate_ID)) %>%
         mutate(Assay_Plate_Code = ifelse(is.na(as.character(Assay_Plate_Code)),
                "NA", Assay_Plate_Code)) %>%
-        group_by(PreExtraction_Plate_ID, Assay_Plate_Code, Control_Code, control_result) %>%
+        group_by(Assay_Plate_Code, Control_Code, control_result) %>%
         summarize(count = n()) %>%
         ungroup() %>% 
         mutate(control_result = paste0(Control_Code, "_", control_result)) %>%
