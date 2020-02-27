@@ -10,6 +10,7 @@
 get_grouped_df<- function(simple_pn_matrix_final,groups_defs,ion_qc_report){
 simple_pn_matrix_final %>%
     filter(!is.na(Owner_Sample_ID)) %>%
+    transform(Panel = as.character(Panel)) %>%
     mutate(Panel = ifelse(is.na(Panel),"All",Panel)) %>%
     gather(type,status, starts_with("HPV")) %>%
     inner_join(groups_defs %>% gather(type,mask, starts_with("HPV")) %>% rename(Panel = Sample_Sheet_Panel_Name)) %>%
