@@ -1,5 +1,7 @@
 #'
-render_ion_qc_report <- function(args_df,
+render_ion_qc_report <- function(variants_final_table,
+                                 ion_qc_report,
+                                 args_df,
                                  manifest,
                                  control_for_report,
                                  samples_only_for_report,

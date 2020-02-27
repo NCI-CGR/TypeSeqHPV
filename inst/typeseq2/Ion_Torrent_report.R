@@ -89,7 +89,7 @@ temp = lineage_plot(lineage_for_report, 2)
 
 #' \newpage
 #' ## Plate map
-#+ Plate map, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
+#+ Plate map, echo=FALSE, message=FALSE, warning=FALSE, fig.width=50, fig.height=20, fig.align = "center"
 
 plate_map_safe <- possibly(plate_map,otherwise = data.frame())
 temp = plate_map(manifest,detailed_pn_matrix_for_report,specimen_control_defs,control_for_report)

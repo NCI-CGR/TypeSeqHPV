@@ -86,7 +86,8 @@ ion_plan <- drake::drake_plan(
         map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv")),
     
     #### 8. generate qc report ####
-    ion_qc_report = render_ion_qc_report(args_df = args_df,
+    ion_qc_report = render_ion_qc_report(variants_final_table = variants_final_table,
+                                         args_df = args_df,
                                          manifest = user_files$manifest,
                                          control_for_report = read.csv("control_for_report"),
                                          samples_only_for_report = read.csv("samples_only_for_report"),
@@ -98,7 +99,8 @@ ion_plan <- drake::drake_plan(
     
     #### 9. generate grouped pn_matrix           
     grouped_outputs = get_grouped_df(simple_pn_matrix_final = read.csv("pn_matrix_results.csv"),
-                                     groups_defs = user_files$grouping_defs)
+                                     groups_defs = user_files$grouping_defs,
+                                     ion_qc_report = ion_qc_report)
     
     
     
