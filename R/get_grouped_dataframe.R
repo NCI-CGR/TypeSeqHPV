@@ -8,8 +8,7 @@
 
 
 get_grouped_df<- function(simple_pn_matrix_final,groups_defs,ion_qc_report){
-  if (exists(groups_defs)) {
-  simple_pn_matrix_final %>%
+simple_pn_matrix_final %>%
     filter(!is.na(Owner_Sample_ID)) %>%
     mutate(Panel = ifelse(is.na(Panel),"All",Panel)) %>%
     gather(type,status, starts_with("HPV")) %>%
@@ -39,7 +38,6 @@ get_grouped_df<- function(simple_pn_matrix_final,groups_defs,ion_qc_report){
 
 }
 
-}
   
   
   
