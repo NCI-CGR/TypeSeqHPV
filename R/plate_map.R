@@ -62,12 +62,12 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     scale_color_manual(values = cols) + theme_bw() +
     labs(x= i, y = "TypeSeqHPV_plate_data")  
   
-  plot_list[[i]] = plot
-  
+ # plot_list[[i]] = plot
+  print(plot)
 }
 
-gridExtra::grid.arrange(grobs = plot_list, nrow = 6, ncol =2, newpage = T)
-#ggplotGrob(plot_list)
+#gridExtra::grid.arrange(grobs = plot_list, nrow = 6, ncol =2, newpage = T)
+##ggplotGrob(plot_list)
 
 #plate map for BM2s
 
@@ -118,12 +118,12 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     labs(x= i, y = "TypeSeqHPV_plate_data")
     
 
-  
-  plot_list[[i]] = plot
+  print(plot)
+ # plot_list[[i]] = plot
   
 }
 
-print(gridExtra::grid.arrange(grobs = plot_list,  nrow = 6,ncol = 2, newpage = T))
+#print(gridExtra::grid.arrange(grobs = plot_list,  nrow = 6,ncol = 2, newpage = T))
 
 
 
@@ -182,11 +182,13 @@ for (i in unique(plate_data$Assay_Plate_Code)) {
     labs(x= i, y = "TypeSeqHPV_plate_data") +
     scale_x_discrete(limits = rev(levels(data$colnum))) 
   
-  plot_list[[i]] = plot
+ # plot_list[[i]] = plot
+  
+  print(plot)
   
 }
 
-print(gridExtra::grid.arrange(grobs =plot_list,  nrow = 6))
+#print(gridExtra::grid.arrange(grobs =plot_list,  nrow = 6))
 
 
 }
