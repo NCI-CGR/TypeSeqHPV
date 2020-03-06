@@ -11,9 +11,11 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     return(coalesce(!!! as.list(df))) }
   
   # add manifest to variants table ----
-  variants_with_all = manifest %>%
+  variants_with_all = manifest %>% 
+    filter(!(is.na(Owner_Sample_ID))) %>% 
     mutate(barcode = paste0(BC1, BC2)) %>% 
     full_join(variants) 
+    
   
   variants_with_zero = variants_with_all %>%  #Modify the DP from NA to '0'
     select(-filename, -BC1, -BC2) %>%
@@ -205,12 +207,12 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   print("line 148")
   
-  # specimen_control_defs%>%
-  #  rename("B2M_S"=B2M.S, "B2M_L"=B2M.L) -> specimen_control_defs 
+   specimen_control_defs%>%
+    rename("B2M_S"=B2M.S, "B2M_L"=B2M.L) -> specimen_control_defs 
   
   specimen_control_defs_long = specimen_control_defs %>%
     filter(!is.na(Control_Code)) %>%
-    tidyr::gather("type", "status", -Control_Code, -qc_name, factor_key = TRUE) %>%
+    tidyr::gather("type", "status", -Control_Code, -qc_name,-Control_type, factor_key = TRUE) %>%
     glimpse()
   
   # 2.  merge pn matrix with control defs
@@ -218,17 +220,19 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   print("line 158")
   
   control_results_final<- simple_pn_matrix %>%
-    select(-human_control,-ESIC_High,-ESIC_Low,-Ext_SIC,-ASIC_Low,-ASIC_High,-ASIC_Med,-Assay_SIC, -Num_Types_Pos) %>%
-    gather(type,status, -barcode,-Owner_Sample_ID) %>%
-    inner_join(specimen_control_defs_long %>% mutate(Owner_Sample_ID = Control_Code), by = c("Owner_Sample_ID", "type")) %>%
-    full_join(specimen_control_defs) %>%
+    select(-human_control,-Ext_SIC,-Assay_SIC, -Num_Types_Pos) %>%
+    gather(type,status, -barcode,-Owner_Sample_ID,-ESIC_High,-ESIC_Low,-ESIC_Med,-ASIC_Low,-ASIC_High,-ASIC_Med) %>%
+    inner_join(specimen_control_defs_long %>% mutate(Owner_Sample_ID = Control_Code), by = c("Owner_Sample_ID", "type")) %>%  
+  #  inner_join(specimen_control_defs %>% select(-B2M.S,-B2M.L)) %>%
     mutate(status_count = ifelse(status.x == status.y, 0, 1)) %>%
     group_by(barcode) %>%
     mutate(sum_status_count = sum(status_count)) %>%
     mutate(control_result = ifelse(sum_status_count == 0, "pass","fail")) %>%
-    select(barcode,Owner_Sample_ID,Control_Code,control_result,type, status.x) %>% 
+    select(barcode,Owner_Sample_ID,Control_Code,control_result,type, status.x,ESIC_High,ESIC_Low,ESIC_Med,ASIC_Low,ASIC_High,ASIC_Med) %>% 
     distinct() %>%
-    spread(type,status.x) 
+    spread(type,status.x) %>% 
+    inner_join(read_counts_matrix_wide %>% select(barcode,Owner_Sample_ID,total_reads), by = c("barcode","Owner_Sample_ID")) %>%
+    inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2))) 
     write_csv(control_results_final,"control_results.csv")
   
   control_for_report = control_results_final %>%
@@ -248,7 +252,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   samples_only_for_report = samples_only_pn_matrix %>%
     inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2))) %>%
-    inner_join(read_counts_matrix_wide %>% select(barcode, Owner_Sample_ID, total_reads)) 
+    inner_join(read_counts_matrix_wide %>% select(barcode, Owner_Sample_ID, total_reads)) %>%
+    filter(!is.na(Project)) 
     write_csv(samples_only_for_report,"samples_only_for_report")
   
   
