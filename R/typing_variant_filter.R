@@ -54,7 +54,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     full_join(read_counts_matrix_wide[,str_sort(colnames(read_counts_matrix_wide), numeric = T)] %>%
               select(barcode,Owner_Sample_ID, `ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
     select(-BC1, -BC2) %>%
-    write_csv(read_counts_matrix_wide,"read_counts_matrix_results.csv")
+    write_csv("read_counts_matrix_results.csv")
   
   print("line 41")
   
@@ -211,6 +211,17 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
                  select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
     select(-BC1, -BC2) %>%
     write_csv("pn_matrix_results.csv")
+
+  print("line 148")
+  
+  #Changing the '.' to '_' to makesure it doesn't cause format issues downstream
+   specimen_control_defs%>%
+    rename("B2M_S"=`B2M-S`, "B2M_L"=`B2M-L`) -> specimen_control_defs 
+  
+  specimen_control_defs_long = specimen_control_defs %>%
+    filter(!is.na(Control_Code)) %>%
+    tidyr::gather("type", "status", -Control_Code, -qc_name,-Control_type, factor_key = TRUE) %>%
+    glimpse()
   
   #Creating a list of failed samples
   simple_pn_matrix %>%
@@ -220,19 +231,6 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     inner_join(manifest %>% mutate(barcode = paste0(BC1, BC2)), by = c("barcode","Owner_Sample_ID")) %>%
     write.csv("failed_samples_pn_matrix.csv")
   
-  
-  
-  
-  print("line 148")
-  
-  #Changing the '.' to '_' to makesure it doesn't cause format issues downstream
-   specimen_control_defs%>%
-    rename("B2M_S"=B2M.S, "B2M_L"=B2M.L) -> specimen_control_defs 
-  
-  specimen_control_defs_long = specimen_control_defs %>%
-    filter(!is.na(Control_Code)) %>%
-    tidyr::gather("type", "status", -Control_Code, -qc_name,-Control_type, factor_key = TRUE) %>%
-    glimpse()
   
   # 2.  merge pn matrix with control defs
   
@@ -257,7 +255,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(barcode = paste0(BC1,BC2)) %>%
     inner_join(control_results_final[,str_sort(colnames(control_results_final), numeric = T)] %>%
      select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything()) ) %>%
-    write_csv(control_results_final,"control_results.csv")
+    write_csv("control_results.csv")
   
   control_for_report = control_results_final %>%
     inner_join(manifest) 
@@ -366,7 +364,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(key = row_number()) %>% 
     mutate(AF = AF*100) %>%
     spread(Lineage_ID,AF) %>%
-    select(-key) 
+    select(-key)  
+    
     
   #Join manifest to add all the information
     manifest %>% 
