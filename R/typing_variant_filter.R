@@ -44,21 +44,17 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   read_counts_matrix_wide = read_counts_matrix_long %>%
     spread(CHROM, depth)
   
-  read_counts_matrix_wide = manifest %>%
-    mutate(barcode = paste0(BC1, BC2)) %>%
-    left_join(read_counts_matrix_wide) %>%
-    select(-BC1, -BC2) 
-  
-  #Rearranging column names to match the order of contigs in variant file. 
-  read_counts_matrix_wide = read_counts_matrix_wide[,str_sort(colnames(read_counts_matrix_wide), numeric = T)] %>%
-    select(barcode,Owner_Sample_ID, `ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything()) 
-    write_csv(read_counts_matrix_wide,"read_counts_matrix_results.csv")
-  
   read_count_matrix_report = read_counts_matrix_wide %>%
     gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`)
-    write.csv(read_count_matrix_report,"read_count_matrix_report")
-    
+  write.csv(read_count_matrix_report,"read_count_matrix_report")
   
+  #Rearranging column names to match the order of contigs in variant file. 
+  read_counts_matrix_wide = manifest %>%
+    mutate(barcode = paste0(BC1, BC2)) %>%
+    full_join(read_counts_matrix_wide[,str_sort(colnames(read_counts_matrix_wide), numeric = T)] %>%
+              select(barcode,Owner_Sample_ID, `ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
+    select(-BC1, -BC2) %>%
+    write_csv(read_counts_matrix_wide,"read_counts_matrix_results.csv")
   
   print("line 41")
   
@@ -141,9 +137,17 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     select(-internal_control_code) %>%
     full_join(new) -> new
   
+  #Override step
   new %>%  
     tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
-    group_by(barcode) %>%
+    group_by(barcode) %>% 
+    mutate(type_status = ifelse(human_control == "failed_to_amplify","neg",type_status)) %>%
+    spread(type_id,type_status) -> new
+  
+  
+  new %>%  
+    tidyr::gather("type_id", "type_status", starts_with("HPV")) %>%
+    group_by(barcode) %>% 
     mutate(Num_Types_Pos = if_else(type_status == "pos", 1, 0)) %>%
     mutate(type2 = type_id) %>%
     mutate(type_id = gsub("_.*","",type_id)) -> new2
@@ -163,7 +167,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     
   detailed_pn_matrix = detailed_pn_matrix[,str_sort(colnames(detailed_pn_matrix), numeric = T)] %>%
     select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything()) 
-  write.csv(detailed_pn_matrix,"detailed_pn_matrix_report")
+  write.csv(detailed_pn_matrix,"detailed_pn_matrix_report.csv")
   
   #  print("line 110")
   
@@ -180,6 +184,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   # make simple pn matrix ----
   
   simple_pn_matrix_long = detailed_pn_matrix %>%
+    filter(!is.na(Owner_Sample_ID)) %>%
     gather("CHROM", "status", starts_with("HPV"), factor_key = TRUE) %>%
     separate(CHROM, sep = "_", into = c("type"), remove = FALSE, extra = "drop") %>%
     glimpse() %>%
@@ -199,14 +204,28 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     spread(type, simple_status) %>%
     glimpse()
   
+  #Creating positive-negative matrix
   simple_pn_matrix_final = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
-    inner_join(simple_pn_matrix) %>%
+    inner_join(simple_pn_matrix[,str_sort(colnames(simple_pn_matrix), numeric = T)] %>%
+                 select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
     select(-BC1, -BC2) %>%
     write_csv("pn_matrix_results.csv")
   
+  #Creating a list of failed samples
+  simple_pn_matrix %>%
+    filter(human_control == "failed_to_amplify") %>%
+    full_join(specimen_control_defs %>% select(Control_Code,Control_type), by = c("Owner_Sample_ID"= "Control_Code")) %>%
+    filter(is.na(Control_type)) %>%
+    inner_join(manifest %>% mutate(barcode = paste0(BC1, BC2)), by = c("barcode","Owner_Sample_ID")) %>%
+    write.csv("failed_samples_pn_matrix.csv")
+  
+  
+  
+  
   print("line 148")
   
+  #Changing the '.' to '_' to makesure it doesn't cause format issues downstream
    specimen_control_defs%>%
     rename("B2M_S"=B2M.S, "B2M_L"=B2M.L) -> specimen_control_defs 
   
@@ -231,8 +250,13 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     select(barcode,Owner_Sample_ID,Control_Code,control_result,type, status.x,ESIC_High,ESIC_Low,ESIC_Med,ASIC_Low,ASIC_High,ASIC_Med) %>% 
     distinct() %>%
     spread(type,status.x) %>% 
-    inner_join(read_counts_matrix_wide %>% select(barcode,Owner_Sample_ID,total_reads), by = c("barcode","Owner_Sample_ID")) %>%
-    inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2))) 
+    inner_join(read_counts_matrix_wide %>% select(barcode,Owner_Sample_ID,total_reads), by = c("barcode","Owner_Sample_ID")) 
+  
+  #Adding manifest to the final results 
+   manifest %>% 
+    mutate(barcode = paste0(BC1,BC2)) %>%
+    inner_join(control_results_final[,str_sort(colnames(control_results_final), numeric = T)] %>%
+     select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything()) ) %>%
     write_csv(control_results_final,"control_results.csv")
   
   control_for_report = control_results_final %>%
@@ -248,7 +272,11 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     left_join(select(control_results_final, barcode, Control_Code)) %>%
     filter(is.na(Control_Code)) %>%
     glimpse()
-    write_csv(samples_only_pn_matrix,"samples_only_matrix_results.csv")
+  
+  manifest %>%
+    mutate(barcode = paste0(BC1,BC2)) %>%
+    inner_join(samples_only_pn_matrix) %>%
+    write_csv("samples_only_matrix_results.csv")
   
   samples_only_for_report = samples_only_pn_matrix %>%
     inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2))) %>%
@@ -257,10 +285,10 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     write_csv(samples_only_for_report,"samples_only_for_report")
   
   
-  failed_samples_only_pn_matrix = samples_only_pn_matrix %>%
-    filter(str_detect(human_control, fixed("fail", ignore_case = TRUE))) %>%
-    glimpse() 
-    write_csv(failed_samples_only_pn_matrix,"failed_samples_matrix_results.csv")
+  #failed_samples_only_pn_matrix = samples_only_pn_matrix %>%
+   # filter(str_detect(human_control, fixed("fail", ignore_case = TRUE))) %>%
+  #  glimpse() 
+   # write_csv(failed_samples_only_pn_matrix,"failed_samples_matrix_results.csv")
   
   
   # # identify lineages ----
@@ -338,10 +366,13 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(key = row_number()) %>% 
     mutate(AF = AF*100) %>%
     spread(Lineage_ID,AF) %>%
-    select(-key) %>% 
+    select(-key) 
+    
+  #Join manifest to add all the information
+    manifest %>% 
+    mutate(barcode = paste0(BC1,BC2)) %>%
+    inner_join(lineage_for_report[,str_sort(colnames(lineage_for_report), numeric = T)]) %>%
     write_csv("lineage_filtered_results.csv")
-  
-  
   
   
 }
