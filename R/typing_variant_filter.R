@@ -167,7 +167,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     
   detailed_pn_matrix = detailed_pn_matrix[,str_sort(colnames(detailed_pn_matrix), numeric = T)] %>%
     select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything()) 
-  write.csv(detailed_pn_matrix,"detailed_pn_matrix_report.csv")
+  write.csv(detailed_pn_matrix,"detailed_pn_matrix_report")
   
   #  print("line 110")
   
@@ -309,6 +309,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
    # mutate(new_res = sum(new_res)) %>%
     ungroup() 
 
+  #Classifying as pass or fail based on set filters
   
   lineage_filtered = lineage_filtered_initial %>%  
     mutate(AF = as.double(AF)) %>%
@@ -341,7 +342,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(lineage_status = ifelse(qc_reason == "Pass" & new_res == def_count, 1, 0)) -> lineage_all 
   
   
-  # calculate AF with only the ones which passed  
+  # calculate AF with only the ones which passed the filters in the last step 
   lineage_all %>%
     filter(lineage_status == 1) %>%
     group_by(barcode, Lineage_ID) %>% 
