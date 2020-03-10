@@ -23,13 +23,13 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(DP = 0) %>%
     mutate(CHROM = "HPV_fake")
   
+  if(length(variants_with_zero$barcode)>0) {
   variants_with_manifest = variants_with_all %>%
     select(-filename, -BC1, -BC2) %>%
     filter(HS) %>%   #This is filtering the variants which are hotspots
     full_join(variants_with_zero)
-  
-  # make read_counts_matrix ----
-  
+ 
+  # make read_counts_matrix ---- 
   read_counts_matrix_long = variants_with_manifest %>%
     group_by(Owner_Sample_ID, barcode, CHROM) %>%
     summarize(depth = max(DP)) %>%
@@ -39,8 +39,24 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     spread(CHROM,depth, fill = '0') %>%
     select(-HPV_fake) %>%
     gather(CHROM,depth,-total_reads,-Owner_Sample_ID,-barcode)
+  }
   
+  else{
+    variants_with_manifest = variants_with_all %>%
+      select(-filename, -BC1, -BC2) %>%
+      filter(HS)
+    # make read_counts_matrix ---- 
+    read_counts_matrix_long = variants_with_manifest %>%
+      group_by(Owner_Sample_ID, barcode, CHROM) %>%
+      summarize(depth = max(DP)) %>%
+      group_by(barcode) %>%
+      mutate(total_reads = sum(depth)) %>%
+      group_by(barcode, Owner_Sample_ID)%>%
+    #  spread(CHROM,depth, fill = '0') %>%
+      gather(CHROM,depth,-total_reads,-Owner_Sample_ID,-barcode)
+  }
   
+
   read_counts_matrix_wide = read_counts_matrix_long %>%
     spread(CHROM, depth)
   
