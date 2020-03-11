@@ -22,7 +22,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     filter(is.na(HS)) %>% 
     mutate(DP = 0) %>%
     mutate(CHROM = "HPV_fake")
-  
+ 
+  #This step is to ensure the samples with no variant calls are retained in the matrix 
   if(length(variants_with_zero$barcode)>0) {
   variants_with_manifest = variants_with_all %>%
     select(-filename, -BC1, -BC2) %>%
@@ -52,7 +53,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
       group_by(barcode) %>%
       mutate(total_reads = sum(depth)) %>%
       group_by(barcode, Owner_Sample_ID)%>%
-    #  spread(CHROM,depth, fill = '0') %>%
+      spread(CHROM,depth, fill = '0') %>%
       gather(CHROM,depth,-total_reads,-Owner_Sample_ID,-barcode)
   }
   
