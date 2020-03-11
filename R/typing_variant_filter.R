@@ -40,9 +40,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     spread(CHROM,depth, fill = '0') %>%
     select(-HPV_fake) %>%
     gather(CHROM,depth,-total_reads,-Owner_Sample_ID,-barcode)
-  }
-  
-  else{
+  } else{
     variants_with_manifest = variants_with_all %>%
       select(-filename, -BC1, -BC2) %>%
       filter(HS)
@@ -114,6 +112,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   # make detailed pn matrix ----
   read_counts_matrix_long %>%
     inner_join(pn_filters) %>% 
+    transform(depth = as.integer(depth)) %>%
     mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
     glimpse() %>%
     select(-depth) %>%
