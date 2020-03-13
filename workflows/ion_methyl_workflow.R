@@ -42,21 +42,26 @@ user_files = startplugin_parse(args_df) %>%
   glimpse(),
 
 #### 3. demux bams ####
-demux_bam = adam_demux(user_files, args_df$ram, args_df$cores) %>%
-    glimpse(),
+demux_bam = dir_ls("./", recursive = T, glob = "*bam*") %>% 
+  map_df(as_tibble)  %>% 
+  rename(sorted_path = value) %>% 
+  mutate(path = sorted_path) %>% 
+  separate(path, c("a","b","c")) %>% 
+  mutate(bam_path = paste0(a,"_",b,"_",c,".bam")) %>% 
+  mutate(sample = b),
 
 #### 4. split, sort, and index bams ####
-sorted_bam = demux_bam %>%
-    split(.$sample) %>%
-    future_map_dfr(samtools_sort) %>%
-    glimpse(),
+sorted_bam = demux_bam %>% 
+   split(.$bam_path) %>% 
+   future_map_dfr(single_barcode_demux) %>% 
+   glimpse(),
 
 #### 5. run tvc on demux bams ####
 vcf_files = sorted_bam %T>%
     map_df(~ system(paste0("cp ", args_df$reference, " ./"))) %T>%
     map_df(~ system(paste0("samtools faidx ", basename(args_df$reference)))) %>%
     split(.$sample) %>%
-    future_map_dfr(tvc_cli, args_df) %>%
+    future_map_dfr(tvc_single, args_df) %>%
     glimpse(),
 
 #### 6. merge vcf files in to 1 table ####
