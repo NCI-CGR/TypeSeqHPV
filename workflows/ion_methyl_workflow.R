@@ -74,7 +74,7 @@ variant_table = vcf_files %>%
     glimpse(),
 
 #### 7. joining variant table with sample sheet and write to file ####
-variants_final_table = methyl_variant_filter(variant_table,
+variants_final_table = single_bar_methyl_variant_filter(variant_table,
                                       args_df$filteringTable,
                                       args_df$posConversionTable,
                                       user_files$manifest,
