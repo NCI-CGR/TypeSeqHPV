@@ -2,6 +2,11 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   require(fuzzyjoin)
   
+  manifest %>%
+  transform(BC1 = as.character(BC1)) %>% 
+    rename(barcode = BC1) -> manifest
+  
+  
   filteringTable = read_tsv(filteringTablePath) %>%
     map_if(is.factor, as.character) %>%
     as_tibble() %>%
@@ -15,7 +20,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     glimpse()
   
   manifest %>%
-    rename(barcode = BC1) %>%
     inner_join(GA_variants) %>%
     select(-filename) %>%
     write_csv("lineage_variants_results.csv")
@@ -59,7 +63,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(chr, pos, DP, methyl_freq, QUAL, status, qc_reason, everything())
   
   return_table = manifest %>%
-    rename(barcode = BC1) %>%
     left_join(filtered_variants) %>%
     write_csv("target_variants_results.csv")
   
@@ -72,7 +75,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     glimpse() 
   
   manifest %>%
-    rename(barcode = BC1) %>%
     inner_join(coverage_matrix) %>%
     write_csv("coverage_matrix_results.csv") 
   
@@ -87,7 +89,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     glimpse() 
   
   manifest %>%
-    rename(barcode = BC1) %>%
     inner_join(freq_matrix) %>%
     write_csv("freq_matrix_results.csv") 
   
@@ -108,7 +109,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     spread(chrom, control_result) 
   
   manifest %>%
-    rename(barcode = BC1) %>%
     inner_join(control_results) %>%
     write_csv("control_results.csv")
   
@@ -118,7 +118,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     filter(!HS)
   
   manifest %>%
-    rename(barcode = BC1) %>%
     inner_join(non_hotspot_vars) %>%
     write_csv("non_target_variants_results.csv")
   
