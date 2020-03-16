@@ -15,7 +15,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     glimpse()
   
   manifest %>%
-    rename(barcode = BC1)) %>%
+    rename(barcode = BC1) %>%
     inner_join(GA_variants) %>%
     select(-filename) %>%
     write_csv("lineage_variants_results.csv")
