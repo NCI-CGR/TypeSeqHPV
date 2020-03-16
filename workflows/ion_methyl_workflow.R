@@ -38,7 +38,7 @@ args_df = get_command_line_args(command_line_args) %>%
     glimpse(),
 
 #### 2. parse plugin data ####
-user_files = startplugin_parse(args_df) %>%
+user_files = meth_startplugin_parse(args_df) %>%
   glimpse(),
 
 #### 3. demux bams ####
