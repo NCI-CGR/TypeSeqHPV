@@ -103,12 +103,12 @@ meth_startplugin_parse <- function(args_df){
       write_csv("control_defs.csv")
     
     #barcode_file
-    data_frame(values = plugin_json$pluginconfig$barcode_file) %>%
-      mutate(values = str_replace(values, "\n", "" )) %>%
-      separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
-      slice(2:n()) %>%
-      glimpse() %>%
-      write_csv("barcodes.csv")
+ #   data_frame(values = plugin_json$pluginconfig$barcode_file) %>%
+  #    mutate(values = str_replace(values, "\n", "" )) %>%
+   #   separate(col = values, sep = ",", into = unlist(str_split(.$values[1], ","))) %>%
+    #  slice(2:n()) %>%
+    #  glimpse() %>%
+    #  write_csv("barcodes.csv")
     
     #grouping
     # data_frame(values = plugin_json$pluginconfig$grouping_defs) %>%
@@ -130,13 +130,14 @@ meth_startplugin_parse <- function(args_df){
   control_defs = read_csv(args_df$control_definitions) %>%
     map_if(is.factor, as.character) %>%
     as_tibble()  %>%
+    drop_na() %>%
     glimpse()
   
-  barcode_file = read_csv(args_df$barcode_file) %>%
-    map_if(is.factor, as.character) %>%
-    as_tibble() %>%
-    glimpse() %>%
-    write_csv("barcodes.csv") # csv needed for ADAM demux part
+ # barcode_file = read_csv(args_df$barcode_file) %>%
+#    map_if(is.factor, as.character) %>%
+ #   as_tibble() %>%
+#    glimpse() %>%
+#    write_csv("barcodes.csv") # csv needed for ADAM demux part
   
   
   #grouping_defs = read_csv(args_df$grouping_defs) %>%
@@ -149,7 +150,7 @@ meth_startplugin_parse <- function(args_df){
   #return list output
   
   return(list(manifest = manifest,
-              barcode_file = barcode_file,
+             # barcode_file = barcode_file,
               control_definitions = control_defs
               #  grouping_defs = grouping_defs
   ))
