@@ -41,7 +41,7 @@
             pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
               "pluginconfig": {typing_manifest,
                 control_definitions,
-                barocde_file, config_file}};
+                config_file}};
                 pluginAPIJSON = JSON.stringify(pluginAPIJSON);
             console.log(pluginAPIJSON);
 
@@ -84,8 +84,6 @@
 <input name = 'manifest_name' id = 'manifest_id' type='file' accept='.csv'><br>
 <p> Control Definitions
 <input name = 'control_definitions_name' id = 'control_definitions_id' type='file' accept='.csv'><br>
-<p> Barcode File
-<input name = 'barcode_file' id = 'barcode_file_id' type='file' accept='.csv'><br>
 <p> Config File
 <input name = 'config_file_name' id = 'config_file_id' type='file' accept='.csv'><br>
 
@@ -180,12 +178,6 @@ function processFileContent_controls(data) {
   console.log(control_definitions);
 };
 
-function processFileContent_barcode_file(data) {
-  report_grouping_definitions = data.split("\n");
-  console.log("you uploaded a barcode file")
-  console.log(report_grouping_definitions);
-};
-
 function processFileContent_report_config(data) {
   config_file = data.split("\n");
   console.log("you uploaded a config file")
@@ -197,9 +189,6 @@ document.getElementById('manifest_id')
 
 document.getElementById('control_definitions_id')
 .addEventListener('change', readFile_control, false);
-
-document.getElementById('barcode_file_id')
-.addEventListener('change', readFile_barcode_file, false);
 
 document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
