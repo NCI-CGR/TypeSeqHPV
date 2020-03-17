@@ -70,7 +70,7 @@ variant_table = vcf_files %>%
     split(.$vcf_out) %>%
     future_map_dfr(vcf_to_dataframe) %>%
     glimpse() %>%
-    mutate(barcode = str_sub(filename, 5, 10)) %>%
+    mutate(barcode = str_sub(filename, 5, 7)) %>%
     glimpse(),
 
 #### 7. joining variant table with sample sheet and write to file ####
