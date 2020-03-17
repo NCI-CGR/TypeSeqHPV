@@ -44,7 +44,10 @@ vcf_to_dataframe <- function(vcf_files){
 methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest, control_defs){
 
 require(fuzzyjoin)
-
+  
+manifest %>%
+  rename(barcode = BC1) -> manifest
+  
 filteringTable = read_tsv(filteringTablePath) %>%
   map_if(is.factor, as.character) %>%
   as_tibble() %>%
@@ -58,9 +61,8 @@ GA_variants = variants %>%
   glimpse()
 
 manifest %>%
-  mutate(barcode = paste0(BC1, BC2)) %>%
   inner_join(GA_variants) %>%
-  select(-filename, -BC1, -BC2) %>%
+  select(-filename, -BC1) %>%
   write_csv("lineage_variants_results.csv")
 
 pos_conversion = read_tsv(posConversionTable) %>%
@@ -102,9 +104,8 @@ filtered_variants = variants %>%
   select(chr, pos, DP, methyl_freq, QUAL, status, qc_reason, everything())
 
  return_table = manifest %>%
-    mutate(barcode = paste0(BC1, BC2)) %>%
     left_join(filtered_variants) %>%
-    select(-BC1, -BC2) %>%
+    select(-BC1) %>%
     write_csv("target_variants_results.csv")
 
  coverage_matrix = return_table %>%
@@ -116,9 +117,8 @@ filtered_variants = variants %>%
   glimpse() 
     
   manifest %>%
-  mutate(barcode = paste0(BC1, BC2)) %>%
   inner_join(coverage_matrix) %>%
-  select(-BC1, -BC2) %>%
+  select(-BC1) %>%
   write_csv("coverage_matrix_results.csv") 
 
  #freq_matrix
@@ -132,9 +132,8 @@ filtered_variants = variants %>%
   glimpse() 
     
   manifest %>%
-  mutate(barcode = paste0(BC1, BC2)) %>%
   inner_join(freq_matrix) %>%
-  select(-BC1, -BC2) %>%
+  select(-BC1) %>%
   write_csv("freq_matrix_results.csv") 
 
  control_defs = control_defs %>%
@@ -154,9 +153,8 @@ filtered_variants = variants %>%
    spread(chrom, control_result) 
                             
   manifest %>%
-  mutate(barcode = paste0(BC1, BC2)) %>%
   inner_join(control_results) %>%
-  select(-BC1, -BC2) %>%
+  select(-BC1) %>%
   write_csv("control_results.csv")
 
 
@@ -165,9 +163,8 @@ non_hotspot_vars = variants %>%
   filter(!HS)
 
 manifest %>%
-  mutate(barcode = paste0(BC1, BC2)) %>%
   inner_join(non_hotspot_vars) %>%
-  select(-filename, -BC1, -BC2) %>%
+  select(-filename, -BC1) %>%
   write_csv("non_target_variants_results.csv")
 
  return(return_table)
