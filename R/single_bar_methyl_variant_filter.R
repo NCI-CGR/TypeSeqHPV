@@ -65,7 +65,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   return_table = manifest %>%
     left_join(filtered_variants) %>%
-    filter(!(is.na(Owner_Sample_ID)) %>%
+    filter(!(is.na(Owner_Sample_ID))) %>%
     write_csv("target_variants_results.csv")
   
   coverage_matrix = return_table %>%
