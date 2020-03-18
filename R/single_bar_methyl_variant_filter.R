@@ -22,6 +22,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   manifest %>%
     inner_join(GA_variants) %>%
     select(-filename) %>%
+    filter(!(is.na(Owner_Sample_ID)) %>%
     write_csv("lineage_variants_results.csv")
   
   pos_conversion = read_tsv(posConversionTable) %>%
@@ -64,6 +65,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   return_table = manifest %>%
     left_join(filtered_variants) %>%
+    filter(!(is.na(Owner_Sample_ID)) %>%
     write_csv("target_variants_results.csv")
   
   coverage_matrix = return_table %>%
@@ -76,6 +78,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   manifest %>%
     inner_join(coverage_matrix) %>%
+    filter(!(is.na(Owner_Sample_ID)) %>%
     write_csv("coverage_matrix_results.csv") 
   
   #freq_matrix
@@ -90,6 +93,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   manifest %>%
     inner_join(freq_matrix) %>%
+    filter(!(is.na(Owner_Sample_ID)) %>%
     write_csv("freq_matrix_results.csv") 
   
   control_defs = control_defs %>%
@@ -110,6 +114,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   manifest %>%
     inner_join(control_results) %>%
+    filter(!(is.na(Owner_Sample_ID)) %>%
     write_csv("control_results.csv")
   
   
@@ -119,6 +124,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   manifest %>%
     inner_join(non_hotspot_vars) %>%
+    filter(!(is.na(Owner_Sample_ID)) %>%
     write_csv("non_target_variants_results.csv")
   
   return(return_table)
