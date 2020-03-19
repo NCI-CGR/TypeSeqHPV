@@ -14,6 +14,7 @@ docker run -i -v $(pwd):/mnt -v /mnt:/user_files \
         --config_file config_file.csv \
         --barcode_file barcodes.csv \
         --control_definitions control_defs.csv \
+        --control_freq control_freq.csv \
         --cores 22 \
         --hotspot_vcf TS2-T52_v1-HOTSPOT.hotspot.vcf \
         --manifest manifest.csv \

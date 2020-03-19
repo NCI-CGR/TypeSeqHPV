@@ -40,7 +40,7 @@
 
             pluginAPIJSON = { "plugin" : [TB_plugin.fields.name],
               "pluginconfig": {typing_manifest,
-                control_definitions,
+                control_definitions,control_freq,
                 config_file}};
                 pluginAPIJSON = JSON.stringify(pluginAPIJSON);
             console.log(pluginAPIJSON);
@@ -86,12 +86,14 @@
 <input name = 'control_definitions_name' id = 'control_definitions_id' type='file' accept='.csv'><br>
 <p> Config File
 <input name = 'config_file_name' id = 'config_file_id' type='file' accept='.csv'><br>
+<p> Control Frequency Definitions
+<input name = 'control_freq_name' id = 'control_freq_id' type='file' accept='.csv'><br>
 
 <script>
 
 var typing_manifest;
 var control_definitions;
-var report_grouping_definitions;
+var control_freq;
 var config_file;
 
 function readFile_manifest(event) {
@@ -130,7 +132,7 @@ function readFile_control(event) {
   }
 }
 
-function readFile_report_grouping(event) {
+function readFile_control_freq(event) {
   var file = event.target.files[0];
   if (file) {
     new Promise(function(resolve, reject) {
@@ -141,7 +143,7 @@ function readFile_report_grouping(event) {
       reader.readAsText(file);
       reader.onerror = reject;
     })
-    .then(processFileContent_report_grouping)
+    .then(processFileContent_control_freq)
     .catch(function(err) {
       console.log(err)
     });
@@ -184,6 +186,12 @@ function processFileContent_report_config(data) {
   console.log(config_file);
 };
 
+function processFileContent_control_freq(data) {
+  control_freq = data.split("\n");
+  console.log("you uploaded a config file")
+  console.log(control_freq);
+};
+
 document.getElementById('manifest_id')
 .addEventListener('change', readFile_manifest, false);
 
@@ -192,6 +200,9 @@ document.getElementById('control_definitions_id')
 
 document.getElementById('config_file_id')
 .addEventListener('change', readFile_report_config, false);
+
+document.getElementById('control_freq_id')
+.addEventListener('change', readFile_control_freq, false);
 
 </script>
 

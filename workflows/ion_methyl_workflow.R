@@ -14,6 +14,7 @@ library(magrittr)
 command_line_args = tibble(
     manifest = optigrab::opt_get('manifest'),
     control_definitions = optigrab::opt_get('control_definitions'),
+    control_freq = optigrab::opt_get('control_freq'),
     barcode_file = optigrab::opt_get('barcode_file'),
     tvc_parameters = optigrab::opt_get('tvc_parameters'),
     reference = optigrab::opt_get('reference'),
@@ -78,7 +79,8 @@ variants_final_table = single_bar_methyl_variant_filter(variant_table,
                                       args_df$filteringTable,
                                       args_df$posConversionTable,
                                       user_files$manifest,
-                                      user_files$control_definitions) %T>%
+                                      user_files$control_definitions, 
+                                      user_files$control_freq) %T>%
   map_df(~ system("zip -j TypeSeqHPVMethyl_outputs.zip read_summary.csv *results.csv"))
 
 )
