@@ -88,6 +88,15 @@ temp = lineage_plot(lineage_for_report, 2)
 
 
 #' \newpage
+#' ## Control Summary
+
+#+ Control summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
+
+Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
+temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report,specimen_control_defs)
+
+
+#' \newpage
 #' ## Plate map
 #+ Plate map, echo=FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=9, fig.align = "center"
 
@@ -95,13 +104,6 @@ plate_map_safe <- possibly(plate_map,otherwise = data.frame())
 temp = plate_map(manifest,detailed_pn_matrix_for_report,specimen_control_defs,control_for_report)
 
 
-#' \newpage
-#' ## Control Summary
-
-#+ Control summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
-
-Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
-temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report,specimen_control_defs)
 
 
 
