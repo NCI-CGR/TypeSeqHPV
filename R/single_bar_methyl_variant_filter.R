@@ -1,4 +1,4 @@
-single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest, control_defs){
+single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest, control_defs,  control_freq_defs){
   
   require(fuzzyjoin)
   
@@ -33,7 +33,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     filter(ALT %in% c("C", "T")) %>%
     inner_join(filteringTable) %>% 
     mutate(AF = as.double(AF)) %>%
-    mutate(qc_reason = "Pass") %>%
+    mutate(qc_reason = "") %>%
     mutate(qc_reason = ifelse(DP >= min_DP, qc_reason,
                               "min_DP")) %>%
  #   filter(!(qc_reason == "min_DP")) %>%
@@ -58,6 +58,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
                               paste0(qc_reason, ";", "max_freq"))) %>%
     mutate(qc_reason = ifelse(FILTER == "PASS", qc_reason,
                               paste0(qc_reason, ";", FILTER))) %>%
+    mutate(qc_reason = ifelse(qc_reason == "","Pass",paste0("Fail",";",qc_reason))) %>%
     mutate(status = ifelse(qc_reason == "Pass", "Pass", "Fail")) %>%
     rename(pos_amplicon = POS, chr_amplicon = CHROM) %>%
     glimpse() %>%
@@ -65,7 +66,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(chr, pos, DP, methyl_freq, QUAL, status, qc_reason, everything()) 
   
   return_table = manifest %>%
-    left_join(filtered_variants) %>% 
+    left_join(filtered_variants %>% select(chr,pos,REF,ALT,DP,methyl_freq,status,qc_reason,chr_amplicon,pos_amplicon,QUAL,FILTER,HS,TYPE,HRUN,everything())) %>% 
     filter(!(is.na(Owner_Sample_ID))) %>% 
     write_csv("target_variants_results.csv")
   
@@ -121,6 +122,23 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     filter(!(is.na(Owner_Sample_ID))) %>% 
     write_csv("control_results.csv")
   
+  
+  #Control frequency QC
+  
+  
+  control_freq_defs %>%
+    tidyr::gather(chrom, value, -control_code,-Control_range) %>%
+    transform(control_code = as.character(control_code)) %>%
+    spread(Control_range, value) -> control_freq_defs
+  
+  freq_matrix %>%
+    tidyr::gather("chrom", "freq", -Owner_Sample_ID, -barcode) %>%
+    inner_join(control_freq_defs, by = c("Owner_Sample_ID" = "control_code", "chrom")) %>%
+    mutate(status = ifelse(freq <= max & freq >= min, "Pass","Fail")) %>% 
+    mutate(status = ifelse(freq == "neg", "NA",status)) %>%
+    select(Owner_Sample_ID, barcode, chrom,status) %>%
+    spread(chrom,status) %>%
+    write.csv("Control_defs_frequency_results.csv")
   
   #non-hotspot vars...
   non_hotspot_vars = variants %>%
