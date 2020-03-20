@@ -116,7 +116,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(status = ifelse(depth >= Min_reads_per_type, "pos", "neg")) %>%
     glimpse() %>%
     select(-depth) %>%
-    select(-total_reads,-Owner_Sample_ID,-Min_reads_per_type) %>%
+    select(-total_reads,-Min_reads_per_type) %>%
     spread(CHROM, status) ->new
   
  
