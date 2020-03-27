@@ -203,7 +203,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     filter(!is.na(Owner_Sample_ID)) %>%
     gather("CHROM", "status", starts_with("HPV"), factor_key = TRUE) %>%
     separate(CHROM, sep = "_", into = c("type"), remove = FALSE, extra = "drop") %>%
-    glimpse() %>%
+    glimpse() %>% 
     mutate(status_as_integer = ifelse(status == "pos", 1, 0)) %>%
     group_by(barcode, type) %>%
     mutate(sum_status = sum(status_as_integer)) %>%
@@ -387,6 +387,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   #Join manifest to add all the information
     manifest %>% 
     mutate(barcode = paste0(BC1,BC2)) %>%
+    select(-BC1,-BC2) %>%
     inner_join(lineage_for_report[,str_sort(colnames(lineage_for_report), numeric = T)]) %>%
     write_csv("lineage_filtered_results.csv")
   
