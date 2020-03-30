@@ -16,6 +16,7 @@ command_line_args = tibble(
     control_definitions = optigrab::opt_get('control_definitions'),
     control_freq = optigrab::opt_get('control_freq'),
     barcode_file = optigrab::opt_get('barcode_file'),
+    pn_filters = optigrab::opt_get('pn_filters'),
     tvc_parameters = optigrab::opt_get('tvc_parameters'),
     reference = optigrab::opt_get('reference'),
     region_bed = optigrab::opt_get('region_bed'),
@@ -78,6 +79,7 @@ variant_table = vcf_files %>%
 variants_final_table = single_bar_methyl_variant_filter(variant_table,
                                       args_df$filteringTable,
                                       args_df$posConversionTable,
+                                      args_df$pn_filters,
                                       user_files$manifest,
                                       user_files$control_definitions, 
                                       user_files$control_freq) %T>%

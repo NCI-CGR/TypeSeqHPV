@@ -1,4 +1,4 @@
-single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, manifest, control_defs,  control_freq_defs){
+single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posConversionTable, pn_filters, manifest, control_defs,  control_freq_defs){
   
   require(fuzzyjoin)
   
@@ -86,7 +86,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     spread(chr_amplicon, depth) %>% 
     glimpse() 
   
-  pn_filter<-read.csv("/Users/shastrya2/Git/TypeSeqHPV/inst/methylation/HPVMethyl_Pos-Neg-Genotyping_filter-criteria_T66-v3-ref_v1.csv")
+  pn_filter<-read.csv(pn_filters)
   pn_filter %>%
     rename(chrom = contig) -> pn_filters
   coverage_matrix %>% 
