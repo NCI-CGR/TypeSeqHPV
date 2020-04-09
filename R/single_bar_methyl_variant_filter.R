@@ -14,7 +14,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   #hotspot vars...
   
-  GA_variants = variants %>%
+  GA_variants = variants %>% 
     filter(HS) %>%
     filter(!(ALT %in% c("C", "T"))) %>%
     transform(barcode = as.character(barcode)) %>%
@@ -40,8 +40,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
                               "min_DP")) %>% 
  #   filter(!(qc_reason == "min_DP")) %>%
     mutate(methyl_freq = case_when(
-      ALT == "C" ~ AF,
-      ALT == "T" ~ 1 - AF)) %>%
+      ALT == "C" ~ AF, ALT == "T" ~ 1 - AF)) %>%
     mutate(qc_reason = ifelse(SRF >= min_coverage_pos, qc_reason,
                               paste0(qc_reason, ";", "min_coverage_pos"))) %>%
     mutate(qc_reason = ifelse(SRR >= min_coverage_neg, qc_reason,
@@ -63,16 +62,16 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     mutate(qc_reason = ifelse(qc_reason == "","Pass",paste0("Fail",";",qc_reason))) %>%
     mutate(status = ifelse(qc_reason == "Pass", "Pass", "Fail")) %>%
     rename(pos_amplicon = POS, chr_amplicon = CHROM) %>% 
-    glimpse() %>%
-    inner_join(pos_conversion) %>% 
-    select(chr, pos, DP, methyl_freq, QUAL, status, qc_reason, everything()) 
+    glimpse() %>% 
+    inner_join(pos_conversion, by = c("chr_amplicon","pos_amplicon")) %>%
+    select(chr_amplicon, pos, DP, methyl_freq, QUAL, status, qc_reason, everything()) 
   
   return_table = manifest %>% 
-    left_join(filtered_variants %>% select(chr,pos,REF,ALT,DP,methyl_freq,status,qc_reason,chr_amplicon,pos_amplicon,QUAL,FILTER,HS,TYPE,HRUN,everything())) %>% 
+    left_join(filtered_variants %>% select(chr,pos,REF,ALT,DP,methyl_freq,status,qc_reason,chr_amplicon,pos_amplicon,QUAL,FILTER,CpG_Variant_Info,HS,TYPE,HRUN,everything())) %>% 
     filter(!(is.na(Owner_Sample_ID))) 
     write_csv(return_table, "target_variants_results.csv")
   
-  coverage_matrix = return_table %>%
+  coverage_matrix = return_table %>% 
     group_by(Owner_Sample_ID, barcode, chr_amplicon) %>% 
     summarize(depth = max(DP)) %>% 
     ungroup() %>% 
@@ -85,6 +84,19 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(-MASIC_reads,-HPV_reads,-Human_reads) %>%
     spread(chr_amplicon, depth) %>% 
     glimpse() 
+  
+  control_defs %>%
+    select(-control_code,-control_type) %>%
+    colnames() -> con_sort_order
+  
+  coverage_matrix = coverage_matrix %>%
+    select(Owner_Sample_ID, barcode, total_HPV_reads,total_human_reads, total_MASIC_reads, con_sort_order, everything())
+  
+  manifest %>%
+    inner_join(coverage_matrix) %>%
+    filter(!(is.na(Owner_Sample_ID))) %>%
+    write_csv("coverage_matrix_results.csv") 
+  
   
   pn_filter<-read.csv(pn_filters)
   pn_filter %>%
@@ -114,8 +126,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
       unique() %>% 
       inner_join(detailed_pn_matrix) %>%
       transform(barcode = as.character(barcode))
-    
-    
     
     manifest %>% 
       inner_join(num_type_list) %>% 
@@ -173,11 +183,6 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     filter(!(is.na(Owner_Sample_ID))) %>%
      write.csv("simple_pn_matrix.csv")
     
-    
-    manifest %>%
-    inner_join(coverage_matrix) %>%
-    filter(!(is.na(Owner_Sample_ID))) %>%
-    write_csv("coverage_matrix_results.csv") 
   
   #freq_matrix
   
@@ -195,31 +200,52 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     filter(!(is.na(Owner_Sample_ID))) %>%
     write_csv("freq_matrix_results.csv") 
   
+  
   control_defs = control_defs %>%
     glimpse() %>%
     tidyr::gather("chrom", "min_coverage", -control_code,-control_type) %>%
     glimpse()
   
-  control_results = coverage_matrix %>%
-    tidyr::gather("chrom", "depth", -Owner_Sample_ID, -barcode) %>%
+  control_results = coverage_matrix %>% 
+    tidyr::gather("chrom", "depth", -Owner_Sample_ID, -barcode, -starts_with("MASIC"), -total_MASIC_reads, -total_HPV_reads, -total_human_reads) %>% 
     mutate(depth = as.integer(depth)) %>%
     fuzzyjoin::fuzzy_join(control_defs, mode = "inner", by = c("Owner_Sample_ID" = "control_code"), match_fun = function(x, y) str_detect(x, fixed(y, ignore_case = TRUE))) %>%
-    filter(chrom.x == chrom.y) %>%
+    filter(chrom.x == chrom.y) %>% 
     mutate(control_results = ifelse(control_type == "pos" & depth >= min_coverage, "Pass","fail")) %>% 
     mutate(control_results = ifelse(control_type == "neg" & depth <= min_coverage, "Pass",control_results)) %>% 
    # mutate(control_result = ifelse(depth >= min_coverage, "pass", "fail")) %>%
     glimpse() %>%
-    select(Owner_Sample_ID, barcode, chrom = chrom.x, control_results) %>%
+    select(Owner_Sample_ID, barcode, chrom = chrom.x, control_results,starts_with("MASIC")) %>%
     arrange(Owner_Sample_ID, chrom) %>%
     mutate(pass_targets = ifelse(control_results == "Pass",1,0)) %>%
     mutate(fail_targets = ifelse(control_results == "fail",1,0)) %>%
-    group_by(Owner_Sample_ID,barcode) %>%
-    mutate(num_pass_targets = sum(pass_targets), num_fail_targets = sum(fail_targets)) %>%
-    select(-pass_targets,-fail_targets) %>%
+    group_by(Owner_Sample_ID,barcode) %>% 
+    mutate(num_pass_targets = sum(pass_targets), num_fail_targets = sum(fail_targets)) %>% 
+    select(-pass_targets,-fail_targets,-starts_with("MASIC")) %>%
     spread(chrom, control_results) 
   
+    control_results_final<- coverage_matrix %>%
+    gather("MAS_chr","mas_depth",starts_with("MASIC"),-Owner_Sample_ID, -barcode) %>% 
+  # inner_join(control_defs, by = c("MAS_chr" = "chrom","Owner_Sample_ID" = "control_code" )) %>%
+    fuzzyjoin::fuzzy_join(control_defs, mode = "inner", by = c("Owner_Sample_ID" = "control_code"), match_fun = function(x, y) str_detect(x, fixed(y, ignore_case = TRUE))) %>%
+    filter(MAS_chr == chrom) %>% 
+    mutate(mas_results = ifelse(control_type == "pos" & mas_depth >= min_coverage, "Pass","fail")) %>% 
+    mutate(mas_results = ifelse(control_type == "neg" & mas_depth < min_coverage, "Pass",mas_results)) %>% 
+    mutate(mas_results = ifelse(Owner_Sample_ID == "NTC" & mas_depth >= min_coverage, "Pass",mas_results)) %>%    #Adding a filter for NTC 
+    mutate(mas_results = ifelse(Owner_Sample_ID == "NTC" & mas_depth < min_coverage, "fail",mas_results))  %>% 
+    mutate(mas_fail_targets = ifelse(mas_results == "fail",1,0)) %>% 
+    group_by(Owner_Sample_ID,barcode) %>% 
+    mutate(num_fail_MASIC = sum(mas_fail_targets)) %>%
+    select(Owner_Sample_ID,barcode,num_fail_MASIC,MAS_chr,mas_results) %>%
+    spread(MAS_chr,mas_results) %>% 
+   # select(Owner_Sample_ID,barcode,num_fail_MASIC) %>%
+    full_join(control_results, by = c("Owner_Sample_ID","barcode")) 
+    
+    control_results_final = control_results_final %>%
+      select(Owner_Sample_ID,barcode,num_pass_targets,num_fail_targets,num_fail_MASIC, con_sort_order, everything())
+    
   manifest %>%
-    inner_join(control_results) %>%
+    inner_join(control_results_final) %>%
     filter(!(is.na(Owner_Sample_ID))) %>% 
     write_csv("control_results.csv")
   
@@ -237,13 +263,21 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     inner_join(control_freq_defs, by = c("Owner_Sample_ID" = "control_code", "chrom")) %>%
     mutate(status = ifelse(freq <= max & freq >= min, "Pass","Fail")) %>% 
     mutate(status = ifelse(freq == "neg", "NA",status)) %>%
-    select(Owner_Sample_ID, barcode, chrom,status) %>%
-    spread(chrom,status) 
+    mutate(pass_freq = ifelse(status == "Pass",1,0)) %>%
+    mutate(fail_freq = ifelse(status == "Fail",1,0)) %>%
+    mutate(NA_freq = ifelse(status == "NA",1,0)) %>%
+    group_by(Owner_Sample_ID,barcode) %>%
+    mutate(num_pass_freq = sum(pass_freq),num_fail_freq = sum(fail_freq),num_NA_freq = sum(NA_freq)) %>%
+    select(Owner_Sample_ID, barcode, chrom,status, num_pass_freq,num_fail_freq,num_NA_freq) %>%
+    spread(chrom,status)
+  
+  control_freq_qc = control_freq_qc %>%
+    select(Owner_Sample_ID,barcode,num_pass_freq,num_fail_freq,num_NA_freq,con_sort_order,everything())
   
   manifest %>%
     inner_join(control_freq_qc) %>%
     filter(!(is.na(Owner_Sample_ID))) %>%
-    write.csv("Control_frequency_results.csv")
+    write.csv("Control_frequency_results.csv", row.names = F)
   
   #non-hotspot vars...
   non_hotspot_vars = variants %>%
