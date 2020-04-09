@@ -271,8 +271,8 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(Owner_Sample_ID, barcode, chrom,status, num_pass_freq,num_fail_freq,num_NA_freq) %>%
     spread(chrom,status)
   
-  control_freq_qc = control_freq_qc %>%
-    select(Owner_Sample_ID,barcode,num_pass_freq,num_fail_freq,num_NA_freq,con_sort_order,everything())
+  control_freq_qc = control_freq_qc[,str_sort(colnames(control_freq_qc),numeric = T)] %>%
+    select(Owner_Sample_ID,barcode,num_pass_freq,num_fail_freq,num_NA_freq,everything())
   
   manifest %>%
     inner_join(control_freq_qc) %>%
