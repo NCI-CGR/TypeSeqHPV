@@ -24,7 +24,7 @@ sample_summary <- function(df){
         
         
     panderOptions("table.split.table", 100)
-    panderOptions("table.split.cells", 6)
+  #  panderOptions("table.split.cells", 6)
 
     pandoc.table(as_tibble(sampleSummary), style = "multiline", justify=c("right", "left", "left", "left", "left", "left"),
                  caption = "SAMPLE Summary",
