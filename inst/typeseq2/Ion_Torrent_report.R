@@ -28,7 +28,7 @@ startPluginDf = get_run_metadata_safe(args_df)
 sample_summary_safe <- possibly(sample_summary, otherwise =  data.frame())
 #samples_only_matrix_results.csv
 
-temp = sample_summary(samples_only_for_report)
+temp = sample_summary_safe(samples_only_for_report)
 
 #' \newpage
 #' ## PLATE Results Summary
