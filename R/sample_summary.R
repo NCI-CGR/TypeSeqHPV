@@ -13,12 +13,16 @@ sample_summary <- function(df){
         summarize(count = n()) %>%
         ungroup() %>%
         spread(human_control, count, fill=0) %>%
-        select(Project_ID = Project, `Number Samples Tested` = numSamplesTested,
-               `Number Passed` = pass, `Number Failed` = failed_to_amplify) %>%
-        arrange(Project_ID) %>%
-        mutate(`Perc Passed` = paste0(round(`Number Passed`/`Number Samples Tested` * 100, digits=2), "%"))  %>%
-        mutate(`Perc Failed` = paste0(round(`Number Failed`/`Number Samples Tested` * 100, digits=2), "%"))
-
+      #  select(Project_ID = Project, `Number Samples Tested` = numSamplesTested,
+       #        `Number Passed` = pass, `Number Failed` = failed_to_amplify) %>%
+         arrange(Project) %>%    
+     #   arrange(Project_ID) %>%
+     #   mutate(`Perc Passed` = paste0(round(`Number Passed`/`Number Samples Tested` * 100, digits=2), "%"))  %>%
+     #   mutate(`Perc Failed` = paste0(round(`Number Failed`/`Number Samples Tested` * 100, digits=2), "%"))
+        # mutate(Perc Passed` = paste0(round(pass/numSamplesTested)
+         mutate(`Perc Failed` = paste0(round(failed_to_amplify/numSamplesTested * 100, digits=2), "%"))
+        
+        
     panderOptions("table.split.table", 100)
     panderOptions("table.split.cells", 5)
 
