@@ -67,7 +67,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   read_counts_matrix_wide = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     full_join(read_counts_matrix_wide[,str_sort(colnames(read_counts_matrix_wide), numeric = T)] %>%
-              select(barcode,Owner_Sample_ID, `ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
+              select(barcode,Owner_Sample_ID,total_reads,`ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
     select(-BC1, -BC2) %>%
     write_csv("read_counts_matrix_results.csv")
   
@@ -182,7 +182,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     rename("ASIC_High"=ASICHigh, "ASIC_Low"=ASICLow, "ASIC_Med"=ASICMed, "ESIC_High"=ESICHigh,"ESIC_Low"=ESICLow,"ESIC_Med"=ESICMed, "B2M_L"=B2ML, "B2M_S"=B2MS)-> detailed_pn_matrix
     
   detailed_pn_matrix = detailed_pn_matrix[,str_sort(colnames(detailed_pn_matrix), numeric = T)] %>%
-    select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything()) 
+    select(barcode,Num_Types_Pos,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything()) 
   write.csv(detailed_pn_matrix,"detailed_pn_matrix_report")
   
   #  print("line 110")
@@ -224,7 +224,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   simple_pn_matrix_final = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     inner_join(simple_pn_matrix[,str_sort(colnames(simple_pn_matrix), numeric = T)] %>%
-                 select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
+                 select(barcode,Num_Types_Pos,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
     select(-BC1, -BC2) %>%
     write_csv("pn_matrix_results.csv")
 
@@ -270,7 +270,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
    manifest %>% 
     mutate(barcode = paste0(BC1,BC2)) %>%
     inner_join(control_results_final[,str_sort(colnames(control_results_final), numeric = T)] %>%
-     select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything()) ) %>%
+     select(barcode,total_reads,Owner_Sample_ID,ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything()) ) %>%
     write_csv("control_results.csv")
   
   control_for_report = control_results_final %>%
@@ -289,7 +289,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   manifest %>%
     mutate(barcode = paste0(BC1,BC2)) %>%
-    inner_join(samples_only_pn_matrix) %>%
+    inner_join(samples_only_pn_matrix[,str_sort(colnames(samples_only_pn_matrix), numeric = T)] %>%
+    select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything())) %>% 
+    select(-Control_Code) %>%
     write_csv("samples_only_matrix_results.csv")
   
   samples_only_for_report = samples_only_pn_matrix %>%
