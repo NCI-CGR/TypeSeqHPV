@@ -38,6 +38,17 @@ plate_summary_safe <- possibly(plate_summary, otherwise = data.frame())
 #needs controls only and samples only matrix
 temp = plate_summary(control_for_report,samples_only_for_report)
 
+
+#' \newpage
+#' ## Control Summary
+
+#+ Control summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
+
+Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
+temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report,specimen_control_defs)
+
+
+
 #' \newpage
 #' ## Counts and Percentage of Types Positive by Project
 
@@ -87,13 +98,7 @@ temp = lineage_plot(lineage_for_report, 1)
 temp = lineage_plot(lineage_for_report, 2)
 
 
-#' \newpage
-#' ## Control Summary
 
-#+ Control summary, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
-
-Internal_control_summary_safe <- possibly(Internal_control_summary,otherwise = data.frame())
-temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,control_for_report,specimen_control_defs)
 
 
 #' \newpage
