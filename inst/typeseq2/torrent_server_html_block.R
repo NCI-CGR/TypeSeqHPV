@@ -35,9 +35,12 @@ cat('
 
 [lineage results](./lineage_results.csv)
 
+[failed samples pn matrix](./failed_samples_pn_matrix.csv)
+
 [control results](./control_results.csv)
 
 [archive of outputs](./TypeSeq2_outputs.zip)
+
 
 
 
