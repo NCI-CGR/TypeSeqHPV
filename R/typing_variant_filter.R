@@ -55,21 +55,31 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
       gather(CHROM,depth,-total_reads,-Owner_Sample_ID,-barcode)
   }
   
-
+  
+  
   read_counts_matrix_wide = read_counts_matrix_long %>%
     spread(CHROM, depth)
   
   read_count_matrix_report = read_counts_matrix_wide %>%
     gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`)
-  write.csv(read_count_matrix_report,"read_count_matrix_report")
+  
+  for (i in code){
+    print(i)
+    write.csv(read_count_matrix_report,file = paste0(i,"_","read_count_matrix_report"))
+  }
+  
   
   #Rearranging column names to match the order of contigs in variant file. 
-  read_counts_matrix_wide = manifest %>%
+  read_counts_matrix_wide_final = manifest %>%
     mutate(barcode = paste0(BC1, BC2)) %>%
     full_join(read_counts_matrix_wide[,str_sort(colnames(read_counts_matrix_wide), numeric = T)] %>%
               select(barcode,Owner_Sample_ID,total_reads,`ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
-    select(-BC1, -BC2) %>%
-    write_csv("read_counts_matrix_results.csv")
+    select(-BC1, -BC2) 
+  
+  for (i in code){
+    print(i)
+    write.csv(read_counts_matrix_wide_final,file = paste0(i,"_","read_counts_matrix_results.csv"))
+  }
   
   print("line 41")
   
@@ -105,9 +115,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     glimpse() %>%
     rename(CHROM = contig) %>%
     mutate(Min_reads_per_type = Min_reads_per_type * scaling_factor)
-    write.csv(pn_filters,"pn_filters_report")
- 
- 
+
+  write.csv(pn_filters,"pn_filters_report")
+
   
   # make detailed pn matrix ----
   read_counts_matrix_long %>%
@@ -191,8 +201,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(barcode = paste0(BC1, BC2)) %>%
     inner_join(detailed_pn_matrix) %>%
     select(-BC1, -BC2) %>%
-    select(-starts_with("HPV"), everything(), starts_with("HPV")) %>%
-    write_csv("detailed_pn_matrix_results.csv")
+    select(-starts_with("HPV"), everything(), starts_with("HPV"))
+    
   
  # str_replace_all(colnames(r),"-","_") -> colnames(temp_detailed_pn_matrix)
   
@@ -225,8 +235,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(barcode = paste0(BC1, BC2)) %>%
     inner_join(simple_pn_matrix[,str_sort(colnames(simple_pn_matrix), numeric = T)] %>%
                  select(barcode,Num_Types_Pos,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
-    select(-BC1, -BC2) %>%
-    write_csv("pn_matrix_results.csv")
+    select(-BC1, -BC2) 
+    
 
   print("line 148")
   
@@ -244,8 +254,15 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     filter(human_control == "failed_to_amplify") %>%
     full_join(specimen_control_defs %>% select(Control_Code,Control_type), by = c("Owner_Sample_ID"= "Control_Code")) %>%
     filter(is.na(Control_type)) %>%
-    inner_join(manifest %>% mutate(barcode = paste0(BC1, BC2)), by = c("barcode","Owner_Sample_ID")) %>%
-    write.csv("failed_samples_pn_matrix.csv")
+    inner_join(manifest %>% mutate(barcode = paste0(BC1, BC2)), by = c("barcode","Owner_Sample_ID")) -> failed_pn_matrix
+    
+  failed_pn_matrix_final = manifest %>%
+    mutate(barcode = paste0(BC1, BC2)) %>%
+    inner_join(failed_pn_matrix[,str_sort(colnames(simple_pn_matrix), numeric = T)] %>%
+                 select(barcode,Num_Types_Pos,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
+    select(-BC1, -BC2) %>%
+    filter(!is.na(Owner_Sample_ID)) 
+  
   
   
   # 2.  merge pn matrix with control defs
@@ -267,11 +284,11 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     inner_join(read_counts_matrix_wide %>% select(barcode,Owner_Sample_ID,total_reads), by = c("barcode","Owner_Sample_ID")) 
   
   #Adding manifest to the final results 
-   manifest %>% 
+   control_results_final = manifest %>% 
     mutate(barcode = paste0(BC1,BC2)) %>%
     inner_join(control_results_final[,str_sort(colnames(control_results_final), numeric = T)] %>%
-     select(barcode,total_reads,Owner_Sample_ID,ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything()) ) %>%
-    write_csv("control_results.csv")
+     select(barcode,total_reads,Owner_Sample_ID,ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything()) ) 
+    
   
   control_for_report = control_results_final %>%
     inner_join(manifest) 
@@ -287,12 +304,12 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     filter(is.na(Control_Code)) %>%
     glimpse()
   
-  manifest %>%
+  samples_only_pn_matrix_final = manifest %>%
     mutate(barcode = paste0(BC1,BC2)) %>%
     inner_join(samples_only_pn_matrix[,str_sort(colnames(samples_only_pn_matrix), numeric = T)] %>%
     select(barcode,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, B2M_L, B2M_S,everything())) %>% 
-    select(-Control_Code) %>%
-    write_csv("samples_only_matrix_results.csv")
+    select(-Control_Code) 
+    
   
   samples_only_for_report = samples_only_pn_matrix %>%
     inner_join(manifest %>% mutate(barcode = paste0(BC1,BC2))) %>%
@@ -387,12 +404,41 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     
     
   #Join manifest to add all the information
-    manifest %>% 
+    lineage_final = manifest %>% 
     mutate(barcode = paste0(BC1,BC2)) %>%
     select(-BC1,-BC2) %>%
-    inner_join(lineage_for_report[,str_sort(colnames(lineage_for_report), numeric = T)]) %>%
-    write_csv("lineage_filtered_results.csv")
+    inner_join(lineage_for_report[,str_sort(colnames(lineage_for_report), numeric = T)]) 
+    
+
+# Adding Assay code to all result files
+
+#Get the assay code
+    
+code = levels(unique(manifest$Assay_Batch_Code))
+Project_code = levels(unique(manifest$Project))
+    
+for (i in Project_code){
   
+  samples_only_pn_matrix_final %>%
+    filter(Project == i) %>%
+    write_csv(paste0(i,"_","samples_only_matrix_results.csv"))
   
+}    
+
+    
+    
+for (i in code){
+      print(i)
+      write.csv(read_count_matrix_report,file = paste0(i,"_","read_count_matrix_report"))
+      write.csv(pn_filters,file = paste0(i,"_","pn_filters_report"))
+      write_csv(deatiled_pn_matrix_for_report1, paste0(i,"_","detailed_pn_matrix_results.csv"))
+      write_csv(simple_pn_matrix_final,paste0(i,"_","pn_matrix_results.csv"))
+      write.csv(failed_pn_matrix_final,paste0(i,"_","failed_samples_pn_matrix.csv"))
+      write_csv(control_results_final, paste0(i,"_","control_results.csv"))
+      write_csv(lineage_final,paste0(i,"_","lineage_filtered_results.csv"))
+      
+      }
+   
+      
 }
 
