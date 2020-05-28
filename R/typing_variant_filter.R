@@ -61,12 +61,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     spread(CHROM, depth)
   
   read_count_matrix_report = read_counts_matrix_wide %>%
-    gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`)
-  
-  for (i in code){
-    print(i)
-    write.csv(read_count_matrix_report,file = paste0(i,"_","read_count_matrix_report"))
-  }
+    gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`) %>%
+    write.csv("read_count_matrix_report")
+
   
   
   #Rearranging column names to match the order of contigs in variant file. 
@@ -76,10 +73,6 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
               select(barcode,Owner_Sample_ID,total_reads,`ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
     select(-BC1, -BC2) 
   
-  for (i in code){
-    print(i)
-    write.csv(read_counts_matrix_wide_final,file = paste0(i,"_","read_counts_matrix_results.csv"))
-  }
   
   print("line 41")
   
@@ -429,7 +422,7 @@ for (i in Project_code){
     
 for (i in code){
       print(i)
-      write.csv(read_count_matrix_report,file = paste0(i,"_","read_count_matrix_report"))
+      write.csv(read_counts_matrix_wide_final,file = paste0(i,"_","read_counts_matrix_results.csv"))
       write.csv(pn_filters,file = paste0(i,"_","pn_filters_report"))
       write_csv(deatiled_pn_matrix_for_report1, paste0(i,"_","detailed_pn_matrix_results.csv"))
       write_csv(simple_pn_matrix_final,paste0(i,"_","pn_matrix_results.csv"))
