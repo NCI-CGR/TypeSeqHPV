@@ -409,9 +409,10 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 # Adding Assay code to all result files
 
 #Get the assay code
-    
-code = levels(unique(manifest$Assay_Batch_Code))
-Project_code = levels(unique(manifest$Project))
+
+man = manifest %>% transform(Assay_Batch_Code = as.factor(Assay_Batch_Code),Project = as.factor(Project))   
+code = levels(unique(man$Assay_Batch_Code))
+Project_code = levels(unique(man$Project))
     
 for (i in Project_code){
   
@@ -429,7 +430,7 @@ for (i in code){
       write.csv(pn_filters,file = paste0(i,"_","pn_filters_report"))
       write_csv(deatiled_pn_matrix_for_report1, paste0(i,"_","detailed_pn_matrix_results.csv"))
       write_csv(simple_pn_matrix_final,paste0(i,"_","pn_matrix_results.csv"))
-      write.csv(failed_pn_matrix_final,paste0(i,"_","failed_samples_pn_matrix.csv"))
+      write.csv(failed_pn_matrix_final,paste0(i,"_","failed_samples_pn_matrix_results.csv"))
       write_csv(control_results_final, paste0(i,"_","control_results.csv"))
       write_csv(lineage_final,paste0(i,"_","lineage_filtered_results.csv"))
       
