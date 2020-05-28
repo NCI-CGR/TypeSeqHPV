@@ -402,6 +402,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     select(-BC1,-BC2) %>%
     inner_join(lineage_for_report[,str_sort(colnames(lineage_for_report), numeric = T)]) 
     
+    write.csv(lineage_final, "lineage_for_report")
 
 # Adding Assay code to all result files
 

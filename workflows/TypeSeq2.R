@@ -96,7 +96,7 @@ ion_plan <- drake::drake_plan(
                                          read_count_matrix_report = read.csv("read_count_matrix_report"),
                                          pn_filters = read.csv("pn_filters_report"),
                                          specimen_control_defs = user_files$control_definitions,
-                                         lineage_for_report = read.csv("lineage_filtered_results.csv") ) %T>%
+                                         lineage_for_report = read.csv("lineage_for_report") ) %T>%
         map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv failed_samples_pn_matrix.csv *results.csv *QC_report.pdf")),
     
     #### 9. generate grouped pn_matrix           
