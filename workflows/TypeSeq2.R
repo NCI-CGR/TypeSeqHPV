@@ -100,7 +100,7 @@ ion_plan <- drake::drake_plan(
         map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv failed_samples_pn_matrix.csv *results.csv *QC_report.pdf")),
     
     #### 9. generate grouped pn_matrix           
-    grouped_outputs = get_grouped_df(simple_pn_matrix_final = read.csv("pn_matrix_results.csv"),
+    grouped_outputs = get_grouped_df(simple_pn_matrix_final = read.csv("pn_matrix_for_groupings"),
                                      groups_defs = user_files$grouping_defs,
                                      ion_qc_report = ion_qc_report)
     

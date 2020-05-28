@@ -229,6 +229,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     inner_join(simple_pn_matrix[,str_sort(colnames(simple_pn_matrix), numeric = T)] %>%
                  select(barcode,Num_Types_Pos,Owner_Sample_ID, ASIC_Low, ASIC_Med, ASIC_High, Assay_SIC, B2M_L, B2M_S,human_control,everything())) %>%
     select(-BC1, -BC2) 
+  
+  write.csv(simple_pn_matrix_final,"pn_matrix_for_groupings")
     
 
   print("line 148")
