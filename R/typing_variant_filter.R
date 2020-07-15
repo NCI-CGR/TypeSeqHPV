@@ -410,9 +410,9 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
 
 #Get the assay code
 
-man = manifest %>% transform(Assay_Batch_Code = as.factor(Assay_Batch_Code),Project = as.factor(Project))   
-code = levels(unique(man$Assay_Batch_Code))
-Project_code = levels(unique(man$Project))
+#man = manifest %>% transform(Assay_Batch_Code = as.factor(Assay_Batch_Code),Project = as.factor(Project))   
+#code = levels(unique(man$Assay_Batch_Code))
+#Project_code = levels(unique(man$Project))
     
 #for (i in Project_code){
   
