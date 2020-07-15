@@ -414,27 +414,27 @@ man = manifest %>% transform(Assay_Batch_Code = as.factor(Assay_Batch_Code),Proj
 code = levels(unique(man$Assay_Batch_Code))
 Project_code = levels(unique(man$Project))
     
-for (i in Project_code){
+#for (i in Project_code){
   
-  samples_only_pn_matrix_final %>%
-    filter(Project == i) %>%
-    write_csv(paste0(i,"_","samples_only_matrix_results.csv"))
+ # samples_only_pn_matrix_final %>%
+  #  filter(Project == i) %>%
+   # write_csv(paste0(i,"_","samples_only_matrix_results.csv"))
   
-}    
+#}    
 
     
     
-for (i in code){
-      print(i)
-      write.csv(read_counts_matrix_wide_final,file = paste0(i,"-","read_counts_matrix_results.csv"))
-      write.csv(pn_filters,file = paste0(i,"-","pn_filters_report"))
-      write_csv(deatiled_pn_matrix_for_report1, paste0(i,"-","detailed_pn_matrix_results.csv"))
-      write_csv(simple_pn_matrix_final,paste0(i,"-","pn_matrix_results.csv"))
-      write.csv(failed_pn_matrix_final,paste0(i,"-","failed_samples_pn_matrix_results.csv"))
-      write_csv(control_results_final, paste0(i,"-","control_results.csv"))
-      write_csv(lineage_final,paste0(i,"-","lineage_filtered_results.csv"))
+#for (i in code){
+ #     print(i)
+  #    write.csv(read_counts_matrix_wide_final,file = paste0(i,"-","read_counts_matrix_results.csv"))
+   #   write.csv(pn_filters,file = paste0(i,"-","pn_filters_report"))
+  #    write_csv(deatiled_pn_matrix_for_report1, paste0(i,"-","detailed_pn_matrix_results.csv"))
+  #    write_csv(simple_pn_matrix_final,paste0(i,"-","pn_matrix_results.csv"))
+  #    write.csv(failed_pn_matrix_final,paste0(i,"-","failed_samples_pn_matrix_results.csv"))
+  #    write_csv(control_results_final, paste0(i,"-","control_results.csv"))
+  #    write_csv(lineage_final,paste0(i,"-","lineage_filtered_results.csv"))
       
-      }
+   #   }
    
       
 }
