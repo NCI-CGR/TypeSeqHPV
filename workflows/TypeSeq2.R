@@ -82,9 +82,8 @@ ion_plan <- drake::drake_plan(
                                                  specimen_control_defs = user_files$control_definitions,
                                                  internal_control_defs = args_df$internal_control_defs,
                                                  pn_filters = args_df$pn_filters,
-                                                 scaling_table = args_df$scaling_table), 
-    #%T>%
-     #   map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv *QC_report.pdf")),
+                                                 scaling_table = args_df$scaling_table) %T>%
+        map_df(~ system("zip -j TypeSeq2_outputs.zip read_summary.csv *results.csv *QC_report.pdf")),
     
     #### 8. generate qc report ####
     ion_qc_report = render_ion_qc_report(variants_final_table = variants_final_table,
