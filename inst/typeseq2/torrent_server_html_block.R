@@ -37,7 +37,7 @@ cat('
 
 [failed samples pn matrix](./*failed_samples_pn_matrix.csv)
 
-[control results](./*control_results.csv)
+<a href="*control_results.csv" target="_blank">control_results.csv</a>  
 
 [archive of outputs](./TypeSeq2_outputs.zip)
 
