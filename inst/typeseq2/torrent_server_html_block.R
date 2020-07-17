@@ -27,17 +27,17 @@ run_type = plugin_json$runplugin$run_type
 
 cat('
 
-[positive negative matrix](./pn_matrix_results.csv)
+[positive negative matrix](./*pn_matrix_results.csv)
 
-[detailed pn matrix](./detailed_pn_matrix_results.csv)
+[detailed pn matrix](./*detailed_pn_matrix_results.csv)
 
-[read count matrix](./read_counts_matrix_results.csv)
+[read count matrix](./*read_counts_matrix_results.csv)
 
-[lineage results](./lineage_results.csv)
+[lineage results](./*lineage_results.csv)
 
-[failed samples pn matrix](./failed_samples_pn_matrix.csv)
+[failed samples pn matrix](./*failed_samples_pn_matrix.csv)
 
-[control results](./control_results.csv)
+[control results](./*control_results.csv)
 
 [archive of outputs](./TypeSeq2_outputs.zip)
 
