@@ -109,7 +109,7 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     glimpse() %>%
     rename(CHROM = contig) %>%
     mutate(Min_reads_per_type = Min_reads_per_type * scaling_factor)  %>%
-    filter(!is.na(Owner_Sample_ID))
+    filter(!is.na(CHROM))
 
   write.csv(pn_filters,"pn_filters_report")
 
