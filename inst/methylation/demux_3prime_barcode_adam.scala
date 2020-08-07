@@ -72,6 +72,8 @@ val df = temp.toDF().
   withColumn("recordGroupSample", $"recordGroupSample" cast "String" as "recordGroupSample").
   withColumn("filename", $"recordGroupSample")
 
+ println(readsTransform.rdd.count())
+
 val read_summary_df = df.
   groupBy("filename").
   agg(countDistinct('readName).alias("total reads"),
