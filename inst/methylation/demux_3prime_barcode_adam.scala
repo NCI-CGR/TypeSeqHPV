@@ -72,7 +72,6 @@ val df = temp.toDF().
   withColumn("recordGroupSample", $"recordGroupSample" cast "String" as "recordGroupSample").
   withColumn("filename", $"recordGroupSample")
 
-println(sc.loadAlignments("*bam").rdd.count())
 
 val read_summary_df = df.
   groupBy("filename").

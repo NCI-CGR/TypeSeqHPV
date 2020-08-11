@@ -3,9 +3,11 @@ adam_demux <- function(user_files, ram, cores){
   require(dplyr)
   require(fs)
   
-  system(paste0("/home/adam/bin/adam-shell --driver-memory ", ram," --driver-cores ",cores," -i /TypeSeqHPV/inst/methylation/demux_3prime_barcode_adam.scala"))
+  system(paste0("/home/adam/bin/adam-shell --driver-memory ", ram," --driver-cores ",cores," --conf spark.network.timeout=10000 --conf spark.executor.heartbeatInterval=1000   --conf spark.driver.maxResultSize=4g -i /TypeSeqHPV/inst/methylation/demux_3prime_barcode_adam.scala"))
   
   system(paste0("samtools index demux_reads.bam"), wait = TRUE)
+  
+  system(paste0("ls /mnt/demux_reads.bam | xargs -n1 -P4 samtools index"),wait = TRUE)
   
   system("cp read_summary_df.csv/*csv read_summary.csv")
   
