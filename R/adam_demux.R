@@ -3,7 +3,7 @@ adam_demux <- function(user_files, ram, cores){
   require(dplyr)
   require(fs)
   
-  system(paste0("/home/adam/bin/adam-shell --driver-memory 100G --driver-cores ",cores," --conf spark.network.timeout=10000 --conf spark.executor.heartbeatInterval=1000   --conf spark.driver.maxResultSize=4g -i /TypeSeqHPV/inst/methylation/demux_3prime_barcode_adam.scala"))
+  system(paste0("/home/adam/bin/adam-shell --driver-memory 100G --driver-cores ",cores," --conf spark.network.timeout=10000 --conf spark.executor.heartbeatInterval=1000 -i /TypeSeqHPV/inst/methylation/demux_3prime_barcode_adam.scala"))
   
   system(paste0("samtools index demux_reads.bam"), wait = TRUE)
   
