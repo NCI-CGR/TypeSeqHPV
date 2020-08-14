@@ -59,7 +59,7 @@ val barcodesJoined = manifest.join(barcodes, manifest("BC2") === barcodes("id"))
   withColumn("barcodeID", concat($"BC1", $"BC2")).
   select($"barcodeID", $"bc_sequence", $"BC1", $"BC2")
 
-val readsTransform = sc.loadAlignments("*.bam").
+val readsTransform = sc.loadAlignments("IonXpress_049*.bam").
 transformDataset(temp => {
 
 val df = temp.toDF().
