@@ -4,13 +4,13 @@ vcf_to_dataframe <- function(vcf_files){
     require(fs)
     require(vcfR)
 
-    temp = read.vcfR(vcf_files$vcf_out)
+    temp = read.vcfR(vcf_files$vcf_out %>% unique())
 
     temp = vcfR2tidy(temp)
 
     temp = temp$fix %>%
     as_tibble() %>%
-    mutate(filename = vcf_files$vcf_out) %>%
+    mutate(filename = vcf_files$vcf_out %>% unique()) %>%
     select(filename, everything())
 
     variant_table_snv = temp %>%
