@@ -72,8 +72,10 @@ control_df2 = detailed_pn_matrix_for_report %>%
    mutate(Num_Pos_Con_Passed = ifelse(control_result == "pass" & Control_type == "pos", 1,0)) %>%
    mutate(Num_Neg_Con_Passed = ifelse(control_result == "pass" & Control_type == "neg", 1,0)) %>% 
    mutate(Num_Pos_Con_Passed = ifelse(is.na(Num_Pos_Con_Passed),0,Num_Pos_Con_Passed),Num_Neg_Con_Passed = ifelse(is.na(Num_Neg_Con_Passed),0,Num_Neg_Con_Passed)) %>%
-   mutate(Num_pos_con_failed = ifelse(Num_Pos_Con_Passed == 1,1,0),Num_neg_con_failed = ifelse(Num_Neg_Con_Passed == 1,1,0)) %>%
-   mutate(Num_sample_failed = ifelse(control_result == "pass",0,1 )) %>%
+   mutate(Num_pos_con_failed = ifelse(control_result == "fail" & Control_type == "pos", 1,0)) %>%
+   mutate(Num_neg_con_failed = ifelse(control_result == "fail" & Control_type == "neg", 1,0)) %>%
+   mutate(Num_pos_con_failed = ifelse(is.na(Num_pos_con_failed),0,Num_pos_con_failed),Num_neg_con_failed = ifelse(is.na(Num_neg_con_failed),0,Num_neg_con_failed)) %>%
+   mutate(Num_sample_failed = ifelse(control_result == "pass",0,1)) %>% 
    group_by(Assay_Plate_Code) %>% 
    mutate(Num_Pos_Con_Passed = sum(Num_Pos_Con_Passed),Num_Neg_Con_Passed = sum(Num_Neg_Con_Passed),Num_pos_con_failed = sum(Num_pos_con_failed),Num_neg_con_failed= sum(Num_neg_con_failed)) %>%
    select(Assay_Plate_Code,Num_Pos_Con_Passed,Num_Neg_Con_Passed,Num_pos_con_failed,Num_neg_con_failed) %>%
