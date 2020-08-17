@@ -435,11 +435,11 @@ for (i in code){
       print(i)
       write.csv(read_counts_matrix_wide_final ,file = paste0(i,"-","read_counts_matrix_results.csv"), row.names = F)
       write.csv(pn_filters,file = paste0(i,"-","pn_filters_report"), row.names = F)
-      write_csv(deatiled_pn_matrix_for_report1, paste0(i,"-","detailed_pn_matrix_results.csv"), row.names = F)
-      write_csv(simple_pn_matrix_final,paste0(i,"-","pn_matrix_results.csv"), row.names = F)
+      write.csv(deatiled_pn_matrix_for_report1, paste0(i,"-","detailed_pn_matrix_results.csv"), row.names = F)
+      write.csv(simple_pn_matrix_final,paste0(i,"-","pn_matrix_results.csv"), row.names = F)
       write.csv(failed_pn_matrix_final,paste0(i,"-","failed_samples_pn_matrix_results.csv"), row.names = F)
-      write_csv(control_results_final, paste0(i,"-","control_results.csv"), row.names = F)
-      write_csv(lineage_final,paste0(i,"-","lineage_filtered_results.csv"), row.names = F)
+      write.csv(control_results_final, paste0(i,"-","control_results.csv"), row.names = F)
+      write.csv(lineage_final,paste0(i,"-","lineage_filtered_results.csv"), row.names = F)
       
       }
    
