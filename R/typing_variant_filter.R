@@ -58,11 +58,11 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
   
   
   read_counts_matrix_wide = read_counts_matrix_long %>%
-    spread(CHROM, depth)
+    spread(CHROM, depth) %>%
+    filter(!is.na(Owner_Sample_ID))
   
   read_count_matrix_report = read_counts_matrix_wide %>%
     gather(HPV_Type, HPV_Type_count, -barcode,-total_reads, -Owner_Sample_ID,-`ASIC-Low`,-`ASIC-High`,-`ASIC-Med`,-`ESIC-High`,-`ESIC-Low`,-`ESIC-Med`,-`B2M-L`,-`B2M-S`) %>%
-    filter(!is.na(Owner_Sample_ID)) %>%
     write.csv("read_count_matrix_report")
 
   
