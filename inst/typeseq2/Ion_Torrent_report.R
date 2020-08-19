@@ -56,7 +56,7 @@ temp = Internal_control_summary_safe(detailed_pn_matrix_for_report,manifest,cont
 #samples_only matrix
 percent_positive_histogram_safe <- possibly(TypeSeqHPV::percent_positive_histogram, otherwise = data.frame())
 
-temp = percent_positive_histogram(samples_only_for_report)
+temp = percent_positive_histogram_safe(samples_only_for_report)
 
 #' \newpage
 #' ## Coinfection Rate Histogram
@@ -65,14 +65,14 @@ temp = percent_positive_histogram(samples_only_for_report)
 coinfection_rate_histogram_safe <- possibly(coinfection_rate_histogram,
                                             otherwise = data.frame())
 
-temp = coinfection_rate_histogram(samples_only_for_report)
+temp = coinfection_rate_histogram_safe(samples_only_for_report)
 
 #' \newpage
 #' ## Signal-to-Noise Plot
 #+ signal to noise plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=9, fig.align = "center"
 #scaling file and simple pn matrix and read counts matrix
 signal_to_noise_plot_safe <- possibly(TypeSeqHPV::signal_to_noise_plot, otherwise = data.frame())
-temp = signal_to_noise_plot(read_count_matrix_report,detailed_pn_matrix_for_report,pn_filters)
+temp = signal_to_noise_plot_safe(read_count_matrix_report,detailed_pn_matrix_for_report,pn_filters)
 
 #' \newpage
 #' ## Distribution of Sample HPV Positivity by Project
@@ -81,7 +81,7 @@ temp = signal_to_noise_plot(read_count_matrix_report,detailed_pn_matrix_for_repo
 # samples only matrix
 hpv_status_circle_plot_safe <- possibly(TypeSeqHPV::hpv_status_circle_plot, otherwise = data.frame())
 
-temp = hpv_status_circle_plot(samples_only_for_report)
+temp = hpv_status_circle_plot_safe(samples_only_for_report)
 
 #' \newpage
 #' ## Lineage Plots
@@ -90,12 +90,12 @@ temp = hpv_status_circle_plot(samples_only_for_report)
 
 lineage_plot_safe <- possibly(TypeSeqHPV::lineage_plot, otherwise = data.frame())
 # lineage results .csv
-temp = lineage_plot(lineage_for_report, 1)
+temp = lineage_plot_safe(lineage_for_report, 1)
 
 
 #' \newpage
 #+ normalized lineage table plot, echo=FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=9, fig.align = "center"
-temp = lineage_plot(lineage_for_report, 2)
+temp = lineage_plot_safe(lineage_for_report, 2)
 
 
 
@@ -106,7 +106,7 @@ temp = lineage_plot(lineage_for_report, 2)
 #+ Plate map, echo=FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=9, fig.align = "center"
 
 plate_map_safe <- possibly(plate_map,otherwise = data.frame())
-temp = plate_map(manifest,detailed_pn_matrix_for_report,specimen_control_defs,control_for_report)
+temp = plate_map_safe(manifest,detailed_pn_matrix_for_report,specimen_control_defs,control_for_report)
 
 
 
