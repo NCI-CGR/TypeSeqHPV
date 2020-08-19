@@ -72,7 +72,8 @@ typing_variant_filter <- function(variants, lineage_defs, manifest,
     mutate(barcode = paste0(BC1, BC2)) %>%
     full_join(read_counts_matrix_wide[,str_sort(colnames(read_counts_matrix_wide), numeric = T)] %>%
               select(barcode,Owner_Sample_ID,total_reads,`ASIC-Low`, `ASIC-Med`, `ASIC-High`, `B2M-L`, `B2M-S`,everything())) %>%
-    select(-BC1, -BC2) 
+    select(-BC1, -BC2) %>%
+    filter(!is.na(Owner_Sample_ID))
   
   
   print("line 41")
