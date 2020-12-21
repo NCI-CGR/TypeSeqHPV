@@ -90,7 +90,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     colnames() -> con_sort_order
   
   coverage_matrix = coverage_matrix %>% 
-    select(Owner_Sample_ID, barcode, total_HPV_reads,total_human_reads, total_MASIC_reads, all_of(con_sort_order), everything())
+    select(Owner_Sample_ID, barcode, total_HPV_reads,total_human_reads, total_MASIC_reads, con_sort_order, everything())
   
   manifest %>%
     inner_join(coverage_matrix) %>%
@@ -275,7 +275,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(Owner_Sample_ID, barcode, chrom,status, num_pass_freq,num_fail_freq,num_NA_freq) %>%
     spread(chrom,status)
   
-  control_freq_qc = control_bfreq_qc[,str_sort(colnames(control_freq_qc),numeric = T)] %>%
+  control_freq_qc = control_freq_qc[,str_sort(colnames(control_freq_qc),numeric = T)] %>%
     select(Owner_Sample_ID,barcode,num_pass_freq,num_fail_freq,num_NA_freq,everything())
   
   manifest %>%
