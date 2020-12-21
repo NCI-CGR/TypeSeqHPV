@@ -2,10 +2,10 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   require(fuzzyjoin)
   
+
   manifest %>%
   transform(BC1 = as.character(BC1)) %>% 
     rename(barcode = BC1) -> manifest
-  
   
   filteringTable = read_tsv(filteringTablePath) %>%
     map_if(is.factor, as.character) %>%
@@ -39,8 +39,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     mutate(qc_reason = ifelse(DP >= min_DP, qc_reason,
                               "min_DP")) %>% 
  #   filter(!(qc_reason == "min_DP")) %>%
-    mutate(methyl_freq = case_when(
-      ALT == "C" ~ AF, ALT == "T" ~ 1 - AF)) %>%
+    mutate(methyl_freq = case_when( ALT == "C" ~ AF, ALT == "T" ~ 1 - AF)) %>%
     mutate(qc_reason = ifelse(SRF >= min_coverage_pos, qc_reason,
                               paste0(qc_reason, ";", "min_coverage_pos"))) %>%
     mutate(qc_reason = ifelse(SRR >= min_coverage_neg, qc_reason,
@@ -64,12 +63,13 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     rename(pos_amplicon = POS, chr_amplicon = CHROM) %>% 
     glimpse() %>% 
     inner_join(pos_conversion, by = c("chr_amplicon","pos_amplicon")) %>%
-    select(chr_amplicon, pos, DP, methyl_freq, QUAL, status, qc_reason, everything()) 
+    select(chr_amplicon, pos, DP, methyl_freq, QUAL, status, qc_reason,everything()) %>%
+    mutate(methyl_freq = ifelse(status == "Fail",NA,methyl_freq)) 
   
   return_table = manifest %>% 
     left_join(filtered_variants %>% select(chr,pos,REF,ALT,DP,methyl_freq,status,qc_reason,chr_amplicon,pos_amplicon,QUAL,FILTER,CpG_Variant_Info,HS,TYPE,HRUN,everything())) %>% 
-    filter(!(is.na(Owner_Sample_ID))) 
-    write_csv(return_table, "target_variants_results.csv")
+    filter(!(is.na(Owner_Sample_ID)))  
+  write_csv(return_table, "target_variants_results.csv")
   
   coverage_matrix = return_table %>% 
     group_by(Owner_Sample_ID, barcode, chr_amplicon) %>% 
@@ -89,8 +89,8 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(-control_code,-control_type) %>%
     colnames() -> con_sort_order
   
-  coverage_matrix = coverage_matrix %>%
-    select(Owner_Sample_ID, barcode, total_HPV_reads,total_human_reads, total_MASIC_reads, con_sort_order, everything())
+  coverage_matrix = coverage_matrix %>% 
+    select(Owner_Sample_ID, barcode, total_HPV_reads,total_human_reads, total_MASIC_reads, all_of(con_sort_order), everything())
   
   manifest %>%
     inner_join(coverage_matrix) %>%
@@ -130,6 +130,9 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     manifest %>% 
       inner_join(num_type_list) %>% 
       filter(!(is.na(Owner_Sample_ID))) %>%
+      select(Sort_Order,Project, Panel, Specimen_project, Specimen_Plate, Specimen_Well,Assay_Batch_Code,
+             Assay_Plate_Code,hg19_amt_ng,HPV_copies_approx,Assay_Well_ID,Owner_Sample_ID,barcode,Num_Types_Pos,
+             total_MASIC_reads,total_HPV_reads,total_human_reads, everything())
       write.csv("detailed_pn_matrix.csv")
 
   # Simple pn matrix
@@ -186,13 +189,14 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
   
   #freq_matrix
   
-  freq_matrix = return_table %>%
-    group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%
-    summarize(mean_freq = mean(methyl_freq[status == "Pass"])) %>%
-    mutate(mean_freq = ifelse(mean_freq == "NaN","neg",mean_freq )) %>%
+  freq_matrix = return_table %>% 
+    group_by(Owner_Sample_ID, barcode, chr_amplicon) %>%  
+    summarize(mean_freq = mean(methyl_freq[status == "Pass"])) %>%   
+    mutate(mean_freq = ifelse(mean_freq == "NaN","neg",mean_freq )) %>% 
     ungroup() %>%
     group_by(barcode, Owner_Sample_ID) %>%
     spread(chr_amplicon, mean_freq) %>% 
+    select(Owner_Sample_ID,barcode,con_sort_order, everything()) %>%
     glimpse() 
   
   manifest %>%
@@ -271,7 +275,7 @@ single_bar_methyl_variant_filter <- function(variants, filteringTablePath, posCo
     select(Owner_Sample_ID, barcode, chrom,status, num_pass_freq,num_fail_freq,num_NA_freq) %>%
     spread(chrom,status)
   
-  control_freq_qc = control_freq_qc[,str_sort(colnames(control_freq_qc),numeric = T)] %>%
+  control_freq_qc = control_bfreq_qc[,str_sort(colnames(control_freq_qc),numeric = T)] %>%
     select(Owner_Sample_ID,barcode,num_pass_freq,num_fail_freq,num_NA_freq,everything())
   
   manifest %>%
