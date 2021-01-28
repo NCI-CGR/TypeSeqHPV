@@ -1,11 +1,11 @@
-rm -r TypeSeqHPV-TSv1
-mkdir TypeSeqHPV-TSv1
+rm -r TypeSeqHPV_V1_controls
+mkdir TypeSeqHPV_V1_controls
 
 # ion torrent plugin specific files
-cp inst/ion_plugin_specific_files/instance.html TypeSeqHPV-TSv1
-cp inst/ion_plugin_specific_files/launch.sh TypeSeqHPV-TSv1
-cp inst/ion_plugin_specific_files/plan.html TypeSeqHPV-TSv1
-cp inst/ion_plugin_specific_files/pluginsettings.json TypeSeqHPV-TSv1
+cp inst/ion_plugin_specific_files/instance.html TypeSeqHPV_V1_controls
+cp inst/ion_plugin_specific_files/launch.sh TypeSeqHPV_V1_controls
+cp inst/ion_plugin_specific_files/plan.html TypeSeqHPV_V1_controls
+cp inst/ion_plugin_specific_files/pluginsettings.json TypeSeqHPV_V1_controls
 
 # zip plugin package
-zip -r TypeSeqHPV_TSv1_Ion_Torrent_Plugin.zip TypeSeqHPV-TSv1
+zip -r TypeSeqHPV_V1_controls.zip TypeSeqHPV_V1_controls
