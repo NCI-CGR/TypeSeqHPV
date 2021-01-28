@@ -14,7 +14,7 @@ cgrlab/typeseqhpv:final_190104 Rscript /TypeSeqHPV/workflows/ion_workflow.R \
 --scaling_table /TypeSeqHPV/docs/Ion/2017-11-24_TypeSeqer_Filtering_Scaling_Table_v2.csv \
 --parameter_file /TypeSeqHPV/docs/Ion/hpv_types_MQ_min_max_len_filters_JUNE2017_30-10bpLen_v6.txt \
 --lineage_reference /TypeSeqHPV/docs/Ion/20180121_lineage_reference_table_and_filters_2.csv \
---barcode_list /TypeSeqHPV/docs/Ion/barcodeList_TypingV1_v2-barcodes.csv \
+--barcode_list /TypeSeqHPV/docs/Ion/barcodeList_v1.txt \
 --bam_files_dir /mnt/ \
 --start_plugin /mnt/startplugin.json \
 --custom_groups /mnt/report_grouping.csv \
