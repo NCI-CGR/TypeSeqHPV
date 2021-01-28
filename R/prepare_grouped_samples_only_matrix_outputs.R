@@ -1,7 +1,7 @@
 #'
 
 prepare_grouped_samples_only_matrix_outputs <- function(args_custom_groups_path, samples_only_matrix, parameters_df){
-
+if(length(samples_only_matrix$Owner_Sample_ID) > 0){
 ########### make groupsDf and long form Samples Matrix and merge #################
 groupsDf = read_csv(args_custom_groups_path) %>%
 gather(HPV_Type, reportingStatus, starts_with("HPV")) %>%
@@ -65,4 +65,10 @@ spread(HPV_Type, status) # <- tranform from long form to actual matrix
   
   
 return(finalGroupedSamplesOnlyMatrix)
+}
+else{
+  finalGroupedSamplesOnlyMatrix = data.frame(empty = "empty",new = "empty") 
+  return(finalGroupedSamplesOnlyMatrix)
+  
+}
 }
