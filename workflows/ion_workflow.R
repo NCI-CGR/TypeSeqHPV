@@ -36,7 +36,7 @@ args_custom_report_script_dir = optigrab::opt_get('custom_report_script_dir')
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 ion_plan <- drake::drake_plan(
 
-parse = startplugin_parse(args_start_plugin,
+parse = old_startplugin_parse(args_start_plugin,
                           args_custom_groups,
                           args_control_defs,
                           args_run_manifest,
