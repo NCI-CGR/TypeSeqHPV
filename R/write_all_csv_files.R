@@ -11,6 +11,7 @@
 write_all_csv_files <- function(final_grouped_samples_only_matrix, read_metrics, final_pn_matrix, hpv_types, control_matrix, failed_samples_matrix, full_lineage_table_with_manifest, parameters_df){
 
 ################ per project code pn matrices with group/mask information ################
+if(dim(grouped_samples_only_matrix)[1]>1){
 final_grouped_samples_only_matrix %>%
     select(Project, Assay_Batch_Code, Assay_Plate_Code, Owner_Sample_ID,
            Barcode = barcode, Human_control = Human_Control,
@@ -37,7 +38,7 @@ final_grouped_samples_only_matrix %>%
 
       temp = temp
     })
-
+}
 
 ############### other outputs that are by batch (sequencing run) ################
 
