@@ -96,7 +96,7 @@ sudo service docker start
 
 ## Download and add hpv-typing plugin zip file via torrent server gui
 
-https://github.com/cgrlab/TypeSeqHPV/releases/download/2.1808.2701/TypeSeqHPV_TSv1_Ion_Torrent_Plugin.zip
+https://github.com/NCI-CGR/TypeSeqHPV/releases/download/2.2103.1501/TypeSeqHPV_TSv1_2019_Ion_Torrent_Plugin.zip
 
 Illumina Workflow
 ================
