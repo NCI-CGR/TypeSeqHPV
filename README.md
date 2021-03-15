@@ -95,7 +95,7 @@ sudo service docker start
 ## Pull the docker image from docker hub
 
 ```
-sudo docker pull cgrlab/typeseqhpv:final_190104
+docker pull cgrlab/typeseqhpv:final_190104
 ```
 
 ## Download and add hpv-typing plugin zip file via torrent server gui
