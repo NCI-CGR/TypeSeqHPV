@@ -1,6 +1,4 @@
 
-This branch is under heavy development. 
-
 
 
 # TypeSeq HPV
@@ -12,7 +10,8 @@ TypeSeq HPV is an R package that includes
 * contains a "make" based pipeline for processing Ion or Illumina runs  
 * contains a docker build file that includes all the dependencies inside a single container  
   
-We recommend running the pipeline inside the docker container ```cgrlab/typeseqhpv:final_2018080604``` as it contains all the required dependencies in the correct locations.
+We recommend running the pipeline inside the docker container ```cgrlab/typeseqhpv:final_190104``` as it contains all the required dependencies in the correct locations.
+
 
 The workflow manager we use is **drake** https://github.com/ropensci/drake
 
@@ -93,10 +92,15 @@ Restart Docker
 sudo service docker start 
 ````
 
+## Pull the docker image from docker hub
+
+```
+docker pull cgrlab/typeseqhpv:final_190104
+```
 
 ## Download and add hpv-typing plugin zip file via torrent server gui
 
-https://github.com/cgrlab/TypeSeqHPV/releases/download/2.1808.2701/TypeSeqHPV_TSv1_Ion_Torrent_Plugin.zip
+https://github.com/NCI-CGR/TypeSeqHPV/releases/download/2.2103.1501/TypeSeqHPV_TSv1_2019_Ion_Torrent_Plugin.zip
 
 Illumina Workflow
 ================
