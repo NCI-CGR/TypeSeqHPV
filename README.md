@@ -100,7 +100,7 @@ docker pull cgrlab/typeseqhpv:final_190104
 
 ## Download and add hpv-typing plugin zip file via torrent server gui
 
-https://github.com/NCI-CGR/TypeSeqHPV/releases/download/2.2103.1501/TypeSeqHPV_TSv1_2019_Ion_Torrent_Plugin.zip
+https://github.com/NCI-CGR/TypeSeqHPV/releases/download/2.2103.1502/TypeSeqHPV_TSv1_2019_Ion_Torrent_Plugin.zip
 
 Illumina Workflow
 ================
