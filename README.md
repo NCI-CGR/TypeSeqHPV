@@ -102,6 +102,16 @@ docker pull cgrlab/typeseqhpv:final_190104
 
 https://github.com/NCI-CGR/TypeSeqHPV/releases/download/2.2103.1502/TypeSeqHPV_TSv1_2019_Ion_Torrent_Plugin.zip
 
+
+## Change the server config to give permissions for creating hard links while running the plugin
+
+change the fs.protected_hardlinks option in the file /etc/sysctl.d/10-link-restrictions.conf to 0
+
+```
+fs.protected_hardlinks = 0
+```
+
+
 Illumina Workflow
 ================
 ### 1. Generate fastq files from raw sequencing data using modified parameters
