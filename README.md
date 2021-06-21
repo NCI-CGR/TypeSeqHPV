@@ -111,6 +111,13 @@ change the fs.protected_hardlinks option in the file /etc/sysctl.d/10-link-restr
 fs.protected_hardlinks = 0
 ```
 
+Now run this from command line to make sure the above changes are reflected 
+
+```
+sysctl –system
+```
+
+
 
 Illumina Workflow
 ================
