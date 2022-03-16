@@ -53,6 +53,36 @@ group_by(barcode) %>%
 spread(HPV_Type, read_counts) # <- tranform from long form to actual matrix
 
 
+### Changes to address the issue # 85
+# a. hpv_reads would be calculated by subtracting the b2m count from total_reads.b. hpv_type would be one of the 54 specific types assayed (ie, HPV03, HPV06, etc.)
+# c. call would be the pos or neg call for the sample and type specified in the row (same as specified in the full_pn_matrix file)
+# d. read_count is the type-specific read count from the read_counts_matrix file, for the sample and hpv type specified in the row
+# e. read_proportion is calculated by dividing the read_count by hpv_reads
+
+# Take A:X columns from hpv_types, and convert the table to long form
+# Join with the table final_pn_matrix
+
+
+
+pn_count_long <- hpv_types %>% mutate(hpv_reads = total_reads - B2M) %>% 
+   # Insert Control_type, control_result, Num_Types_Pos, and Human_Control
+   # between hpv_reads and hpv_type
+   left_join(
+      final_pn_matrix %>% select(barcode, Control_type:Human_Control), by=c("barcode")
+   ) %>%
+   gather("hpv_type", "read_count", starts_with("HPV", ignore.case=F)) %>% 
+   mutate(read_proportion = read_count/hpv_reads) %>% 
+  
+   # join with the final_pn_matrix to have the call
+   inner_join(
+     final_pn_matrix %>% select(barcode, starts_with("HPV")) %>% gather("hpv_type", "call", starts_with("HPV")) , by=c("barcode", "hpv_type")
+    ) 
+
+
+# Save to [Exp]_calls_and_read_counts.csv
+write_csv(pn_count_long, paste0(final_pn_matrix$Assay_Batch_Code[1], "_calls_and_read_counts.csv"))
+
+### End of #85
 
 write_csv(read_metrics, paste0(final_pn_matrix$Assay_Batch_Code[1], "_read_metrics.csv"))
 
