@@ -19,7 +19,7 @@ We also include a wrapper for the Ion Torrent server that can be uploaded via th
 
 ### Download and add hpv-typing plugin zip file via torrent server gui
 
-https://github.com/cgrlab/TypeSeqHPV/releases/download/2.1808.2701/TypeSeqHPV_TSv1_Ion_Torrent_Plugin.zip
+https://github.com/NCI-CGR/IonTorrent_plugins/tree/main/TypeSeqHPV-TSv1/archive
 
 
 ### Tools utilized in the Ion Torrent
