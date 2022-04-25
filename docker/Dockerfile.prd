@@ -1,0 +1,9 @@
+FROM cgrlab/typeseqhpv:base_190221
+
+WORKDIR /mnt
+
+RUN Rscript -e 'devtools::install_github("cgrlab/TypeSeqHPV@2.2204.0101", ref="master", force=TRUE)'
+
+RUN cd / && git clone --single-branch -b 2.2204.0101 https://github.com/cgrlab/TypeSeqHPV.git
+
+
