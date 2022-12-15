@@ -191,3 +191,9 @@ prepare_lineage_df_safe <- possibly(TypeSeqHPV::prepare_lineage_df,
 
 future::plan(multiprocess)
 drake::make(ion_plan)
+
+### Clean .drake if the drake workflow is completed successfully
+if (length(failed()) == 0){
+    cache <- get_cache()
+    cache$destroy()
+}
